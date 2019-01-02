@@ -1,0 +1,243 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+<!-- CSS -->
+@Styles.Render("~/Content/themes/iseiQ/maint.css")
+@model PaymentListModel
+
+@{
+    ViewBag.Title = "Payment Information List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+}
+@using (Html.BeginForm("EditPaymentClear", "Payment", FormMethod.Post, new { id = "frmPaymentClearEdit", enctype = "multipart/form-data" }))
+{
+    <div id="maintInputDateList">
+    <div id="topContent">
+        <div id="title">Payment Information List</div>
+
+        <div id="searchArea">            
+            <div class="form-group">
+                @Html.Label("User Name", new { @class = "" })
+                @Html.TextBoxFor(m => m.NAME_SEARCH, new { @class = "width-200", style = "ime-mode: auto;", maxlength = 100 })
+            </div>
+        </div>
+        <hr />
+
+        <div id="searchAction">
+            <button type="button" id="btnClearConditions" class="btn btn-default">
+                <i class="btn-icon btn-clear">Clear</i>
+            </button>
+            <button type="button" id="btnSearch" class="btn btn-green">
+                <i class="btn-icon btn-search-white">Search</i>
+            </button>
+        </div>
+    </div>
+
+    @RenderPage("~/Views/Shared/ShowHideHeaderContent.cshtml")
+
+    <div id="registButton">
+        <button type="button" id="btnUpdate" name="btnUpdate" class="btn btn-orange"><i class="btn-icon btn-regist">Update Payment</i></button>
+    </div>
+    
+    <div id="mainContent" class="auto-overflow">
+        <table id="InfoTable" class="dataTable auto-scroll-x" cellspacing="0">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>                    
+                    <th class="width-200">User Name</th>
+                    <th class="width-200">Balance</th>
+                    <th class="width-200">Received Amount</th>                    
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>    
+</div>
+}
+
+
+<script type="text/javascript">
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Variables Declaration
+    ////////////////////////////////////////////////////////////////////////////////////
+    var dataTable;
+    var TaxRateMaintSearchUrl = '@Url.Action("PaymentSearch", "Payment", new { area = "Payment" })';
+
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+    var PAYMENT_CD = 0;
+    var SETUP_USER_SEQ_CD = 1;
+    var USER_NAME = 2;
+    var BALANCE = 3;
+    var RECEIVED_AMOUNT = 4;
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Initialization functions
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(function () {
+
+        var oSorting = {
+            "bSort": false
+        };
+
+        var oPaginate = {
+            "bPaginate": true,
+            "iDisplayStart": parseInt(@Model.SEARCH_START),
+            "iDisplayLength": parseInt(@Model.SEARCH_LENGTH),
+            "bStateSave": false
+        };
+
+        var oServerSide = {
+            "bServerSide": true,
+            "sAjaxSource": TaxRateMaintSearchUrl,
+            "fnServerParams": serverParams,
+            "fnInitComplete": function () { },
+            "fnDrawCallback": displayComplete
+        };
+
+        var aoColumnDefs = [
+            { "bVisible": false, "bSortable": false, "aTargets": [PAYMENT_CD] },
+            { "bVisible": false, "bSortable": false, "aTargets": [SETUP_USER_SEQ_CD] },
+            { "bSortable": false, "aTargets": [USER_NAME], "sWidth": "10%", "sClass": "cell_left" },
+            { "bSortable": false, "aTargets": [BALANCE], "sWidth": "10%", "sClass": "cell_center", "mRender": function (data, type, full) { return bindPaymentCd(data, full[0]); } },
+            { "bSortable": false, "aTargets": [RECEIVED_AMOUNT], "sWidth": "10%", "sClass": "cell_right", "mRender": function (data, type, full) { return buildReceivedAmountQouta(); } }
+
+        ];
+
+        function serverParams(aoData) {
+            //検索条件を保持
+
+            aoData.push(
+               { "name": "NAME_SEARCH", "value": $("#NAME_SEARCH").val() }
+            );
+        }
+
+        function displayComplete(data) {
+            //if (sort_colum == 0) {
+            //    $('#InfoTable tr th:not(.sorting_disabled)').removeClass('sorting_asc sorting_desc').addClass('sorting').removeAttr('aria-sort');
+            //}
+
+            resetElementName();
+        }
+
+        dataTable = CreateDataTable('#InfoTable', oSorting, oPaginate, oServerSide, aoColumnDefs);
+    });
+
+
+
+    $(document).off('#btnUpdate');
+    $(document).on('click', '#btnUpdate', function () {
+        var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!result) return;
+
+        iseiQ.utility.showConfirmModal('Do you want to Update Payment ?', function (action) {
+            if (action) {
+                $('#frmPaymentClearEdit').submit();
+            }
+        });
+    });
+
+    $(document).off('#frmPaymentClearEdit');
+    $(document).on('submit', '#frmPaymentClearEdit', function (event) {
+        $.ajax({
+            url: '@Url.Action("EditPaymentClear", "Payment")',
+            dataType: 'json',
+            data: $(this).serialize(),
+            type: 'POST',
+            success: function (result) {
+                window.parent.$('.ui-dialog-content:visible').dialog('close');
+                var message = "";
+                if (result.ErrorMessages) {
+                    for (var i = 0; i < result.ErrorMessages.length; i++) {
+                        message += result.ErrorMessages[i] + "\n";
+                    }
+                    iseiQ.utility.showMessageModal(message, true);
+                } else if (result.IsSuccess) {
+                    //saveCondition();
+
+                    message = "@string.Format(Messages.UpdatePaymentClearSuccess)";
+                    iseiQ.utility.showMessageModal("Update Payment Success !!!")
+                }
+            },
+            error: function (xhr) {
+                window.parent.$('.ui-dialog-content:visible').dialog('close');
+                iseiQ.utility.showMessageModal("Update Payment Failed !!!");
+            }
+        });
+        event.preventDefault();
+    });
+
+    $(document).off('#btnSearch');
+    $(document).on('click', '#btnSearch', function () {
+        var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!result) return;
+
+        searchTaxRateMaint();
+    });
+
+    $(document).off('#btnClearConditions');
+    $(document).on('click', '#btnClearConditions', function () {
+        var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!result) return;
+
+        $("#NAME_SEARCH").val("");
+
+        searchTaxRateMaint();
+    });
+
+    $(document).off('.post-TaxRateMaint-register');
+    $(document).on('click', '.post-TaxRateMaint-register', function () {
+        var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!result) return;
+
+        RegistSubmit($(this).data('tax-rate-id'));
+    });
+
+    $(document).off('.receive-amount-qouta');
+    $(document).on('keyup', '.receive-amount-qouta', function () {
+        var oldbalance = parseInt(this.parentElement.parentElement.children[1].children[3].value);
+        var newbalance = oldbalance + +$(this).val();
+        this.parentElement.parentElement.children[1].children[0].textContent = newbalance;
+        this.parentElement.parentElement.children[1].children[1].value = newbalance;
+        //this.parentElement.parentElement.children[1].children[2].value = newbalance;
+        //$(this).parents('tr').find('.balance').val(newbalance);
+    });
+
+    function searchTaxRateMaint() {
+        $('.validation-summary-errors').remove();
+
+        dataTable.fnPageChange('first');
+    }
+
+    function buildActionLink(TaxRateID, className, label, status) {
+        if (status == 0) {
+            return '';
+        }
+        return '<a class="' + className + '" data-tax-rate-id="' + TaxRateID + '" >' + label + '</a>';
+    }
+
+    function buildReceivedAmountQouta() {
+        var html = '';
+        html = '<input class="receive-amount-qouta negative-money" type="text" maxlength="100" style="width: 150px;text-align: right;" value="0" />VNĐ';
+        return html;
+    }
+
+    function resetElementName() {
+        $('#InfoTable tbody tr').each(function (index, element) {
+            var prefix = 'PAYMENT_LIST[' + index + '].';            
+            $(element).find('.payment-cd').attr('name', prefix + 'PAYMENT_CD');
+            $(element).find('.balance-push').attr('name', prefix + 'BALANCE');
+        });
+    }
+
+    function bindPaymentCd(data, id) {
+        var html = '<div class="short-text text-overflow balance' + '" title="' + data + '">' + data + '</div>'
+                 + '<input class="balance-push" type="hidden" value="' + nvl(data, '') + '" />'
+                 + '<input class="payment-cd" type="hidden" value="' + nvl(id, '') + '" />'
+                 + '<input class="balance-temp" type="hidden" value="' + nvl(data, '') + '" />';
+        return html;
+    }
+
+</script>

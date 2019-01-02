@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+    <meta name="viewport" content="width=device-width" charset="utf-8" />
+    <title>@SystemSetup.UtilityServices.StringUtil.GetHtmlTitle(ViewBag.Title)</title>
+
+    @Styles.Render("~/Content/themes/iseiQ/css")
+    @Styles.Render("~/Content/common")
+    @Styles.Render("~/Content/themes/base/css")
+    @RenderPage("~/Views/Shared/_CommonScript.cshtml")     
+    @Scripts.Render("~/bundles/jquery")       
+    @Scripts.Render("~/bundles/common")
+    @Scripts.Render("~/bundles/jquery/bootstrapPlugins")
+    @Scripts.Render("~/bundles/input")
+    @Scripts.Render("~/bundles/dataTables")
+
+    @if (ViewContext.RouteData.Values["controller"].ToString() != "Login")
+    {
+        @Scripts.Render("~/bundles/loadingPlugin")
+    }
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function () {            
+            window.onload = function () {
+                                
+            }
+        });
+    </script>
+    @RenderSection("scripts", required: false)
+</head>
+<body>    
+    <div id="body" style="min-width: 600px">
+        @RenderBody()
+    </div>
+</body>
+</html>

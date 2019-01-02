@@ -1,0 +1,439 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+@*CSS*@
+@Styles.Render("~/Content/themes/iseiQ/maint.css")
+@model AllInformationListModel
+@{
+    ViewBag.Title = AllInformation.AllInformationRegister;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+    var tempDateTime = new DateTime();
+}
+<div id="AllInformationRegister" class="edit-screen">
+    @using (Html.BeginForm("Edit", "AllInformation", FormMethod.Post, new { id = "formAllInfoRegis", enctype = "multipart/form-data", @class = "form-horizontal" }))
+    {
+        <div id="title">@AllInformation.ALLREGISTER_INFO</div>
+        @Html.HiddenFor(m => m.INFO_SEQ_NO, new { @class = "sp-id" })
+        <div class="form-group">
+            <label class="title-row">@AllInformation.PUBLISH_DATE_START <span class="RequiredField">*</span></label>
+            <span class="date datepicker-days">
+                @Html.TextBoxFor(m => m.PUBLISH_DATE_START, "{0:yyyy/MM/dd}", new { @class = "ime-mode", maxlength = 10 })
+                <button type="button" class="btn btn-default btn-add-on"><i class="btn-icon btn-calendar"></i></button>
+            </span>
+        </div>
+
+        <div class="form-group">
+            <label class="title-row">@AllInformation.PUBLISH_DATE_END <span class="RequiredField">*</span></label>
+            <span class="date datepicker-days">
+                @Html.TextBoxFor(m => m.PUBLISH_DATE_END, "{0:yyyy/MM/dd}", new { @class = "ime-mode", maxlength = 10 })
+                <button type="button" class="btn btn-default btn-add-on"><i class="btn-icon btn-calendar"></i></button>
+            </span>
+        </div>
+
+        <div class="form-group">
+            <label class="title-row">@AllInformation.DSP_PRIORITY <span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.DSP_PRIORITY, new { @class = "txt-w-30 decimal_7_2 ", maxlength = 2 })
+        </div>
+        
+        <div class="form-group">
+            <label class="title-row">@AllInformation.lblContentType <span class="RequiredField">*</span></label>
+            @Html.DropDownListFor(m => m.CONTENT_TYPE, new SelectList(ContentType.Items, "Key", "Value"), new { @class = "no-margin-left ddl-w-120" })
+        </div>
+        
+         <div class="form-group">
+            <label class="title-row">@AllInformation.lblTitle <span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.TITLE, new { @class = "txt-w-800 no-margin-left", maxlength = 100 })
+            <input id="TITLE_HIDDEN" type="hidden" value="@Model.TITLE">
+        </div>
+
+        <div class="form-group">
+            <label class="title-row vertical-align-top">@AllInformation.CONTENT <span class="RequiredField">*</span>&nbsp;&nbsp;&nbsp;</label>
+            @Html.TextAreaFor(m => m.CONTENT, new { @class = "note-textarea no-margin-left", maxlength = 4000 })
+            <input id="CONTENT_HIDDEN" type="hidden" value="@Model.CONTENT">
+        </div>
+
+        <div class="form-group">
+            <label class="title-row">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            @if (Model.DEL_FLG == DeleteFlag.NON_DELETE)
+            {
+                <input id="DEL_FLG" type="checkbox">
+                <input id="DEL_FLG_HIDDEN" name="DEL_FLG" type="hidden" value="@DeleteFlag.NON_DELETE">
+            }
+            else
+            {
+                <input id="DEL_FLG" type="checkbox" checked="checked">
+                <input id="DEL_FLG_HIDDEN" name="DEL_FLG" type="hidden" value="@DeleteFlag.DELETE">
+            }
+            @Html.Label(@Information.DELETE, new { @for = "DEL_FLG" })
+        </div>
+
+        <div class="form-group action-button-bottom">
+            <button type="button" id="btnBack" name="btnBack" class="btn btn-default"><i class="btn-icon btn-back">@EstimationRegister.btnBack</i></button>
+            <div class="pull-right">
+                <button type="button" id="btnClear" name="btnClear" class="btn btn-default"><i class="btn-icon btn-clear">@EstimationRegister.btnClear</i></button>
+                <button type="button" id="btnSubmit" name="btnSubmit" class="btn btn-orange"><i class="btn-icon btn-edit">@EstimationRegister.btnRegister</i></button>
+            </div>
+        </div>
+    @Html.HiddenFor(m => m.INFO_SEQ_NO)
+    }
+    @using (Html.BeginForm("AllInformationList", "AllInformation", FormMethod.Post, new
+            {
+                area = "Information",
+                id = "Back",
+                enctype = "multipart/form-data"
+            }))
+    {
+        @Html.HiddenFor(m => m.INFO_SEQ_NO)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.INFO_SEQ_NO)
+        @Html.HiddenFor(m => m.REGIST_PARAM.CONTENT)
+        @Html.HiddenFor(m => m.REGIST_PARAM.DSP_PRIORITY)
+        @Html.HiddenFor(m => m.REGIST_PARAM.DEL_FLG)
+        @Html.HiddenFor(m => m.DEL_FLG)
+        @Html.HiddenFor(m => m.SEARCH_START)
+        @Html.HiddenFor(m => m.SEARCH_LENGTH)
+    }
+</div>
+
+<script type="text/javascript">
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+    var AllInformationSearchUrl = '@Url.Action("AllInformationList", "AllInformation", new { area = "Information" })';
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Check validate
+    ////////////////////////////////////////////////////////////////////////////////////
+    function validateData() {
+        var invalidMess = [];
+        var content = $('#CONTENT').val();
+        var startDate = $('#PUBLISH_DATE_START').val();
+        var endDate = $('#PUBLISH_DATE_END').val();
+        var content = $('#CONTENT').val();
+        var display = $('#DSP_PRIORITY').val();
+        var contentType = $('#CONTENT_TYPE').val();
+        var title = $('#TITLE').val();
+        var errContent = null;
+        var errStartDate = null;
+        var errEndDate = null;
+
+        // Validate start date
+        if (errStartDate != null) {
+            invalidMess.push(errStartDate);
+        }
+        else if (startDate.length === 0) {
+            errStartDate = '@AllInformation.PUBLISH_DATE_START' + Constant.ERR_REQUIRED;
+            invalidMess.push(errStartDate);
+        }
+        else if (startDate.length > 0) {
+            errStartDate = iseiQ.utility.validDate(startDate, Constant.DATE_FORMAT, '@AllInformation.PUBLISH_DATE_START');
+            if (errStartDate != null) {
+                invalidMess.push(errStartDate);
+            }
+        }
+        else if (errStartDate == null && startDate.length > Constant.MAX_DATE) {
+            invalidMess.push('@AllInformation.PUBLISH_DATE_START' + Constant.ERR_INCORRECT_DATE);
+        }
+
+        // Validate end date
+        if (errEndDate != null) {
+            invalidMess.push(errEndDate);
+        }
+        else if (endDate.length === 0) {
+            errEndDate = '@AllInformation.PUBLISH_DATE_END' + Constant.ERR_REQUIRED;
+            invalidMess.push(errEndDate);
+        }
+        else if (endDate.length > 0) {
+            errEndDate = iseiQ.utility.validDate(endDate, Constant.DATE_FORMAT, '@AllInformation.PUBLISH_DATE_END');
+            if (errEndDate != null) {
+                invalidMess.push(errEndDate);
+            }
+        }
+        else if (errEndDate == null && endDate.length > Constant.MAX_DATE) {
+            invalidMess.push('@AllInformation.PUBLISH_DATE_END' + Constant.ERR_INCORRECT_DATE);
+        }
+
+        // Validate content
+        if (content.length === 0) {
+            errContent = '@AllInformation.CONTENT' + Constant.ERR_REQUIRED;
+            invalidMess.push(errContent);
+        }
+
+        var addition = 0;
+        var lineBreak = content.match(/(\r\n|\r|\n)/g);
+        if (lineBreak != null) {
+            addition = lineBreak.length;
+        }
+
+        if ((content.length + addition) > Constant.MAX_AREA_LENGTH) {
+            errContent = Constant.ERR_STRING_LENGTH.replace('{0}', '@Information.CONTENT').replace('{1}', Constant.MAX_AREA_LENGTH)
+            invalidMess.push(errContent);
+        }
+
+        // required DSP_Priority
+        if (display.length === 0) {
+            errDisplay = '@AllInformation.DSP_PRIORITY' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        // required ContentType
+        if (contentType == null || contentType == "") {
+            errContentType = '@AllInformation.lblContentType' + Constant.ERR_REQUIRED;
+            invalidMess.push(errContentType);
+        }
+
+        if (title.trim() == "") {
+            errTitle = '@AllInformation.lblTitle' + Constant.ERR_REQUIRED;
+            invalidMess.push(errTitle);
+        }
+        else if (title.length > Constant.TITLE_MAX_LENGTH) {
+            errTitle = Constant.ERR_STRING_LENGTH.replace('{0}', '@AllInformation.lblTitle').replace('{1}', Constant.TITLE_MAX_LENGTH)
+            invalidMess.push(errTitle);
+        }
+
+
+        // Validate if end date smaller than start date.
+        if (errStartDate == null && errEndDate == null && startDate.length > 0 && endDate.length > 0) {
+            if (!iseiQ.utility.compareDate(startDate, endDate, Constant.DATE_FORMAT)) {
+                errEndDate = '@AllInformation.PUBLISH_DATE_END' + '@AllInformation.ERR_END_DATE';
+                invalidMess.push(errEndDate);
+            }
+        }
+
+        return invalidMess;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Clear
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnClear');
+    $(document).on('click', '#btnClear', function () {
+        iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmClear)', function (action) {
+            $('.validation-summary-errors').remove();
+            if (action) {
+                if ($('#INFO_SEQ_NO').val() == "0") {
+                    var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+                    if (!result) return;
+                    $("#PUBLISH_DATE_START").val("");
+                    $("#PUBLISH_DATE_END").val("");
+                    $("#DSP_PRIORITY").val("0");
+                    $("#CONTENT").val("");
+                    $('#CONTENT_TYPE').val("0");
+                    $("#TITLE").val("");
+                    $("#DEL_FLG").prop('checked', false).change();
+                    $('#DEL_FLG_HIDDEN').val('@DeleteFlag.NON_DELETE');
+                }
+                else {
+                    @if(Model.PUBLISH_DATE_START.HasValue)
+                    {
+                        <text>
+                    $("#PUBLISH_DATE_START").val('@Model.PUBLISH_DATE_START.Value.ToString("yyyy/MM/dd")');
+                    </text>
+                    }
+                    @if(Model.PUBLISH_DATE_START.HasValue)
+                    {
+                        <text>
+                    $("#PUBLISH_DATE_END").val('@Model.PUBLISH_DATE_END.Value.ToString("yyyy/MM/dd")');
+                    </text>
+                    }
+                    $("#DSP_PRIORITY").val('@Model.DSP_PRIORITY');
+                    $('#CONTENT_TYPE').val('@Model.CONTENT_TYPE');
+                    $("#TITLE").val($("#TITLE_HIDDEN").val());
+                    $("#CONTENT").val($("#CONTENT_HIDDEN").val());
+                    $("#DEL_FLG_HIDDEN").val('@Model.DEL_FLG').change();
+                    if ($("#DEL_FLG_HIDDEN").val() == '@DeleteFlag.NON_DELETE') {
+                        $("#DEL_FLG").prop("checked", false);
+                    }
+                    else {
+                        $("#DEL_FLG").prop("checked", true);
+                    }
+                }
+            }
+        })
+    });
+    $(document).off('#DEL_FLG');
+    $(document).on('change', '#DEL_FLG', function () {
+        if ($('#DEL_FLG').is(":checked")) {
+            $('#DEL_FLG_HIDDEN').val('@DeleteFlag.DELETE');
+        }
+        else {
+            $('#DEL_FLG_HIDDEN').val('@DeleteFlag.NON_DELETE');
+        }
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Submit
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnSubmit');
+    $(document).on('click', '#btnSubmit', function () {
+
+        var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!result) return;
+
+        $('.validation-summary-errors').remove();
+        var invalidMess = validateData();
+        if (invalidMess.length > 0) {
+            iseiQ.utility.showClientError(invalidMess);
+            return false;
+        }
+
+        @*var startDate = '@Model.PUBLISH_DATE_START';
+        var endDate = '@Model.PUBLISH_DATE_END';
+        var content = '@Model.CONTENT.Replace("\r\n", @"\r\n")';
+        var display = '@Model.DSP_PRIORITY';*@
+
+        var insFlg = false;
+        var infoSeqNo = '@Model.INFO_SEQ_NO';
+
+        if (infoSeqNo == 0) {
+            $('#UPD_DATE').val('@tempDateTime.ToString()');
+            $('#UPD_DATE').css("visibility", "hidden");
+            insFlg = true;
+        } else {
+            insFlg = true;
+        }
+
+        if (insFlg) {
+            iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmSubmitData, (Model.INFO_SEQ_NO > 0 ? Messages.Update : Messages.Register))', function (action) {
+                if (action) {
+                    $("#formAllInfoRegis").submit();
+                }
+            })
+        }
+    });
+
+    $("#formAllInfoRegis").submit(function (event) {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+        var formData = new FormData($(this)[0]);
+        $.ajax(
+        {
+            url: '@Url.Action("Edit", "AllInformation")',
+            data: formData,
+            mimeType: "multipart/form-data",
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                window.parent.$('.ui-dialog-content:visible').dialog('close');
+                var result = jQuery.parseJSON(res);
+                var message = "";
+                if (result.ErrorMessages) {
+                    for (var i = 0; i < result.ErrorMessages.length; i++) {
+                        message += result.ErrorMessages[i] + "\n";
+                    }
+                    iseiQ.utility.showMessageModal(message, true);
+                } else {
+                    message = result.isNew == true ? "@AllInformation.AllInsertSuccess" : "@AllInformation.AllUpdateSuccess";
+                    iseiQ.utility.showMessageModal(message, false, function () {
+                        window.location.href = '@Url.Action("AllInformationList", "AllInformation", new { area = "Information" })';
+                    });
+                }
+            },
+            error: function (xhr) {
+                window.parent.$('.ui-dialog-content:visible').dialog('close');
+                window.location.href = '/Common/Common/CloseIframe/';
+            }
+        });
+        event.preventDefault();
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Back
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnBack');
+    $(document).on('click', '#btnBack', function () {
+        iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmBack)', function (action) {
+            if (action) {
+                var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+                if (!result) return;
+                $(window).off('beforeunload');
+                $('#Back').submit();
+            }
+        })
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Change Publish start date
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#PUBLISH_DATE_START');
+    $(document).on('change', '#PUBLISH_DATE_START', function () {
+        $(this).val(iseiQ.utility.autoCompleteYearMonthDay($(this).val()));
+        validateStartDate();
+    });
+
+    $(document).off('#PUBLISH_DATE_START');
+    $(document).on('change', '#PUBLISH_DATE_START', function () {
+        if ("" !== $(this).val()) {
+            $(this).parents(".datepicker-days").datepicker('update');
+        }
+        validateStartDate();
+    });
+
+    function validateStartDate() {
+        var startDate = $('#PUBLISH_DATE_START').val();
+        var errInvalid;
+        errInvalid = iseiQ.utility.validDate(startDate, Constant.DATE_FORMAT, '@AllInformation.PUBLISH_DATE_START');
+        var endDate = $('#PUBLISH_DATE_END').val();
+        var errInvalidEndDate = iseiQ.utility.validDate(endDate, Constant.DATE_FORMAT, '@AllInformation.PUBLISH_DATE_END');
+
+        if (errInvalid != null) {
+            iseiQ.utility.showMessageModal(errInvalid, true);
+            return;
+        }
+
+        // valid startDate length
+        if (startDate.length > Constant.MAX_DATE) {
+            errInvalid = '@AllInformation.PUBLISH_DATE_START' + Constant.ERR_INCORRECT_DATE;
+            iseiQ.utility.showMessageModal(errInvalid, true);
+            return;
+        }
+
+        if (errInvalidEndDate == null && errInvalid == null && startDate.length > 0) {
+            if (endDate.length > 0 && !iseiQ.utility.compareDate(startDate, endDate, Constant.DATE_FORMAT)) {
+                iseiQ.utility.showMessageModal('@AllInformation.PUBLISH_DATE_END' + '@AllInformation.ERR_END_DATE', true);
+                return;
+            }
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Change Publish end date
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#PUBLISH_DATE_END');
+    $(document).on('change', '#PUBLISH_DATE_END', function () {
+        $(this).val(iseiQ.utility.autoCompleteYearMonthDay($(this).val()));
+        validateEndDate();
+    });
+
+    $(document).off('#PUBLISH_DATE_END');
+    $(document).on('change', '#PUBLISH_DATE_END', function () {
+        if ("" !== $(this).val()) {
+            $(this).parents(".datepicker-days").datepicker('update');
+        }
+        validateEndDate();
+    });
+
+    function validateEndDate() {
+        var endDate = $('#PUBLISH_DATE_END').val();
+        var errInvalid;
+        errInvalid = iseiQ.utility.validDate(endDate, Constant.DATE_FORMAT, '@AllInformation.PUBLISH_DATE_END');
+        var startDate = $('#PUBLISH_DATE_START').val();
+        var errInvalidStartDate = iseiQ.utility.validDate(endDate, Constant.DATE_FORMAT, '@AllInformation.PUBLISH_DATE_START');
+
+        if (errInvalid != null) {
+            iseiQ.utility.showMessageModal(errInvalid, true);
+            return;
+        }
+        if (endDate.length > Constant.MAX_DATE) { // valid string length
+            errInvalid = '@AllInformation.PUBLISH_DATE_END' + Constant.ERR_INCORRECT_DATE;
+            iseiQ.utility.showMessageModal(errInvalid, true);
+            return;
+        }
+
+        if (errInvalidStartDate == null && errInvalid == null && startDate.length > 0) {
+            if (endDate.length > 0 && !iseiQ.utility.compareDate(startDate, endDate, Constant.DATE_FORMAT)) {
+                iseiQ.utility.showMessageModal('@AllInformation.PUBLISH_DATE_END' + '@AllInformation.ERR_END_DATE', true);
+                return;
+            }
+        }
+    }
+</script>

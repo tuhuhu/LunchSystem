@@ -1,0 +1,8 @@
+﻿@if (Model == null)
+{
+    <span class="decimal"></span>
+}
+else
+{    
+    <span class="decimal">@String.Format("{0:N0}", Model)</span>
+}

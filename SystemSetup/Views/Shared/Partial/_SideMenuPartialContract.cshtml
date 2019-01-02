@@ -1,0 +1,66 @@
+﻿@using SystemSetup.Constants.Resources;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Models;
+@{
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+}
+
+<ul class="dropdown-menu">
+    <b class="caret"></b>
+    <li>
+        <a href='@Url.Action("PaymentList", "Payment", new { area = "Payment" })'>
+            <i class="fa fa-angle-right pull-left"></i>Payment List
+        </a>
+    </li>
+    @*<li>
+        <a href='@Url.Action("AuthorityGroupMaintList", "AuthorityGroupMaint", new { area = "Maint" })'>
+            <i class="fa fa-angle-right pull-left"></i>@SideMenu.AuthorityGroupMaintenance
+        </a>
+    </li>
+    <li>
+        <a href='@Url.Action("UserMaintList", "UserMaint", new { area = "Maint" })'>
+            <i class="fa fa-angle-right pull-left"></i>@SideMenu.UserMaintenance
+        </a>
+    </li>
+    <li>
+        <a href='@Url.Action("CategoryMaintList", "CategoryMaint", new { area = "Maint" })'>
+            <i class="fa fa-angle-right pull-left"></i>@SideMenu.CategoryMaintenance
+        </a>
+    </li>
+    <li>
+        <a href='@Url.Action("SubCategoryMaintList", "SubCategoryMaint", new { area = "Maint" })'>
+            <i class="fa fa-angle-right pull-left"></i>@SideMenu.SubCategoryMaintenance
+        </a>
+    </li>
+    <li>
+        <a href='@Url.Action("ProductMaintList", "ProductMaint", new { area = "Maint" })'>
+            <i class="fa fa-angle-right pull-left"></i>@SideMenu.ProductMaintenance
+        </a>
+    </li>
+    <li>
+        <a href='@Url.Action("CategorySetDuplicate", "CategoryMaint", new { area = "Maint" })'>
+            <i class="fa fa-angle-right pull-left"></i>@SideMenu.CategorySetDuplicate
+        </a>
+    </li>
+    <li>
+        <a href='@Url.Action("OrgMaintList", "OrgMaint", new { area = "Maint" })'>
+            <i class="fa fa-angle-right pull-left"></i>@SideMenu.OrganizationMaintenance
+        </a>
+    </li>    
+    <li>
+        <a href='@Url.Action("DispatchContractOverheadList", "DispatchContractOverhead", new { area = "Maint" })'>
+            <i class="fa fa-angle-right pull-left"></i>@SideMenu.DispatchContractOverheadRegister
+        </a>
+    </li>
+    <li>
+        <a href='@Url.Action("PaymentDispatchContractList", "PaymentDispatchContract", new { area = "Maint" })'>
+            <i class="fa fa-angle-right pull-left"></i>@SideMenu.PaymentDispatchContractRegister
+        </a>
+    </li>
+    <li>    
+        <a href='@Url.Action("DebitNoteFormat", "DebitNote", new { area = "Maint" })'>
+           <i class="fa fa-angle-right pull-left"></i>@SideMenu.DebitNoteFormat
+        </a>
+    </li>*@  
+</ul>

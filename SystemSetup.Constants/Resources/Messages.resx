@@ -1,0 +1,444 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountFailed" xml:space="preserve">
+    <value>Your input content is not correct or account is not registered</value>
+  </data>
+  <data name="AuthenticateTimeout" xml:space="preserve">
+    <value>この内容で登録します。\nよろしいですか？</value>
+  </data>
+  <data name="ChangePassSuccess" xml:space="preserve">
+    <value>パスワードの変更に成功しました。</value>
+  </data>
+  <data name="ConfirmChangeProduct" xml:space="preserve">
+    <value>入力した内容が失われます。よろしいですか？</value>
+  </data>
+  <data name="ConfirmClosePopup" xml:space="preserve">
+    <value>入力した内容が失われます。よろしいですか？</value>
+  </data>
+  <data name="ConfirmCloseViewEstimate" xml:space="preserve">
+    <value>見積閲覧画面を閉じます。よろしいですか？</value>
+  </data>
+  <data name="ConfirmDeleteAttachedFile" xml:space="preserve">
+    <value>添付ファイルを削除しますか？</value>
+  </data>
+  <data name="ConfirmIssueEstimate" xml:space="preserve">
+    <value>この見積書を発行しますか？</value>
+  </data>
+  <data name="ConfirmRegisterCustomer" xml:space="preserve">
+    <value>この内容で登録します。 よろしいですか？</value>
+  </data>
+  <data name="ConfirmRegisterEstimate" xml:space="preserve">
+    <value>この内容で登録します。\nよろしいですか？</value>
+  </data>
+  <data name="ConfirmRegisterPartnerAddress" xml:space="preserve">
+    <value>この内容で登録します。 よろしいですか？</value>
+  </data>
+  <data name="ConfirmRegisterPartnerStaff" xml:space="preserve">
+    <value>この内容で登録します。 よろしいですか？</value>
+  </data>
+  <data name="ConfirmSendEstimate" xml:space="preserve">
+    <value>この見積書の送付日を登録します。\nよろしいですか？</value>
+  </data>
+  <data name="DuplicateName" xml:space="preserve">
+    <value>入力された取引先名は既に存在しています。</value>
+  </data>
+  <data name="EndDateLessStartDateWarning" xml:space="preserve">
+    <value>期間終了日は期間開始日より未来の日付を入力して下さい。</value>
+  </data>
+  <data name="Expired" xml:space="preserve">
+    <value>接続の有効時間が切れました。再度ログインしなおしてください。</value>
+  </data>
+  <data name="FailedExpandFlg" xml:space="preserve">
+    <value>展開フラグの取得に失敗しました。</value>
+  </data>
+  <data name="FailedProduct" xml:space="preserve">
+    <value>製品の取得に失敗しました。</value>
+  </data>
+  <data name="FailedSendFlag" xml:space="preserve">
+    <value>見積書送付フラグの更新に失敗しました。</value>
+  </data>
+  <data name="FailedSubContract" xml:space="preserve">
+    <value>サブ契約種別の取得に失敗しました。</value>
+  </data>
+  <data name="GetPicFailed" xml:space="preserve">
+    <value>主担当者名を取得できません。</value>
+  </data>
+  <data name="IncorrectFormat" xml:space="preserve">
+    <value>{0}の入力形式に誤りがあります。</value>
+  </data>
+  <data name="InputIncorrect" xml:space="preserve">
+    <value>入力に誤りがあります。修正してください。</value>
+  </data>
+  <data name="MaxLength" xml:space="preserve">
+    <value>{0}は{1}文字以内で入力してください.</value>
+  </data>
+  <data name="NoAddressWarning" xml:space="preserve">
+    <value>郵便番号に該当する住所情報が見つかりません。</value>
+  </data>
+  <data name="NoSelectContractType" xml:space="preserve">
+    <value>「契約種別」と「契約種別分類」を選択してください。</value>
+  </data>
+  <data name="NoSelectContractTypeClass" xml:space="preserve">
+    <value>「契約種別」を選択してください。</value>
+  </data>
+  <data name="PasswordChangeFailed" xml:space="preserve">
+    <value>パスワードを変更することができません。</value>
+  </data>
+  <data name="PasswordExpired" xml:space="preserve">
+    <value>パスワードが{0}ヶ月以上変更されていません。\nパスワードを変更してください。い。</value>
+  </data>
+  <data name="PasswordInvalidCharacter" xml:space="preserve">
+    <value>入力されたパスワードは使用できません。</value>
+  </data>
+  <data name="PasswordLength" xml:space="preserve">
+    <value>パスワードの長さが正しくありません。</value>
+  </data>
+  <data name="PasswordNotChanged" xml:space="preserve">
+    <value>変更前と同一のパスワードは設定できません。</value>
+  </data>
+  <data name="PasswordNotMatch" xml:space="preserve">
+    <value>新パスワード と 新パスワード（確認）が一致していません。</value>
+  </data>
+  <data name="RangeValue" xml:space="preserve">
+    <value>{0}は{1}と{2}文字以内で入力してください.</value>
+  </data>
+  <data name="RegisterFailed" xml:space="preserve">
+    <value>{0}の登録に失敗しました。</value>
+  </data>
+  <data name="RegisterSuccess" xml:space="preserve">
+    <value>{0}を{1}しました。</value>
+  </data>
+  <data name="RePasswordInvalidCharacter" xml:space="preserve">
+    <value>入力されたパスワード（確認）は使用できません。</value>
+  </data>
+  <data name="RePasswordLength" xml:space="preserve">
+    <value>新パスワード（確認）の長さが正しくありません。</value>
+  </data>
+  <data name="ReplaceAddressWarning" xml:space="preserve">
+    <value>住所を上書きします。よろしいですか？</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>{0}は必須項目です。</value>
+  </data>
+  <data name="UpdateEstimateSuccess" xml:space="preserve">
+    <value>見積情報を更新しました。</value>
+  </data>
+  <data name="BackEstimateConfirm" xml:space="preserve">
+    <value>見積一覧画面に遷移します。よろしいですか？</value>
+  </data>
+  <data name="ClearEstimateConfirm" xml:space="preserve">
+    <value>入力内容を消去しますか？</value>
+  </data>
+  <data name="BackContractConfirm" xml:space="preserve">
+    <value>契約一覧画面に遷移します。よろしいですか？</value>
+  </data>
+  <data name="UpdateContractSuccess" xml:space="preserve">
+    <value>契約情報を更新しました。</value>
+  </data>
+  <data name="CreateOrderFileSuccess" xml:space="preserve">
+    <value>注文書を出力しました。</value>
+  </data>
+  <data name="ConfirmIssueOrder" xml:space="preserve">
+    <value>この注文書を発行しますか？</value>
+  </data>
+  <data name="ConfirmExportEstimate" xml:space="preserve">
+    <value>見積書を発行します。\nよろしいですか？</value>
+  </data>
+  <data name="ConfirmDeleteEstimate" xml:space="preserve">
+    <value>の見積情報を削除します。よろしいですか？</value>
+  </data>
+  <data name="CanNotCreateOrderFile" xml:space="preserve">
+    <value>見積書を発行していないので、注文書を発行することはできません。</value>
+  </data>
+  <data name="ConfirmRegisterBilling" xml:space="preserve">
+    <value>請求情報を更新します。よろしいですか？</value>
+  </data>
+  <data name="UpdateBillingSuccess" xml:space="preserve">
+    <value>請求情報を更新しました。</value>
+  </data>
+  <data name="UpdateBillingFailed" xml:space="preserve">
+    <value>請求情報を更新することができませんでした。</value>
+  </data>
+  <data name="ConfirmCreateBilling" xml:space="preserve">
+    <value>請求書を作成します。\nよろしいですか？</value>
+  </data>
+  <data name="ConfirmRegisterRedInvoice" xml:space="preserve">
+    <value>赤伝を登録してもよろしいですか？</value>
+  </data>
+  <data name="UpdateRedInvoiceFailed" xml:space="preserve">
+    <value>赤伝を更新することができませんでした。</value>
+  </data>
+  <data name="UpdateRedInvoiceSuccess" xml:space="preserve">
+    <value>赤伝を更新しました。</value>
+  </data>
+  <data name="UpdatePaymentClearFailed" xml:space="preserve">
+    <value>入金消込情報を更新することができませんでした。</value>
+  </data>
+  <data name="UpdatePaymentClearSuccess" xml:space="preserve">
+    <value>入金消込情報を更新しました。</value>
+  </data>
+  <data name="NotSelectedBillingTarget" xml:space="preserve">
+    <value>請求情報を選択してください。</value>
+  </data>
+  <data name="BackBillingConfirm" xml:space="preserve">
+    <value>請求一覧画面に遷移します。よろしいですか？</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>登録</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="ConfirmSubmitData" xml:space="preserve">
+    <value>Dou want to {0} this item for lunch。\Is that right？</value>
+  </data>
+  <data name="InvalidDateRange" xml:space="preserve">
+    <value>{0}の指定が正しくありません。</value>
+  </data>
+  <data name="BackPaymentListConfirm" xml:space="preserve">
+    <value>支払一覧画面に遷移します。よろしいですか？</value>
+  </data>
+  <data name="UnableUpdateContract" xml:space="preserve">
+    <value>既に入金済みのため、契約を更新することは出来ません。</value>
+  </data>
+  <data name="UpdatePaymentInfor" xml:space="preserve">
+    <value>請求書情報を更新しました。</value>
+  </data>
+  <data name="UpdateSuccess" xml:space="preserve">
+    <value>更新しました。</value>
+  </data>
+  <data name="AddLine" xml:space="preserve">
+    <value>新規に追加した行</value>
+  </data>
+  <data name="ConfirmExportOrders" xml:space="preserve">
+    <value>注文書を発行します。\nよろしいですか？</value>
+  </data>
+  <data name="CreateFileFailed" xml:space="preserve">
+    <value>ファイルの作成に失敗しました。</value>
+  </data>
+  <data name="ConfirmDepositPayment" xml:space="preserve">
+    <value>入金情報を登録してもよろしいですか？</value>
+  </data>
+  <data name="BackEstimateContractConfirm" xml:space="preserve">
+    <value>見積情報一覧（契約）画面に遷移します。よろしいですか？</value>
+  </data>
+  <data name="CreatedInvoice" xml:space="preserve">
+    <value>請求書を作成しました。</value>
+  </data>
+  <data name="ConfirmDeleteBilling" xml:space="preserve">
+    <value>の請求準備情報を削除します。よろしいですか？</value>
+  </data>
+  <data name="ConfirmIssueOrderforPayment" xml:space="preserve">
+    <value>支払先用注文書を発行します。\nよろしいですか？</value>
+  </data>
+  <data name="ConfirmFinishContract" xml:space="preserve">
+    <value>契約を終了しても、よろしいでしょうか。</value>
+  </data>
+  <data name="ConfirmClear" xml:space="preserve">
+    <value>入力した内容が失われます。よろしいですか？</value>
+  </data>
+  <data name="ConfirmRegister" xml:space="preserve">
+    <value>この内容で登録します。よろしいですか？</value>
+  </data>
+  <data name="ConfirmUpdate" xml:space="preserve">
+    <value>この内容で更新します。よろしいですか？</value>
+  </data>
+  <data name="ConfirmBack" xml:space="preserve">
+    <value>入力した内容が失われます。よろしいですか？</value>
+  </data>
+  <data name="ClosingDayBiggerthanPaymentDay" xml:space="preserve">
+    <value>"支払日は締日より後の日を選択してください。"</value>
+  </data>
+  <data name="Invalid_collect_contract_month" xml:space="preserve">
+    <value>契約月数がおまとめ請求の月数で割り切れません。</value>
+  </data>
+  <data name="ErrCompareTwoDate" xml:space="preserve">
+    <value>{0}は{1}以降を指定してください。</value>
+  </data>
+  <data name="ErrRangeUnitTime" xml:space="preserve">
+    <value>時間単位は60分以内で入力してください.</value>
+  </data>
+  <data name="ErrTargetYmDuplicate" xml:space="preserve">
+    <value>入力された年月は既に存在しています。</value>
+  </data>
+  <data name="DoesNotExistChangedData" xml:space="preserve">
+    <value>変更されたレコードが存在しません。</value>
+  </data>
+  <data name="ConfirmDeleteContract" xml:space="preserve">
+    <value>契約の削除を行います。宜しいですか？</value>
+  </data>
+  <data name="ContractDeleteFail" xml:space="preserve">
+    <value>契約の削除に失敗しました。</value>
+  </data>
+  <data name="ContractDeleteSuccess" xml:space="preserve">
+    <value>契約を削除しました。</value>
+  </data>
+  <data name="Request" xml:space="preserve">
+    <value>請求</value>
+  </data>
+  <data name="InputLengthErr" xml:space="preserve">
+    <value>{0}の入力が長すぎます。</value>
+  </data>
+  <data name="InputNumErr" xml:space="preserve">
+    <value>{0}の入力が大きすぎます。</value>
+  </data>
+  <data name="DuplicateAccountCd" xml:space="preserve">
+    <value>入力された勘定科目コードは既に存在しています。</value>
+  </data>
+  <data name="PasswordStrength" xml:space="preserve">
+    <value>パスワードの複雑度が不足しています。</value>
+  </data>
+  <data name="AccountLocked" xml:space="preserve">
+    <value>ユーザアカウントはロックされました。管理者に連絡をしてください。</value>
+  </data>
+  <data name="PasswordOnExpired" xml:space="preserve">
+    <value>パスワードの有効期限が切れました。\nパスワードを変更してください。</value>
+  </data>
+  <data name="ConfirmRegistDispatchContractOverhead" xml:space="preserve">
+    <value>派遣契約諸表登録の情報を更新します。よろしいですか？</value>
+  </data>
+  <data name="UpdateFailDisptachContractOverhead" xml:space="preserve">
+    <value>更新に失敗しました。</value>
+  </data>
+  <data name="UpdateSuccessDispatchContractOverhead" xml:space="preserve">
+    <value>更新が成功しました。</value>
+  </data>
+  <data name="ConfirmRegistDebitNote" xml:space="preserve">
+    <value>請求書追加フォーマットの情報を更新します。よろしいですか？</value>
+  </data>
+  <data name="UpdateDebitNoteFailed" xml:space="preserve">
+    <value>更新に失敗しました。</value>
+  </data>
+  <data name="UpdateDebitNoteSuccess" xml:space="preserve">
+    <value>更新が成功しました。</value>
+  </data>
+  <data name="MaxByte" xml:space="preserve">
+    <value>{0}の入力が長すぎます。</value>
+  </data>
+  <data name="PostInformationTitleRequired" xml:space="preserve">
+    <value>タイトルは必須項目です。</value>
+  </data>
+  <data name="ComfirmDuplicateCategory" xml:space="preserve">
+    <value>この内容でカテゴリを複製します。よろしいですか？</value>
+  </data>
+  <data name="ConfirmRegistPaymentDispatchContractOverhead" xml:space="preserve">
+    <value>支払先派遣契約諸表の情報を更新します。よろしいですか？</value>
+  </data>
+</root>

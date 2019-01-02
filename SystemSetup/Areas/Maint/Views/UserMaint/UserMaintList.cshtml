@@ -1,0 +1,484 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+@*CSS*@
+@Styles.Render("~/Content/themes/iseiQ/maint.css")
+@model UserMaintListModel
+
+@{
+    ViewBag.Title = Maint.UserList;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+}
+
+<div id="maintInputDateList" class="UserMaintList">
+    <div id="topContent">
+        <div id="title">@Maint.UserList</div>
+
+        <div id="searchArea">
+            <div class="form-group">
+                @Html.Label(@Maint.COMPANY_CD, new { @class = "title-row min-width-110" })
+                @Html.DropDownListFor(m => m.COMPANY_CD, Model.CONTRACT_FIRM_LIST, "", new { @class = "no-margin ddlContractFirmMaster" })
+            </div>
+            <div class="form-group">
+                @Html.Label(@Maint.User_Account, new { @class = "title-row min-width-110" })
+                @Html.TextBoxFor(m => m.CONTRACT_USER_ACCOUNT, new { @class = "width-200", style = "ime-mode: auto; ", maxlength = 100 })
+
+                @Html.Label(@Maint.User_Name, new { @class = "title-row min-width-70 margin-left-40" })
+                @Html.TextBoxFor(m => m.CONTRACT_USER_NAME, new { @class = "width-200", style = "ime-mode: auto;", maxlength = 50 })
+            </div>
+            <div class="form-group">
+                @Html.Label(@Maint.Employee_ID, new { @class = "title-row min-width-110" })
+                @Html.TextBoxFor(m => m.STAFF_ID, new { @class = "width-200", style = "ime-mode: auto;", maxlength = 15 })
+
+                @Html.Label(@Maint.Group_Name, new { @class = "title-row min-width-70 margin-left-40" })
+                @Html.DropDownListFor(m => m.AUTHORITY_GROUP_CD_EDIT, Model.AUTHORITY_GROUP_LIST, "", new { @class = "no-margin width-200" })
+
+                <span>
+                    <input id="INCLUDE_DISABLE" type="checkbox" value="false">
+                    <input id="INCLUDE_DISABLE_HIDDEN" type="hidden" value="false">
+                    @Html.Label(@Maint.lblIncludeInvalid, new { @for = "INCLUDE_DISABLE" })
+                </span>
+            </div>
+        </div>
+        <hr />
+        <div id="searchAction">
+            <button type="button" id="btnClearConditions" class="btn btn-default">
+                <i class="btn-icon btn-clear">@Maint.btnClearConditions</i>
+            </button>
+            <button type="button" id="btnSearch" class="btn btn-green">
+                <i class="btn-icon btn-search-white">@Maint.btnSearch</i>
+            </button>
+        </div>
+    </div>
+
+    @RenderPage("~/Views/Shared/ShowHideHeaderContent.cshtml")
+
+    <div id="registButton">
+        <button type="button" id="btnCreateNew" name="btnCreateNew" class="btn btn-orange"><i class="btn-icon btn-regist">@Maint.btnCreateNew</i></button>
+    </div>
+
+    <div id="mainContent">
+        <table id="InfoTable" class="dataTable" cellspacing="0">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th class="width-200">@Maint.lblNo</th>
+                    <th class="width-200">@Maint.COMPANY_CD</th>
+                    <th class="width-200">@Maint.User_Account</th>
+                    <th class="width-200">@Maint.User_Name</th>
+                    <th class="width-200">@Maint.Employee_ID</th>
+                    <th class="width-200">@Maint.Group_Name</th>
+                    <th class="width-200">@Maint.PASSWORD_CHANGE_DATE</th>
+                    <th>@Maint.lblUpdateTime</th>
+                    <th>@Maint.lblUpdateUser</th>
+                    <th>@Maint.EDIT</th>
+                    <th>@Maint.DELETE</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    @Html.Hidden("AuthorityGroupCd", @Model.AUTHORITY_GROUP_CD)
+
+    @using (Html.BeginForm("UserMaintEdit", "UserMaint", FormMethod.Post, new
+    {
+        area = "Maint",
+        id = "UserMaintRegist",
+        enctype = "multipart/form-data"
+    }))
+    {
+        <input type="hidden" id="txtRowIndex" name="txtRowIndex" value="0">
+
+        @Html.HiddenFor(m => m.SEARCH_PARAM.COMPANY_CD);
+        @Html.HiddenFor(m => m.SEARCH_PARAM.CONTRACT_USER_SEQ_CD);
+
+        @Html.HiddenFor(m => m.SEARCH_PARAM.CONTRACT_USER_ACCOUNT)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.CONTRACT_USER_NAME)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.STAFF_ID)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.AUTHORITY_GROUP_CD)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.DISABLE_FLG)
+        @Html.HiddenFor(m => m.AUTHORITY_GROUP_CD)
+        <input type="hidden" id="DISPLAY_START" name="DISPLAY_START" value="">
+        <input type="hidden" id="DISPLAY_LENGTH" name="DISPLAY_LENGTH" value="">
+    }
+
+</div>
+
+<script type="text/javascript">
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Variables Declaration
+    ////////////////////////////////////////////////////////////////////////////////////
+    var dataTable;
+    var userMaintSearchUrl = '@Url.Action("UserMaintSearch", "UserMaint", new { area = "Maint" })';
+    var userMaintRegisterUrl = '@Url.Action("UserMaintEdit", "UserMaint", new { area = "Maint" })';
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+    editlink = "編集";
+    var deletelink = "削除";
+    var CONTRACT_USER_SEQ_CD = 0;
+    var ORDER = 1;
+    var COMPANY_CD = 2;
+    var CONTRACT_USER_ACCOUNT = 3;
+    var CONTRACT_USER_NAME = 4;
+    var STAFF_ID = 5;
+    var AUTHORITY_GROUP_CD = 6;
+    var PASSWORD_LAST_UPDATE_DATE = 7;
+    var UPD_DATE = 8;
+    var UPD_USERNAME = 9;
+    var EDIT = 10;
+    var DELETE = 11;
+
+    var doServerSide = false;
+
+    var dataTable = null;
+    var dataList = null;
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Initialization functions
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(function () {
+        iseiQ.utility.checkInputNumber($("#STAFF_ID"));
+        iseiQ.utility.validFullHalfSize($("#CONTRACT_USER_ACCOUNT"));
+
+        iseiQ.utility.imeControl($("#CONTRACT_USER_SEQ_CD"), 'active');
+        iseiQ.utility.imeControl($("#CONTRACT_USER_ACCOUNT"), 'active');
+        iseiQ.utility.imeControl($("#CONTRACT_USER_NAME"), 'active');
+        iseiQ.utility.imeControl($("#STAFF_ID"), 'disable');
+        iseiQ.utility.imeControl($("#PASSWORD_LAST_UPDATE_DATE"), 'active');
+
+        var oSorting = {
+            "bSort": false
+        };
+
+        var oPaginate = {
+            "bPaginate": true,
+            "iDisplayStart": parseInt(@Model.DISPLAY_START),
+            "iDisplayLength": parseInt(@Model.DISPLAY_LENGTH),
+            "bStateSave": false
+        };
+
+        var oServerSide = {
+            "bServerSide": true,
+            "sAjaxSource": userMaintSearchUrl,
+            "fnServerParams": serverParams,
+            "fnInitComplete": bindData,
+            "fnDrawCallback": drawCallback,
+            "fnBeforeSend": fnBeforeSend
+        };
+
+        var aoColumnDefs = [
+            { "bVisible": false, "bSortable": false, "aTargets": [CONTRACT_USER_SEQ_CD] },
+            { "bSortable": false, "aTargets": [ORDER], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [COMPANY_CD], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [CONTRACT_USER_ACCOUNT], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [CONTRACT_USER_NAME], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [STAFF_ID], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [AUTHORITY_GROUP_CD], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [PASSWORD_LAST_UPDATE_DATE], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [UPD_DATE], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [UPD_USERNAME], "sWidth": "10%", "sClass": "cell_left" },
+            { "bSortable": false, "aTargets": [EDIT], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return buildActionLink(full[CONTRACT_USER_SEQ_CD], editlink); } },
+            { "bSortable": false, "aTargets": [DELETE], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return data == 0 ? '' : bindDeleteElement(full[CONTRACT_USER_SEQ_CD], 'delete-usermaint-link btn btn-red', deletelink); } }
+        ];
+
+        function serverParams(aoData) {
+            //検索条件を保持
+
+            if ($("#SEARCH_PARAM_COMPANY_CD").val() != "") {
+                doServerSide = true;
+            }
+
+            $("#COMPANY_CD").val($("#SEARCH_PARAM_COMPANY_CD").val());
+            $("#CONTRACT_USER_ACCOUNT").val($("#SEARCH_PARAM_CONTRACT_USER_ACCOUNT").val());
+            $("#CONTRACT_USER_NAME").val($("#SEARCH_PARAM_CONTRACT_USER_NAME").val());
+            $("#STAFF_ID").val($("#SEARCH_PARAM_STAFF_ID").val());
+
+            bindAuthorityGroupCd();
+            $("#AUTHORITY_GROUP_CD_EDIT").val($("#SEARCH_PARAM_AUTHORITY_GROUP_CD").val());
+            if ($("#AUTHORITY_GROUP_CD_EDIT").val() != "") {
+                var valueArr = $("#AUTHORITY_GROUP_CD_EDIT").val().split('_');
+                $("#AUTHORITY_GROUP_CD").val(valueArr[1]);
+            } else {
+                $("#AUTHORITY_GROUP_CD").val(null);
+            }
+
+            if ($("#SEARCH_PARAM_DISABLE_FLG").val() == 'true') {
+                $("#INCLUDE_DISABLE").prop('checked', true).change();
+                $('#INCLUDE_DISABLE_HIDDEN').val('true');
+            }
+
+            aoData.push(
+                { "name": "COMPANY_CD", "value": $("#COMPANY_CD").val() },
+                { "name": "CONTRACT_USER_ACCOUNT", "value": $("#CONTRACT_USER_ACCOUNT").val() },
+                { "name": "CONTRACT_USER_NAME", "value": $("#CONTRACT_USER_NAME").val() },
+                { "name": "STAFF_ID", "value": $("#STAFF_ID").val() },
+                { "name": "AUTHORITY_GROUP_CD", "value": $("#AUTHORITY_GROUP_CD").val() },
+                { "name": "PASSWORD_LAST_UPDATE_DATE", "value": $("#PASSWORD_LAST_UPDATE_DATE").val() },
+                { "name": "INCLUDE_DISABLE", "value": $("#INCLUDE_DISABLE_HIDDEN").val() }
+            );
+        }
+
+        function fnBeforeSend() {
+            // Controller へ送信前にチェック
+            return doServerSide;
+        }
+
+        function bindData(data) {
+            dataList = data.aaData;
+        }
+
+        function drawCallback() {
+            if ($('#tbLeft').length > 0) {
+                $('#InfoTable').unwrap();
+                $('.col-left, .rBarOn, .bBarOn').remove();
+            }
+
+            var htmlTbLeft = '<table id="tbLeft" class="dataTable" cellspacing="0">'
+                + ' <thead>'
+                + ' <tr>'
+                + ' <th>@Maint.lblNo</th>'
+                + ' <th>@Maint.COMPANY_CD</th>'
+                + ' <th>@Maint.User_Account</th>'
+                + ' </tr>'
+                + ' </thead>'
+                + ' <tbody>';
+
+            if (dataList !== null && dataList.length > 0) {
+                for (var i = 0; i < dataList.length; i++) {
+                    var classRow = i % 2 == 0 ? 'odd' : 'even';
+                    var height = $($('#InfoTable tbody tr')[i]).outerHeight();
+
+                    htmlTbLeft += ' <tr class="' + classRow + '" style="height: ' + height + 'px">'
+                        + ' <td class="cell_center">' + iseiQ.utility.buildColumShortText(dataList[i][ORDER]) + '</td>'
+                        + ' <td class="cell_center">' + iseiQ.utility.buildColumShortText(dataList[i][COMPANY_CD]) + '</td>';
+                    htmlTbLeft += ' <td class="cell_center"> <div>' + iseiQ.utility.buildColumShortText(dataList[i][CONTRACT_USER_ACCOUNT], 'special-wrap') + '</div></td></tr>';
+                }
+            }
+
+            htmlTbLeft += '</tbody></table>';
+
+            $("#InfoTable").wrap('<div class="col-right dragOn" style="width:65%"></div>').removeClass('no-footer');
+            $('div.col-right').before('<div class="col-left" style="width:35%"> ' + htmlTbLeft + '</div>');
+            $('#tbLeft thead tr').height($('#InfoTable thead').height());
+
+            $("#tbLeft tbody tr").each(function (i) {
+                if ($(this).height() != 40) {
+                    $("#InfoTable tbody tr").eq(i).height($(this).height() + 1);
+                    $(this).height($(this).height() + 1);     //jQueryでは高さの少数を取得できないため
+                }
+            });
+
+            $('.dragOn').dragOn();
+            $('.dragOn').barOn();
+
+            var visibleCount = 1;
+            $('#InfoTable thead tr th').eq(ORDER - visibleCount).hide();
+            $('#InfoTable thead tr th').eq(COMPANY_CD - visibleCount).hide();
+            $('#InfoTable thead tr th').eq(CONTRACT_USER_ACCOUNT - visibleCount).hide();
+            $('#InfoTable tbody tr').each(function (i) {
+                if (dataList.length != 0) {
+                    $('td', this).eq(ORDER - visibleCount).hide();
+                    $('td', this).eq(COMPANY_CD - visibleCount).hide();
+                    $('td', this).eq(CONTRACT_USER_ACCOUNT - visibleCount).hide();
+                }
+            });
+        }
+
+        dataTable = CreateDataTable('#InfoTable', oSorting, oPaginate, oServerSide, aoColumnDefs);
+
+        bindAuthorityGroupCd();
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Event Listeners
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnCreateNew');
+    $(document).on('click', '#btnCreateNew', function () {
+        var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!result) return;
+
+        if ($("#SEARCH_PARAM_COMPANY_CD").val() == "") {
+            iseiQ.utility.showMessageModal('@string.Format(@Messages.Required, "企業コード")', false)
+            return false;
+        }
+
+        RegistSubmit("0");
+    });
+
+    $(document).off('#btnSearch');
+    $(document).on('click', '#btnSearch', function () {
+        var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!result) return;
+
+        searchUserMaint();
+    });
+
+    $(document).off('#btnClearConditions');
+    $(document).on('click', '#btnClearConditions', function () {
+        var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!result) return;
+
+        $("#SEARCH_PARAM_COMPANY_CD").val("");
+        $('#COMPANY_CD').val("");
+
+        $("#CONTRACT_USER_ACCOUNT").val("");
+        $("#CONTRACT_USER_NAME").val("");
+        $("#STAFF_ID").val("");
+        bindAuthorityGroupCd();
+        $("#AUTHORITY_GROUP_CD_EDIT").val("");
+        $("#INCLUDE_DISABLE_HIDDEN").val("");
+        $("#INCLUDE_DISABLE").prop('checked', false).change();
+        $('#INCLUDE_DISABLE_HIDDEN').val('false');
+
+        $('#InfoTable_info').empty();
+        $('#InfoTable_paginate').empty();
+        $('tbody').empty();
+    });
+
+    $(document).off('#INCLUDE_DISABLE');
+    $(document).on('change', '#INCLUDE_DISABLE', function () {
+        if ($('#INCLUDE_DISABLE').is(":checked")) {
+            $('#INCLUDE_DISABLE_HIDDEN').val('true');
+        } else {
+            $('#INCLUDE_DISABLE_HIDDEN').val('false');
+        }
+    });
+
+    $(document).off('.post-UserMaint-register');
+    $(document).on('click', '.post-UserMaint-register', function () {
+        RegistSubmit($(this).data('info-seq-no'));
+    });
+
+    function RegistSubmit(seqCd) {
+        var oSettings = dataTable.fnSettings();
+
+        $('#DISPLAY_START').val(oSettings._iDisplayStart);
+        $('#DISPLAY_LENGTH').val(oSettings._iDisplayLength);
+        $('#SEARCH_PARAM_CONTRACT_USER_SEQ_CD').val(seqCd);
+
+        $('#UserMaintRegist').submit();
+    }
+
+    $(document).off('.delete-usermaint-link');
+    $(document).on('click', '.delete-usermaint-link', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+        var seq_no = parseInt($(this).data('est-seq-no'));
+
+        if (seq_no < 1) return;
+
+        // Get Project Dsp Name
+        iseiQ.utility.showConfirmModal('@string.Format(@Maint.UserMaintDelete)', function (action) {
+            if (action) {
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: '@Url.Action("DELETE")',
+                    data: { "SEQNO": seq_no },
+                    success: function (data) {
+                        dataTable.fnStandingRedraw();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        iseiQ.utility.showMessageModal("@string.Format(Maint.MaintDeleteError)", true);
+                    }
+                });
+            }
+        });
+    });
+
+    $("#COMPANY_CD").change(function () {
+        // check time out
+        var sUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+        var result = iseiQ.utility.getDataByAjax(sUrl, null);
+
+        if (!result)
+            return;
+
+        $('#AUTHORITY_GROUP_CD_EDIT').val('');
+        bindAuthorityGroupCd();
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Misc Functions
+    ////////////////////////////////////////////////////////////////////////////////////
+    // Bind data authorityGroupCd to select list
+    function bindAuthorityGroupCd() {
+        var companyCd = $("#COMPANY_CD");
+        var authorityGroupCd = $("#AUTHORITY_GROUP_CD_EDIT");
+
+        authorityGroupCd.find('option:not(:first)').each(function () {
+            if ($(this).parent().is('i')) {
+                $(this).unwrap();
+            }
+        });
+
+        authorityGroupCd.find('option:not(:first)').wrap('<i></i>');
+
+        if (companyCd.val() != "") {
+            var param = { "companycd": companyCd.val() };
+            var sUrl = '@Url.Action("GetAuthorityGroupCdSelectList", "UserMaint", new { area = "Maint" })';
+            var dataAuthorityGroupCd = iseiQ.utility.getDataByAjax(sUrl, param);
+
+            $.each(dataAuthorityGroupCd, function (index, data) {
+                var keyItem = data.key;
+                authorityGroupCd.find('option:not(:first)').each(function () {
+                    var valueArr = this.value.split('_');
+                    if (valueArr[0] == companyCd.val() && valueArr[1] == keyItem) {
+                        $(this).unwrap();
+                        return false;
+                    }
+                });
+            });
+        }
+    }
+
+    function validateData() {
+        var invalidMess = [];
+        var contractuseraccount = $('#CONTRACT_USER_ACCOUNT').val();
+        var contractusername = $('#CONTRACT_USER_NAME').val();
+        var staffid = $('#STAFF_ID').val();
+        var authoritygroupcd = $('#AUTHORITY_GROUP_CD_EDIT').val();
+        var invalidMess = [];
+        //bigint型で入力した値が保障される範囲
+        var bigintcheck = 999999999999999;　//15桁
+
+        if (staffid > bigintcheck) {
+            invalidMess.push("@string.Format(Maint.Input_Err)");
+        }
+        return invalidMess;
+    }
+
+    function searchUserMaint() {
+        $('.validation-summary-errors').remove();
+        var invalidMess = validateData();
+
+        if (invalidMess.length > 0) {
+            iseiQ.utility.showClientError(invalidMess);
+            return false;
+        }
+
+        if ($("#COMPANY_CD").val() == "") {
+            iseiQ.utility.showMessageModal('@string.Format(@Messages.Required, "企業コード")', false)
+            return false;
+        }
+
+        $("#SEARCH_PARAM_CONTRACT_USER_ACCOUNT").val($("#CONTRACT_USER_ACCOUNT").val());
+        $("#SEARCH_PARAM_CONTRACT_USER_NAME").val($("#CONTRACT_USER_NAME").val());
+        $("#SEARCH_PARAM_STAFF_ID").val($("#STAFF_ID").val());
+        $("#SEARCH_PARAM_AUTHORITY_GROUP_CD").val($("#AUTHORITY_GROUP_CD_EDIT").val());
+        $("#SEARCH_PARAM_DISABLE_FLG").val($("#INCLUDE_DISABLE").prop('checked'));
+        $("#SEARCH_PARAM_COMPANY_CD").val($("#COMPANY_CD").val());
+
+        dataTable.fnPageChange('first');
+    }
+
+    function bindDeleteElement(id, className, label) {
+        return '<a class="' + className + '" data-est-seq-no="' + id + '">' + label + '</a>';
+    }
+
+    function buildActionLink(infoSEQNo, label) {
+        return '<a class="post-UserMaint-register" data-info-seq-no="' + infoSEQNo + '">' + label + '</a>';
+    }
+
+</script>

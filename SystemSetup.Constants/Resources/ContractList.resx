@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BillingDestination" xml:space="preserve">
+    <value>請求先</value>
+  </data>
+  <data name="btnClear" xml:space="preserve">
+    <value>条件クリア</value>
+  </data>
+  <data name="btnNewContract" xml:space="preserve">
+    <value>新規作成</value>
+  </data>
+  <data name="btnSearch" xml:space="preserve">
+    <value>検索</value>
+  </data>
+  <data name="ContractStatus" xml:space="preserve">
+    <value>契約状況</value>
+  </data>
+  <data name="ContractType" xml:space="preserve">
+    <value>契約種別</value>
+  </data>
+  <data name="ContractTypeClass" xml:space="preserve">
+    <value>契約種別分類</value>
+  </data>
+  <data name="CustomerDestinationDepartment" xml:space="preserve">
+    <value>顧客先担当部署</value>
+  </data>
+  <data name="CustomerPICName" xml:space="preserve">
+    <value>顧客先担当者名</value>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>期間</value>
+  </data>
+  <data name="IssueEstimate" xml:space="preserve">
+    <value>見積書発行</value>
+  </data>
+  <data name="OutsourcingPICName" xml:space="preserve">
+    <value>外注先担当者名</value>
+  </data>
+  <data name="PaymentDestination" xml:space="preserve">
+    <value>支払先</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>製品</value>
+  </data>
+  <data name="ProjectName" xml:space="preserve">
+    <value>案件名</value>
+  </data>
+  <data name="SendEstimate" xml:space="preserve">
+    <value>見積書送付</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>ステータス</value>
+  </data>
+  <data name="SubcontractorDepartment" xml:space="preserve">
+    <value>外注先担当部署</value>
+  </data>
+  <data name="TH_AmountPayment" xml:space="preserve">
+    <value>払い金額</value>
+  </data>
+  <data name="TH_AmountReceived" xml:space="preserve">
+    <value>受け金額</value>
+  </data>
+  <data name="TH_Attention" xml:space="preserve">
+    <value>要注意</value>
+  </data>
+  <data name="TH_BillingDestination" xml:space="preserve">
+    <value>請求先</value>
+  </data>
+  <data name="TH_ContractType" xml:space="preserve">
+    <value>カテゴリ</value>
+  </data>
+  <data name="TH_CustomerPIC" xml:space="preserve">
+    <value>顧客先担当</value>
+  </data>
+  <data name="TH_EditContract" xml:space="preserve">
+    <value>編集</value>
+  </data>
+  <data name="TH_EndContract" xml:space="preserve">
+    <value>終了</value>
+  </data>
+  <data name="TH_EndDate" xml:space="preserve">
+    <value>契約終了日</value>
+  </data>
+  <data name="TH_ExtendContract" xml:space="preserve">
+    <value>延長</value>
+  </data>
+  <data name="TH_NewContract" xml:space="preserve">
+    <value>決定</value>
+  </data>
+  <data name="TH_OutsourcingPIC" xml:space="preserve">
+    <value>外注先担当</value>
+  </data>
+  <data name="TH_PaymentDestination" xml:space="preserve">
+    <value>支払先</value>
+  </data>
+  <data name="TH_ProjectName" xml:space="preserve">
+    <value>案件名</value>
+  </data>
+  <data name="TH_ProjectParticipationDate" xml:space="preserve">
+    <value>案件参画日</value>
+  </data>
+  <data name="TH_StartDate" xml:space="preserve">
+    <value>契約開始日</value>
+  </data>
+  <data name="TH_ViewContract" xml:space="preserve">
+    <value>表示</value>
+  </data>
+  <data name="TH_WorkerProduct" xml:space="preserve">
+    <value>作業者／品名</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>契約一覧</value>
+  </data>
+  <data name="WorkerProductName" xml:space="preserve">
+    <value>作業者／品名</value>
+  </data>
+  <data name="raAcceptanceDate" xml:space="preserve">
+    <value>検収日</value>
+  </data>
+  <data name="raDeliveryDate" xml:space="preserve">
+    <value>納品日</value>
+  </data>
+  <data name="raEndDate" xml:space="preserve">
+    <value>契約期間（終了）</value>
+  </data>
+  <data name="raParticipationDate" xml:space="preserve">
+    <value>案件参画日</value>
+  </data>
+  <data name="raStartDate" xml:space="preserve">
+    <value>契約期間（開始）</value>
+  </data>
+  <data name="btnCheckAllEstimate" xml:space="preserve">
+    <value>全チェック</value>
+  </data>
+  <data name="btnIssueEstimations" xml:space="preserve">
+    <value>見積書発行</value>
+  </data>
+  <data name="btnUnCheckAllEstimate" xml:space="preserve">
+    <value>全チェック解除</value>
+  </data>
+  <data name="TH_EstimateIssueDate" xml:space="preserve">
+    <value>見積書発行日</value>
+  </data>
+  <data name="TH_EstimateSendDate" xml:space="preserve">
+    <value>見積書送付日</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>カテゴリ</value>
+  </data>
+  <data name="IssuedEstimatePackage" xml:space="preserve">
+    <value>見積書一括発行</value>
+  </data>
+  <data name="btnIssueOrders" xml:space="preserve">
+    <value>注文書発行</value>
+  </data>
+  <data name="btnExportCsv" xml:space="preserve">
+    <value>当月契約終了予定案件をCSV出力</value>
+  </data>
+  <data name="TH_SendEstimate" xml:space="preserve">
+    <value>送付</value>
+  </data>
+  <data name="TH_Delete" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="DeleteMessConfirm" xml:space="preserve">
+    <value>請求書発行済みのデータが存在します。\n請求書を再作成する必要があります。宜しいですか？</value>
+  </data>
+  <data name="DeleteMessInvalid" xml:space="preserve">
+    <value>既に入金済みの請求が存在しているため、契約を削除できません</value>
+  </data>
+</root>

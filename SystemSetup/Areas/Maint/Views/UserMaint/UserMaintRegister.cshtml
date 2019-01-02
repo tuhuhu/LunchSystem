@@ -1,0 +1,642 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+@*CSS*@
+@Styles.Render("~/Content/themes/iseiQ/maint.css")
+@model UserMaintModel
+    @{
+        ViewBag.Title = Maint.UserRegister;
+        Layout = "~/Views/Shared/_Layout.cshtml";
+        var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+        var authorityList = currentUser.AuthorityList as List<string>;
+        var tempDateTime = new DateTime();
+    }
+    <div id="MaintRegister" class="edit-screen">
+    @using (Html.BeginForm("Edit", "UserMaint", FormMethod.Post, new { id = "formUserMaintRegis", enctype = "multipart/form-data", @class = "form-horizontal" }))
+    {
+        <div id="title">@Maint.UserRegister</div>
+        @Html.HiddenFor(m => m.CONTRACT_USER_SEQ_CD, new { @class = "sp-id" })
+        @Html.HiddenFor(m => m.DEL_FLG, new { @class = "sp-id" })
+        @Html.HiddenFor(m => m.COMPANY_CD, new { @class = "sp-id" })
+       
+        <input type="hidden" id="ACTION_TYPE" name="ACTION_TYPE" value="0">
+        <div class="form-group">            
+            <label class="title-row">@Maint.COMPANY_CD<span class="RequiredField">*</span></label>
+            @*@Html.TextBoxFor(m => m.COMPANY_CD, new { @class = "ime-mode border-none txt-w-250", @readonly = "readonly" })*@
+            <label class="font-weight-normal">@Model.COMPANY_CD</label>  
+        </div>
+        <div class="form-group">           
+            <label class="title-row">@Maint.User_Account<span class="RequiredField">*</span></label>
+            @if (String.IsNullOrEmpty(Model.CONTRACT_USER_ACCOUNT))
+            {
+                @Html.TextBoxFor(m => m.CONTRACT_USER_ACCOUNT, new { @class = "txt-w-250", style = "ime-mode: auto; ", maxlength = 100 })
+            }
+            else
+            {
+                @Html.HiddenFor(m => m.CONTRACT_USER_ACCOUNT, new { @class = "sp-id" })
+                <label class="font-weight-normal">@Model.CONTRACT_USER_ACCOUNT</label>               
+            }
+        </div>
+
+            //オートコンプリートの補完を無効化
+            <span style="display:none">
+                <input name="autoComplete" type="text" value="reset" />
+            </span>
+
+            <div>
+                @if (String.IsNullOrEmpty(Model.CONTRACT_USER_ACCOUNT))
+                {
+                    <div class="form-group">                      
+                        <label class="title-row">@Maint.Temporary_Password<span class="RequiredField">*</span></label>
+                        @Html.PasswordFor(m => m.CONTRACT_USER_PASSWORD, new { @class = "txt-w-250  ", style = "ime-mode: auto; " })
+                    </div>
+
+                    <div class="form-group">                        
+                        <label class="title-row">@Maint.Confirm_Password<span class="RequiredField">*</span></label>
+                        @Html.PasswordFor(m => m.CONTRACT_USER_PASSWORD_REPEAT, new { @class = "txt-w-250 ", style = "ime-mode: auto; " })
+                    </div>
+                }
+            </div>
+
+            <div class="form-group">              
+                <label class="title-row">@Maint.User_Name<span class="RequiredField">*</span></label>
+                @Html.TextBoxFor(m => m.CONTRACT_USER_NAME, new { @class = "txt-w-250", @style = "ime-mode: auto;", maxlength = 50 })
+
+                <input type="hidden" id="CLEAR_CONTRACT_USER_NAME" name="CLEAR_CONTRACT_USER_NAME" value="@Model.CONTRACT_USER_NAME">
+
+                @if (!String.IsNullOrEmpty(Model.CONTRACT_USER_ACCOUNT))
+                {
+                    @Html.Label(@Maint.Temporary_Password, new { @class = "title-row300right padding-right-10" })
+                    @Html.PasswordFor(m => m.CONTRACT_USER_PASSWORD, new { @class = "txt-w-250  ", style = "ime-mode: auto; " })
+                    <button type="button" id="btnPasswordChange" name="btnPasswordChange" class="btn btn-orange">@Maint.btnPasswordReset</button>
+                }
+            </div>
+            <div class="form-group">
+                @Html.Label(@Maint.Employee_ID, new { @class = "title-row" })
+                @Html.TextBoxFor(m => m.STAFF_ID, new { @class = "txt-w-250", @style = "ime-mode: auto;", maxlength = 15 })
+                @if (!String.IsNullOrEmpty(Model.CONTRACT_USER_ACCOUNT))
+                {
+                    @Html.Label(@Maint.Confirm_Password, new { @class = "title-row300right padding-right-10" })
+                    @Html.PasswordFor(m => m.CONTRACT_USER_PASSWORD_REPEAT, new { @class = "txt-w-250 ", style = "ime-mode: auto; " })
+                }
+            </div>
+
+            <div class="form-group">
+                @Html.Label(@Maint.Group_Name, new { @class = "title-row" })
+                @Html.DropDownListFor(m => m.AUTHORITY_GROUP_CD_STRING, Model.AUTHORITY_GROUP_LIST, new { @class = "no-margin txt-w-250" })
+                @Html.HiddenFor(m => m.AUTHORITY_GROUP_CD)
+            </div>
+        
+            <div class="form-group">
+                <label class="title-row">@Maint.Authority_type<span class="RequiredField">*</span></label>
+                @foreach (var item in (SelectList)ViewBag.AuthorityType)
+                {
+                    <label class="padding-right-5">
+                        @Html.RadioButtonFor(m => m.SEARCH_AUTHORITY_TYPE, item.Value, new { id = "ID_" + item.Value, @class = "no-margin" })
+                        @item.Text
+                    </label>
+                }
+            </div>
+        
+            <div class="form-group">
+                <label class="title-row">@Maint.Sales_Analysis_Authority_type<span class="RequiredField">*</span></label>
+                @foreach (var item in (SelectList)ViewBag.SalesAnalysisAuthorityType)
+                {
+                    <label class="padding-right-5">
+                        @Html.RadioButtonFor(m => m.SALES_ANALYSIS_AUTHORITY_TYPE, item.Value, new { id = "SA_ID_" + item.Value, @class = "no-margin" })
+                        @item.Text
+                    </label>
+                }
+            </div>
+
+            <div>
+                @if (!String.IsNullOrEmpty(Model.CONTRACT_USER_ACCOUNT))
+                {
+                    <div class="form-group">
+                        @Html.Label(@Maint.Login_lock, new { @for = "LOGIN_LOCK_FLG", @class = "title-row" })
+                        @if (String.IsNullOrEmpty(Model.LOGIN_LOCK_FLG) || Model.LOGIN_LOCK_FLG.Equals("0"))
+                        {
+                            <input id="LOGIN_LOCK_FLG" type="checkbox">
+                            <input id="LOGIN_LOCK_FLG_HIDDEN" name="LOGIN_LOCK_FLG" type="hidden" value="0">
+                        }
+                        else
+                        {
+                            <input id="LOGIN_LOCK_FLG" type="checkbox" checked="checked">
+                            <input id="LOGIN_LOCK_FLG_HIDDEN" name="LOGIN_LOCK_FLG" type="hidden" value="1">
+                        }
+                    </div>
+                }
+            </div>
+
+            <div class="form-group">
+                @Html.Label(@Maint.To_Disable, new { @for = "DISABLE_FLG", @class = "title-row" })
+                @if (String.IsNullOrEmpty(Model.DISABLE_FLG) || Model.DISABLE_FLG.Equals("0"))
+                {
+                    <input id="DISABLE_FLG" type="checkbox">
+                    <input id="DISABLE_FLG_HIDDEN" name="DISABLE_FLG" type="hidden" value="0">
+                }
+                else
+                {
+                    <input id="DISABLE_FLG" type="checkbox" checked="checked">
+                    <input id="DISABLE_FLG_HIDDEN" name="DISABLE_FLG" type="hidden" value="1">
+                }
+            </div>
+            @Html.HiddenFor(m => m.INS_DATE)
+            @Html.HiddenFor(m => m.INS_USER_ID)
+            @Html.HiddenFor(m => m.UPD_DATE)
+            @Html.HiddenFor(m => m.UPD_USER_ID)
+        if (Model.CONTRACT_USER_SEQ_CD > 0)
+        {
+            <div class="form-group">
+                @Html.Label(@Maint.REGISTER_DATE, new { @class = "title-row" })
+                @if (Model.INS_DATE != null)
+                {
+                    <label class="font-weight-normal">@Model.INS_DATE.Value.ToString("yyyy/MM/dd HH:mm")</label>
+                }
+
+            </div>
+            <div class="form-group">
+                @Html.Label(@Maint.REGISTER_PERSON, new { @class = "title-row" })
+                <label class="font-weight-normal">@Model.INS_USERNAME</label>
+            </div>
+            <div class="form-group">
+                @Html.Label(@Maint.DATE_MODIFY, new { @class = "title-row" })
+                @if (Model.UPD_DATE != null)
+                {
+                    <label class="font-weight-normal">@Model.UPD_DATE.Value.ToString("yyyy/MM/dd HH:mm")</label>
+                }
+
+            </div>
+            <div class="form-group">
+                @Html.Label(@Maint.PERSON_UPDATE, new { @class = "title-row" })
+                <label class="font-weight-normal">@Model.UPD_USERNAME</label>
+            </div>
+        }
+
+        <div class="form-group action-button-bottom">
+            <button type="button" id="btnBack" name="btnBack" class="btn btn-default"><i class="btn-icon btn-back">@EstimationRegister.btnBack</i></button>
+            <div class="pull-right">
+                <button type="button" id="btnClear" name="btnClear" class="btn btn-default"><i class="btn-icon btn-clear">@EstimationRegister.btnClear</i></button>
+                <button type="button" id="btnSubmit" name="btnSubmit" class="btn btn-orange"><i class="btn-icon btn-edit">@EstimationRegister.btnRegister</i></button>
+            </div>            
+        </div>
+    }
+    @using (Html.BeginForm("UserMaintList", "UserMaint", FormMethod.Post, new
+    {
+        area = "Maint",
+        id = "formUserMaintBack",
+        enctype = "multipart/form-data"
+    }))
+    {
+        @Html.HiddenFor(m => m.SEARCH_PARAM.COMPANY_CD);
+        @Html.HiddenFor(m => m.SEARCH_PARAM.CONTRACT_USER_ACCOUNT)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.CONTRACT_USER_NAME)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.STAFF_ID)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.AUTHORITY_GROUP_CD)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.DISABLE_FLG)
+        @Html.HiddenFor(m => m.DISPLAY_START)
+        @Html.HiddenFor(m => m.DISPLAY_LENGTH)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.LOGIN_LOCK_FLG)
+    }
+</div>
+
+<script type="text/javascript">
+    iseiQ.utility.checkInputNumber($("#STAFF_ID"));
+    iseiQ.utility.validFullHalfSize($("#CONTRACT_USER_ACCOUNT"));
+
+    iseiQ.utility.imeControl($("#STAFF_ID"), 'disable');
+    iseiQ.utility.imeControl($("#CONTRACT_USER_ACCOUNT"), 'disable');
+
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+    var UserMaintListUrl = '@Url.Action("UserMaintList", "UserMaint", new { area = "Maint" })';
+
+    $(function () {
+        var regX = Constant.REGEX_PASSWORD;
+        $("#CONTRACT_USER_PASSWORD").on("change keyup", function (e) {
+            var text = $(this).val();
+            if (regX.test(text)) {
+                text = text.replace(regX, '');
+                $(this).val(text);
+            }
+
+        });
+
+        $("#CONTRACT_USER_PASSWORD_REPEAT").on("change keyup", function (e) {
+            var text = $(this).val();
+            if (regX.test(text)) {
+                text = text.replace(regX, '');
+                $(this).val(text);
+            }
+
+        });
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Check validate
+    ////////////////////////////////////////////////////////////////////////////////////
+    function validateData() {
+        var invalidMess = [];
+        var contractuseraccount = $('#CONTRACT_USER_ACCOUNT').val().trim();         //ユーザーアカウント
+        var password = $('#CONTRACT_USER_PASSWORD').val();                   //一時パスワード
+        var repassword = $('#CONTRACT_USER_PASSWORD_REPEAT').val();          //パスワードの確認
+        var contractusername = $('#CONTRACT_USER_NAME').val();               //ユーザー名
+        var staffid = $('#STAFF_ID').val();                                  //社員ID
+        var authoritygroupcd = $('#AUTHORITY_GROUP_CD').val();               //グループ名
+        var disableflg = $('#DISABLE_FLG').val();                            //無効にする
+        var authority_type;
+        if ($('#ID_0').is(":checked")) {
+            authority_type = "0";
+        }
+
+        if ($('#ID_1').is(":checked")) {
+            authority_type = "1";
+        }
+
+        if ($('#ID_2').is(":checked")) {
+            authority_type = "2";
+        }
+
+        var sales_analysis;
+        if ($('#SA_ID_0').is(":checked")) {
+            sales_analysis = "0";
+        }
+
+        if ($('#SA_ID_1').is(":checked")) {
+            sales_analysis = "1";
+        }
+
+        if ($('#SA_ID_2').is(":checked")) {
+            sales_analysis = "2";
+        }
+
+        var errContent = [];
+        var errDisplay = [];
+        var invalidMess = [];
+        var errStartDate = null;
+        var errEndDate = null;
+        //bigint型で入力した値が保障される範囲
+        var bigintcheck = 999999999999999;　//15桁
+
+        if (contractuseraccount == "") { // required content
+            errDisplay = '@Maint.User_Account' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+        else if (!iseiQ.utility.validEmail(contractuseraccount)) {
+            invalidMess.push('@Maint.User_Account' + Constant.ERR_FORMAT);
+        }
+
+        if ('@Model.CONTRACT_USER_SEQ_CD' == 0) {
+            if (password.trim() == "") {
+                invalidMess.push("@string.Format(Messages.Required, @Maint.Temporary_Password)");
+            }
+            else {
+                if (password.length < Constant.MIN_INPUT_PASS || password.length > Constant.MAX_INPUT_PASS) {
+                    invalidMess.push("@string.Format(Maint.PasswordLength)");
+                }
+                if (!iseiQ.utility.validAccount(password)) {
+                    invalidMess.push("@string.Format(Maint.PasswordInvalidCharacter)");
+                }
+            }
+
+            if (repassword.trim() == "") {
+                invalidMess.push("@string.Format(Messages.Required, @Maint.Confirm_Password)");
+            }
+            else {
+                if (repassword.length < Constant.MIN_INPUT_PASS || repassword.length > Constant.MAX_INPUT_PASS) {
+                    invalidMess.push("@string.Format(Maint.RePasswordLength)");
+                }
+
+                if (!iseiQ.utility.validAccount(repassword)) {
+                    invalidMess.push("@string.Format(Maint.RePasswordInvalidCharacter)");
+                }
+            }
+
+            if (invalidMess.length == 0) {
+                if (password !== repassword) {
+                    invalidMess.push("@string.Format(Maint.PasswordNotMatch)");
+                }
+            }
+
+        }
+
+        if (contractusername.trim() == "") { // required DSP_Priority
+            errDisplay = '@Maint.User_Name' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (staffid.length === 0) {
+            $("#STAFF_ID").val("0");
+        }
+
+        if (staffid > bigintcheck) {
+            invalidMess.push("@string.Format(Maint.Input_Err)");
+        }
+
+        if (authority_type == undefined) { // required AUthority Type
+            errAuthorityType = '@Maint.Authority_type' + Constant.ERR_REQUIRED;
+            invalidMess.push(errAuthorityType);
+        }
+
+        if (sales_analysis == undefined) { // required Sales Analysis
+            invalidMess.push('@Maint.Sales_Analysis_Authority_type' + Constant.ERR_REQUIRED);
+        }
+
+        return invalidMess;
+    }
+
+    function validateData2() {
+        var invalidMess = [];
+
+        var password = $('#CONTRACT_USER_PASSWORD').val();
+        var repassword = $('#CONTRACT_USER_PASSWORD_REPEAT').val();
+        var errContent = [];
+        var errDisplay = [];
+        var invalidMess = [];
+        var errStartDate = null;
+        var errEndDate = null;
+
+        if (password.trim() == "") {
+            invalidMess.push("@string.Format(Messages.Required, @Maint.Temporary_Password)");
+        }
+        else {
+            if (password.length < Constant.MIN_INPUT_PASS || password.length > Constant.MAX_INPUT_PASS) {
+                invalidMess.push("@string.Format(Maint.PasswordLength)");
+            }
+            if (!iseiQ.utility.validAccount(password)) {
+                invalidMess.push("@string.Format(Maint.PasswordInvalidCharacter)");
+            }
+        }
+
+        if (repassword.trim() == "") {
+            invalidMess.push("@string.Format(Messages.Required, @Maint.Confirm_Password)");
+        }
+        else {
+            if (repassword.length < Constant.MIN_INPUT_PASS || repassword.length > Constant.MAX_INPUT_PASS) {
+                invalidMess.push("@string.Format(Maint.RePasswordLength)");
+            }
+
+            if (!iseiQ.utility.validAccount(repassword)) {
+                invalidMess.push("@string.Format(Maint.RePasswordInvalidCharacter)");
+            }
+        }
+
+        if (invalidMess.length == 0) {
+            if (password !== repassword) {
+                invalidMess.push("@string.Format(Maint.PasswordNotMatch)");
+            }
+        }
+
+        return invalidMess;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Clear
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnClear');
+    $(document).on('click', '#btnClear', function () {
+        iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmClear)', function (action) {
+            $('.validation-summary-errors').remove();
+            if (action) {
+                if ($('#CONTRACT_USER_SEQ_CD').val() == "0") {
+                    var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+                    if (!result) return;
+                    $("#CONTRACT_USER_ACCOUNT").val("");
+                    $("#CONTRACT_USER_PASSWORD").val("");
+                    $("#CONTRACT_USER_PASSWORD_REPEAT").val("");
+                    $("#CONTRACT_USER_NAME").val("");
+                    $("#STAFF_ID").val("0");
+                    $("#AUTHORITY_GROUP_CD_STRING").val("");
+                    $("#DISABLE_FLG").prop('checked', false).change();
+                    $('#DISABLE_FLG_HIDDEN').val('0');
+                    $("#LOGIN_LOCK_FLG").prop('checked', false).change();
+                    $('#LOGIN_LOCK_FLG_HIDDEN').val('0');
+                    $('#SEARCH_AUTHORITY_TYPE').val('0');
+                    $("#ID_0").prop("checked", true);
+
+                    $('#SALES_ANALYSIS_AUTHORITY_TYPE').val('0');
+                    $("#SA_ID_0").prop("checked", true);
+                } else {
+                    $("#CONTRACT_USER_PASSWORD").val('');
+                    $("#CONTRACT_USER_PASSWORD_REPEAT").val('');
+                    $("#CONTRACT_USER_NAME").val($("#CLEAR_CONTRACT_USER_NAME").val());
+                    $("#STAFF_ID").val('@Model.STAFF_ID');
+                    $("#AUTHORITY_GROUP_CD_STRING").val('@Model.AUTHORITY_GROUP_CD');
+                    $("#DISABLE_FLG_HIDDEN").val('@Model.DISABLE_FLG').change();
+                    if ('@Model.DISABLE_FLG' == '0') {
+                        $("#DISABLE_FLG").prop("checked", false);
+                    } else {
+                        $("#DISABLE_FLG").prop("checked", true);
+                    }
+                    $("#LOGIN_LOCK_FLG_HIDDEN").val('@Model.LOGIN_LOCK_FLG').change();
+                    if ('@Model.LOGIN_LOCK_FLG' == '0') {
+                        $("#LOGIN_LOCK_FLG").prop("checked", false);
+                    } else {
+                        $("#LOGIN_LOCK_FLG").prop("checked", true);
+                    }
+                    if ('@Model.SEARCH_AUTHORITY_TYPE' == '0') {
+                        $("#ID_0").prop("checked", true);
+                    } else if ('@Model.SEARCH_AUTHORITY_TYPE' == '1') {
+                        $("#ID_1").prop("checked", true);
+                    } else {
+                        $("#ID_2").prop("checked", true);
+                    }
+
+                    if ('@Model.SALES_ANALYSIS_AUTHORITY_TYPE' == '0') {
+                        $("#SA_ID_0").prop("checked", true);
+                    } else if ('@Model.SALES_ANALYSIS_AUTHORITY_TYPE' == '1') {
+                        $("#SA_ID_1").prop("checked", true);
+                    } else {
+                        $("#SA_ID_2").prop("checked", true);
+                    }
+                }
+            }
+        })
+    });
+
+    $(document).off('#DISABLE_FLG');
+    $(document).on('change', '#DISABLE_FLG', function () {
+        if ($('#DISABLE_FLG').is(":checked")) {
+            $('#DISABLE_FLG_HIDDEN').val('1');
+        } else {
+            $('#DISABLE_FLG_HIDDEN').val('0');
+        }
+    });
+
+    $(document).off('#LOGIN_LOCK_FLG');
+    $(document).on('change', '#LOGIN_LOCK_FLG', function () {
+        if ($('#LOGIN_LOCK_FLG').is(":checked")) {
+            $('#LOGIN_LOCK_FLG_HIDDEN').val('1');
+        } else {
+            $('#LOGIN_LOCK_FLG_HIDDEN').val('0');
+        }
+    });
+
+    $("#AUTHORITY_GROUP_CD_STRING").change(function () {
+
+        $('#AUTHORITY_GROUP_CD').val($('#AUTHORITY_GROUP_CD_STRING').val());
+
+    });
+
+    $(document).off('#btnPasswordChange');
+    $(document).on('click', '#btnPasswordChange', function () {
+        var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!result) return;
+        $('.validation-summary-errors').remove();
+        var invalidMess = validateData2();
+        if (invalidMess.length > 0) {
+            iseiQ.utility.showClientError(invalidMess);
+            return false;
+        }
+
+        iseiQ.utility.showConfirmModal('@string.Format(@Maint.Password_Reset)', function (action) {
+            if (action) {
+                $("#ACTION_TYPE").val('1');
+                $("#formUserMaintRegis").submit();
+            }
+        })
+
+    });
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Submit
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnSubmit');
+    $(document).on('click', '#btnSubmit', function () {
+        var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!result) return;
+        $('.validation-summary-errors').remove();
+        var invalidMess = validateData();
+        if (invalidMess.length > 0) {
+            iseiQ.utility.showClientError(invalidMess);
+            return false;
+        }
+        var infoSeqNo = '@Model.CONTRACT_USER_SEQ_CD';
+        if (infoSeqNo == '0') {
+            $('#INS_DATE').val('@tempDateTime.ToString()');
+            $('#INS_DATE').css("visibility", "hidden");
+            $('#UPD_DATE').val('@tempDateTime.ToString()');
+            $('#UPD_DATE').css("visibility", "hidden");
+        }
+
+        if ($('#ID_0').is(":checked")) {
+            $("#SEARCH_AUTHORITY_TYPE").val('0');
+        }
+
+        if ($('#ID_1').is(":checked")) {
+            $("#SEARCH_AUTHORITY_TYPE").val('1');
+        }
+
+        if ($('#ID_2').is(":checked")) {
+            $("#SEARCH_AUTHORITY_TYPE").val('2');
+        }
+
+        if ($('#SA_ID_0').is(":checked")) {
+            $("#SALES_ANALYSIS_AUTHORITY_TYPE").val('0');
+        }
+        if ($('#SA_ID_1').is(":checked")) {
+            $("#SALES_ANALYSIS_AUTHORITY_TYPE").val('1');
+        }
+        if ($('#SA_ID_2').is(":checked")) {
+            $("#SALES_ANALYSIS_AUTHORITY_TYPE").val('2');
+        }
+
+        $("#AUTHORITY_GROUP_CD").val($("#AUTHORITY_GROUP_CD_STRING").val());
+
+        var dataToSend = JSON.stringify({
+            CompanyCd: $("#COMPANY_CD").val(),
+            SeqNo: $('#CONTRACT_USER_SEQ_CD').val(),
+            Account: $('#CONTRACT_USER_ACCOUNT').val(),
+            Delflg: $('#DEL_FLG').val()
+        });
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetDefaultAccount", "UserMaint")',
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            data: dataToSend,
+            success: function (result) {
+                if (result.IsExited.length > 0) {
+                    errDisplay = '@Maint.UsedUserAccount';
+                    invalidMess.push(errDisplay);
+                    iseiQ.utility.showClientError(invalidMess);
+                    return false;
+                } else {
+                    iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmSubmitData, (Model.CONTRACT_USER_SEQ_CD > 0 ? Messages.Update : Messages.Register))', function (action) {
+                        if (action) {
+                            $("#formUserMaintRegis").submit();
+                        }
+                    })
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+
+    });
+
+    $("#formUserMaintRegis").submit(function (event) {
+        var timeout = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!timeout) return;
+        var formData = new FormData($(this)[0]);
+        $.ajax(
+        {
+            url: '@Url.Action("Edit", "UserMaint")',
+            data: formData,
+            mimeType: "multipart/form-data",
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                console.log(res);
+                if (res.length == 0) {
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    window.location.href = '/Common/Common/CloseIframe/';
+                } else {
+                    var result = jQuery.parseJSON(res);
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    if ($("#ACTION_TYPE").val() == "1") {
+                        var message = "@Maint.Password_Reset_OK";
+                    } else {
+                        var message = result.isNew == true ? "@Maint.User_RegisterSuccess" : "@Maint.User_UpdateSuccess";
+                    }
+                    iseiQ.utility.showMessageModal(message, false, function () {
+                        $("#formUserMaintBack").submit();
+                        //window.location.href = UserMaintListUrl;
+                        return false;
+                    });
+                }
+            },
+            error: function (xhr) {
+                window.parent.$('.ui-dialog-content:visible').dialog('close');
+                window.location.href = '/Common/Common/CloseIframe/';
+            }
+        });
+        event.preventDefault();
+    });
+
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Back
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnBack');
+    $(document).on('click', '#btnBack', function () {
+        iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmBack)', function (action) {
+            if (action) {
+                var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+                if (!result) return;
+
+                $(window).off('beforeunload');
+
+                $("#formUserMaintBack").submit();
+                ////window.location = window.location.host + Url;
+                //window.location.href = UserMaintListUrl;
+            }
+        })
+    });
+
+
+
+</script>

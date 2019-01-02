@@ -1,0 +1,351 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+<!-- CSS -->
+@Styles.Render("~/Content/themes/iseiQ/maint.css")
+@model ContractCompanyMaintModel
+
+@{
+    ViewBag.Title = Maint.ContractCompanyMaintList;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+}
+
+<div id="maintInputDateList" class="ContractCompanyMaintList">
+    <div id="topContent">
+        <div id="title">@Maint.ContractCompanyMaintList</div>
+
+        <div id="searchArea">
+            <div class="form-group">
+                @Html.Label(@Maint.COMPANY_CD, new { @class = "title-row min-width-60" })
+                @Html.TextBoxFor(m => m.COMPANY_CD, new { @class = "txt-w-50", @style = "ime-mode: disabled;", maxlength = 5 })
+
+                @Html.Label(@Maint.BP_NAME, new { @class = "title-row min-width-40 margin-left-20" })
+                @Html.TextBoxFor(m => m.COMPANY_NAME, new { @class = "txt-w-250", @style = "ime-mode: auto;", maxlength = 40 })
+            </div>
+            <div class="form-group">
+                @Html.Label(@Maint.COMPANY_GROUP_NAME, new { @class = "title-row min-width-60" })
+                @Html.TextBoxFor(m => m.COMPANY_GROUP_NAME, new { @class = "txt-w-250", @style = "ime-mode: auto;", maxlength = 30 })
+            </div>
+            <div class="form-group">
+                @Html.Label(@Maint.PERS_IN_CHAR_NAME, new { @class = "title-row min-width-60" })
+                @Html.TextBoxFor(m => m.COMPANY_STAFF_NAME, new { @class = "txt-w-250", @style = "ime-mode: auto;", maxlength = 50 })
+
+                <input id="COMPANY_CONTRACT_STATUS" type="checkbox" value="false">
+                <input id="SEARCH_COMPANY_CONTRACT_STATUS_HIDDEN" type="hidden" value="false">
+                @Html.Label(@Maint.lblIncludeInvalid, new { @class = "title-row" })
+            </div>
+        </div>
+        <hr />
+
+        <div id="searchAction">
+            <button type="button" id="btnClearConditions" class="btn btn-default">
+                <i class="btn-icon btn-clear">@Maint.btnClearConditions</i>
+            </button>
+            <button type="button" id="btnSearch" class="btn btn-green">
+                <i class="btn-icon btn-search-white">@Maint.btnSearch</i>
+            </button>
+        </div>
+    </div>
+
+    @RenderPage("~/Views/Shared/ShowHideHeaderContent.cshtml")
+
+    <div id="registButton">
+        <button type="button" id="btnCreateNew" name="btnCreateNew" class="btn btn-orange"><i class="btn-icon btn-regist">@Maint.btnCreateNew</i></button>
+    </div>
+
+    <div id="mainContent">
+        <table id="InfoTable" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>@Maint.lblNo</th>
+                    <th class="width-200">@Maint.COMPANY_CD</th>
+                    <th class="width-200">@Maint.BP_NAME</th>
+                    <th class="width-200">@Maint.COMPANY_GROUP_NAME</th>
+                    <th class="width-200">@Maint.PERS_IN_CHAR_NAME</th>
+                    <th class="width-200">@Maint.lblIncludeInvalid</th>
+                    <th>@Maint.lblUpdateTime</th>
+                    <th>@Maint.lblUpdateUser</th>
+                    <th>@Maint.EDIT</th>
+                    <th>@Maint.DELETE</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    @using (Html.BeginForm("ContractCompanyMaintEdit", "ContractCompanyMaint", FormMethod.Post, new
+        {
+            area = "Maint",
+            id = "ContractCompanyMaintRegist",
+            enctype = "multipart/form-data"
+        }))
+    {
+        @Html.HiddenFor(m => m.REGIST_PARAM.COMPANY_CD)
+
+        @Html.HiddenFor(m => m.SEARCH_COMPANY_CD)
+        @Html.HiddenFor(m => m.SEARCH_COMPANY_NAME)
+        @Html.HiddenFor(m => m.SEARCH_COMPANY_GROUP_NAME)
+        @Html.HiddenFor(m => m.SEARCH_COMPANY_STAFF_NAME)
+        @Html.HiddenFor(m => m.SEARCH_COMPANY_CONTRACT_STATUS)
+
+        @Html.HiddenFor(m => m.SEARCH_START)
+        @Html.HiddenFor(m => m.SEARCH_LENGTH)
+    }
+</div>
+
+<script type="text/javascript">
+
+    iseiQ.utility.checkInputAlphanumeric($("#COMPANY_CD"));
+
+    //前回の検索条件を値をセット
+    $("#COMPANY_CD").val($("#SEARCH_COMPANY_CD").val());
+    $("#COMPANY_NAME").val($("#SEARCH_COMPANY_NAME").val());
+    $("#COMPANY_GROUP_NAME").val($("#SEARCH_COMPANY_GROUP_NAME").val());
+    $("#COMPANY_STAFF_NAME").val($("#SEARCH_COMPANY_STAFF_NAME").val());
+
+    if ('@Model.SEARCH_COMPANY_CONTRACT_STATUS' == 'True') {
+        $('#COMPANY_CONTRACT_STATUS').prop('checked', true);
+        $('#SEARCH_COMPANY_CONTRACT_STATUS_HIDDEN').val('true');
+    } else {
+        $('#COMPANY_CONTRACT_STATUS').prop('checked', false);
+        $('#SEARCH_COMPANY_CONTRACT_STATUS_HIDDEN').val('false');
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Variables Declaration
+    ////////////////////////////////////////////////////////////////////////////////////
+    var dataTable;
+    var ContractCompanyMaintSearchUrl = '@Url.Action("ContractCompanyMaintSearch", "ContractCompanyMaint", new { area = "Maint" })';
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+    editlink = "編集";
+    var deletelink = "削除";
+    var ORDER = 0;
+    var COMPANY_CD = 1;
+    var COMPANY_NAME = 2;
+    var COMPANY_GROUP_NAME = 3;
+    var COMPANY_STAFF_NAME = 4;
+    var COMPANY_CONTRACT_STATUS = 5;
+    var UPD_DATE = 6;
+    var UPD_USERNAME = 7;
+    var EDIT = 8;
+    var DELETE = 9;
+
+    var dataTable = null;
+    var dataList = null;
+
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Initialization functions
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(function () {
+        var oSorting = {
+            "bSort": false
+        };
+
+        var oPaginate = {
+            "bPaginate": true,
+            "iDisplayStart": parseInt(@Model.SEARCH_START),
+            "iDisplayLength": parseInt(@Model.SEARCH_LENGTH),
+            "bStateSave": false
+        };
+
+        var oServerSide = {
+            "bServerSide": true,
+            "sAjaxSource": ContractCompanyMaintSearchUrl,
+            "fnServerParams": serverParams,
+            "fnInitComplete": bindData,
+            "fnDrawCallback": drawCallback
+        };
+
+        var aoColumnDefs = [
+            { "bVisible": false, "bSortable": false, "aTargets": [ORDER], "sWidth": "10%", "sClass": "cell_center" },
+            { "bVisible": false, "bSortable": false, "aTargets": [COMPANY_CD], "sWidth": "10%", "sClass": "cell_center" },
+            { "bVisible": false, "bSortable": false, "aTargets": [COMPANY_NAME], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [COMPANY_GROUP_NAME], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [COMPANY_STAFF_NAME], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [COMPANY_CONTRACT_STATUS], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [UPD_DATE], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [UPD_USERNAME], "sWidth": "10%", "sClass": "cell_left" },
+            { "bSortable": false, "aTargets": [EDIT], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return buildActionLink(full[COMPANY_CD], 'post-ContractCompanyMaint-register', editlink); } },
+            { "bSortable": false, "aTargets": [DELETE], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return data == 0 ? '' : buildActionLink(full[COMPANY_CD], 'delete-ContractCompanyMaint-link btn btn-red', deletelink); } }
+        ];
+
+        function serverParams(aoData) {
+            //検索条件を保持
+            $("#SEARCH_COMPANY_CD").val($("#COMPANY_CD").val());
+            $("#SEARCH_COMPANY_NAME").val($("#COMPANY_NAME").val());
+            $("#SEARCH_COMPANY_GROUP_NAME").val($("#COMPANY_GROUP_NAME").val());
+            $("#SEARCH_COMPANY_STAFF_NAME").val($("#COMPANY_STAFF_NAME").val());
+            $("#SEARCH_COMPANY_CONTRACT_STATUS").val($("#SEARCH_COMPANY_CONTRACT_STATUS_HIDDEN").val());
+
+            aoData.push(
+                { "name": "SEARCH_COMPANY_CD", "value": $("#SEARCH_COMPANY_CD").val() },
+                { "name": "SEARCH_COMPANY_NAME", "value": $("#SEARCH_COMPANY_NAME").val() },
+                { "name": "SEARCH_COMPANY_GROUP_NAME", "value": $("#SEARCH_COMPANY_GROUP_NAME").val() },
+                { "name": "SEARCH_COMPANY_STAFF_NAME", "value": $("#SEARCH_COMPANY_STAFF_NAME").val() },
+                { "name": "SEARCH_COMPANY_CONTRACT_STATUS", "value": $("#SEARCH_COMPANY_CONTRACT_STATUS_HIDDEN").val() }
+            );
+            doServerSide = true;
+        }
+        function bindData(data) {
+            dataList = data.aaData;
+        }
+
+        function drawCallback() {
+            if ($('#tbLeft').length > 0) {
+                $('#InfoTable').unwrap();
+                $('.col-left, .rBarOn, .bBarOn').remove();
+            }
+
+            var htmlTbLeft = '<table id="tbLeft" class="dataTable" cellspacing="0">'
+                + ' <thead>'
+                + ' <tr>'
+                + ' <th class="width-50">@Maint.lblNo</th>'
+                + ' <th class="width-80">@Maint.COMPANY_CD</th>'
+                + ' <th>@Maint.BP_NAME</th>'
+                + ' </tr>'
+                + ' </thead>'
+                + ' <tbody>';
+
+            if (dataList !== null && dataList.length > 0) {
+                for (var i = 0; i < dataList.length; i++) {
+                    var classRow = i % 2 == 0 ? 'odd' : 'even';
+                    var height = $($('#InfoTable tbody tr')[i]).outerHeight();
+
+                    htmlTbLeft += ' <tr class="' + classRow + '" style="height: ' + height + 'px">'
+                               + '   <td class="cell_center">' + iseiQ.utility.buildColumShortText(dataList[i][0]) + '</td>'
+                               + '   <td class="cell_center">' + iseiQ.utility.buildColumShortText(dataList[i][1]) + '</td>'
+                               + '   <td class="cell_center"> <div>' + iseiQ.utility.buildColumShortText(dataList[i][2], 'special-wrap') + '</div></td>'
+                               + ' </tr>';
+                }
+            }
+
+            htmlTbLeft += '</tbody></table>';
+
+            $("#InfoTable").wrap('<div class="col-right dragOn"></div>').removeClass('no-footer');
+            $('div.col-right').before('<div class="col-left"> ' + htmlTbLeft + '</div>');
+            $('#tbLeft thead tr').height($('#InfoTable thead').height());
+
+            $("#tbLeft tbody tr").each(function (i) {
+                if ($(this).height() != $("#InfoTable tbody tr").eq(i).height()) {
+                    var height = $(this).height() > $("#InfoTable tbody tr").eq(i).height() ? $(this).height() : $("#InfoTable tbody tr").eq(i).height();
+                    height++    //jQueryでは高さの少数を取得できないため
+                    $("#InfoTable tbody tr").eq(i).height(height);
+                    $(this).height(height);
+                }
+            });
+
+            $('.dragOn').dragOn();
+            $('.dragOn').barOn();
+
+        }
+
+        dataTable = CreateDataTable('#InfoTable', oSorting, oPaginate, oServerSide, aoColumnDefs);
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Event Listeners
+    ////////////////////////////////////////////////////////////////////////////////////
+
+    $(document).off('#btnCreateNew');
+    $(document).on('click', '#btnCreateNew', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        RegistSubmit('0');
+    });
+
+    $(document).off('#btnSearch');
+    $(document).on('click', '#btnSearch', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        searchContractCompanyMaint();
+    });
+
+    $(document).off('#btnClearConditions');
+    $(document).on('click', '#btnClearConditions', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        $('#COMPANY_CD').val('');
+        $('#COMPANY_NAME').val('');
+        $('#COMPANY_GROUP_NAME').val('');
+        $("#COMPANY_STAFF_NAME").val('');
+        $('#COMPANY_CONTRACT_STATUS').prop('checked', false);
+        $('#SEARCH_COMPANY_CONTRACT_STATUS_HIDDEN').val('false');
+
+        $('#btnSearch').trigger("click");
+
+    });
+
+    $(document).off('.post-ContractCompanyMaint-register');
+    $(document).on('click', '.post-ContractCompanyMaint-register', function () {
+        RegistSubmit($(this).data('company-cd'));
+    });
+
+    function RegistSubmit(companyCd) {
+        var oSettings = dataTable.fnSettings();
+
+        $('#SEARCH_START').val(oSettings._iDisplayStart);
+        $('#SEARCH_LENGTH').val(oSettings._iDisplayLength);
+
+        $('#REGIST_PARAM_COMPANY_CD').val(companyCd);
+        $('#ContractCompanyMaintRegist').submit();
+    }
+
+    $(document).off('.delete-ContractCompanyMaint-link');
+    $(document).on('click', '.delete-ContractCompanyMaint-link', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        var companyCd = $(this).data('company-cd');
+        var contractType = $(this).data('contract-type');
+        var contractTypeClass = $(this).data('contract-type-class');
+
+        // Get Project Dsp Name
+        iseiQ.utility.showConfirmModal('@string.Format(@Maint.ContractCompanyMaintDelete)', function (action) {
+            if (action) {
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: '@Url.Action("DELETE")',
+                    data: { "COMPANY_CD": companyCd },
+                    success: function (data) {
+                        dataTable.fnStandingRedraw();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        iseiQ.utility.showMessageModal("@string.Format(Maint.MaintDeleteError)", true);
+                    }
+                });
+            }
+        });
+    });
+
+    $(document).off('#COMPANY_CONTRACT_STATUS');
+    $(document).on('change', '#COMPANY_CONTRACT_STATUS', function () {
+        if ($('#COMPANY_CONTRACT_STATUS').is(":checked")) {
+            $('#SEARCH_COMPANY_CONTRACT_STATUS_HIDDEN').val('true');
+        } else {
+            $('#SEARCH_COMPANY_CONTRACT_STATUS_HIDDEN').val('false');
+        }
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Misc Functions
+    ////////////////////////////////////////////////////////////////////////////////////
+    function searchContractCompanyMaint() {
+
+        doServerSide = true;
+
+        $("#SEARCH_COMPANY_CD").val($("#COMPANY_CD").val());
+        $("#SEARCH_COMPANY_NAME").val($("#COMPANY_NAME").val());
+        $("#SEARCH_COMPANY_GROUP_NAME").val($("#COMPANY_GROUP_NAME").val());
+        $("#SEARCH_COMPANY_STAFF_NAME").val($("#COMPANY_STAFF_NAME").val());
+
+        dataTable.fnPageChange('first');
+    }
+
+    function buildActionLink(infoCompanyCd, className, label) {
+        return '<a class="' + className + '" data-company-cd="' + infoCompanyCd + '" >' + label + '</a>';
+    }
+
+</script>

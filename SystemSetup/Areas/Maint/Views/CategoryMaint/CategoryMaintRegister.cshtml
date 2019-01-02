@@ -1,0 +1,312 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+@*CSS*@
+@Styles.Render("~/Content/themes/iseiQ/maint.css")
+@model CategoryMaintModel
+@{
+    ViewBag.Title = Maint.CategoryMaintRegister;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+    var tempDateTime = new DateTime();
+}
+<div id="MaintRegister" class="edit-screen">
+    @using (Html.BeginForm("Edit", "CategoryMaint", FormMethod.Post, new { id = "formCategoryMaintRegis", enctype = "multipart/form-data", @class = "form-horizontal" }))
+    {
+        <div id="title">@Maint.CategoryMaintRegister</div>
+        @Html.HiddenFor(m => m.DEL_FLG, new { @class = "sp-id" })
+        @Html.HiddenFor(m => m.CONTRACT_TYPE, new { @class = "sp-id" })
+        @Html.HiddenFor(m => m.CONTRACT_LEVEL_TYPE)
+        @Html.HiddenFor(m => m.COMPANY_CD)
+        <div class="form-group">           
+            <label class="title-row">@Maint.COMPANY_CD<span class="RequiredField">*</span></label>
+            <label class="font-weight-normal">@Model.COMPANY_CD</label> 
+        </div>
+        <div class="form-group">           
+            <label class="title-row">@Maint.CONTRACT_TYPE_DISP_NAME<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.CONTRACT_TYPE_DISP_NAME, new { @class = "txt-w-150 ", style = "ime-mode: active;", maxlength = 10 })
+
+            <input type="hidden" id="CLEAR_CONTRACT_TYPE_DISP_NAME" name="CLEAR_CONTRACT_TYPE_DISP_NAME" value="@Model.CONTRACT_TYPE_DISP_NAME">
+        </div>
+        <div class="form-group">           
+            <label class="title-row">@Maint.DSP_PRIORITY<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.DSP_PRIORITY, new { @class = "txt-w-50  ", style = "ime-mode: active;", maxlength = 5 })
+        </div>
+        <div class="form-group">          
+            <label class="title-row">@Maint.EST_NO_PREFIX<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.EST_NO_PREFIX, new { @class = "txt-w-50 ", style = "ime-mode: active;", maxlength = 3 })
+
+            <input type="hidden" id="CLEAR_EST_NO_PREFIX" name="CLEAR_EST_NO_PREFIX" value="@Model.EST_NO_PREFIX">
+        </div>
+        <div class="form-group">           
+            <label class="title-row">@Maint.DELIVERY_NO_PREFIX<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.DELIVERY_NO_PREFIX, new { @class = "txt-w-50", maxlength = 3 })
+        </div>
+        <div class="form-group">           
+            <label class="title-row">@Maint.PLC_ORDER_NO_PREFIX<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.PLC_ORDER_NO_PREFIX, new { @class = "txt-w-50", maxlength = 3 })
+        </div>
+        <div class="form-group">            
+            <label class="title-row">@Maint.EST_EFFECTIVE_TYPE<span class="RequiredField">*</span></label>
+            @Html.DropDownListFor(m => m.EST_EFFECTIVE_TYPE, new SelectList(EffectiveType.Items, "Key", "Value"), new { @class = "ddl-w-120" })
+        </div>
+        <div class="form-group">           
+            <label class="title-row">@Maint.EST_EFFECTIVE_INTERVAL<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.EST_EFFECTIVE_INTERVAL, new { @class = "txt-w-50 ", style = "ime-mode: active;", maxlength = 3 })
+        </div>
+        @Html.HiddenFor(m => m.INS_DATE)
+        @Html.HiddenFor(m => m.INS_USER_ID)
+        @Html.HiddenFor(m => m.UPD_DATE)
+        @Html.HiddenFor(m => m.UPD_USER_ID)
+        if (Model.CONTRACT_TYPE > 0)
+        {
+            <div class="form-group">
+                @Html.Label(@Maint.REGISTER_DATE, new { @class = "title-row" })
+                @if (Model.INS_DATE != null)
+                {
+                    <label class="font-weight-normal">@Model.INS_DATE.Value.ToString("yyyy/MM/dd HH:mm")</label>
+                }               
+            </div>
+            <div class="form-group">
+                @Html.Label(@Maint.REGISTER_PERSON, new { @class = "title-row" })             
+                <label class="font-weight-normal">@Model.INS_USERNAME</label>
+            </div>
+            <div class="form-group">
+                @Html.Label(@Maint.DATE_MODIFY, new { @class = "title-row" })
+                @if (Model.UPD_DATE != null)
+                {
+                    <label class="font-weight-normal">@Model.UPD_DATE.Value.ToString("yyyy/MM/dd HH:mm")</label>
+                }
+                
+            </div>
+            <div class="form-group">
+                @Html.Label(@Maint.PERSON_UPDATE, new { @class = "title-row" })              
+                <label class="font-weight-normal">@Model.UPD_USERNAME</label>
+            </div>
+        }
+
+        <div class="form-group action-button-bottom">
+            <button type="button" id="btnBack" name="btnBack" class="btn btn-default"><i class="btn-icon btn-back">@EstimationRegister.btnBack</i></button>
+            <div class="pull-right">
+                <button type="button" id="btnClear" name="btnClear" class="btn btn-default"><i class="btn-icon btn-clear">@EstimationRegister.btnClear</i></button>
+                <button type="button" id="btnSubmit" name="btnSubmit" class="btn btn-orange"><i class="btn-icon btn-edit">@EstimationRegister.btnRegister</i></button>
+            </div>          
+        </div>
+    }
+    @using (Html.BeginForm("CategoryMaintList", "CategoryMaint", FormMethod.Post, new
+    {
+        area = "Maint",
+        id = "formCategoryMaint",
+        enctype = "multipart/form-data"
+    }))
+    {
+        @Html.HiddenFor(m => m.SEARCH_COMPANY_CD)
+        @Html.HiddenFor(m => m.SEARCH_CONTRACT_TYPE_EDIT)
+        @Html.HiddenFor(m => m.SEARCH_START)
+        @Html.HiddenFor(m => m.SEARCH_LENGTH)
+        @Html.HiddenFor(m => m.REGIST_PARAM.EST_NO_PREFIX)
+        @Html.HiddenFor(m => m.REGIST_PARAM.EST_EFFECTIVE_TYPE)
+        @Html.HiddenFor(m => m.REGIST_PARAM.EST_EFFECTIVE_INTERVAL)
+    }
+</div>
+
+<script type="text/javascript">
+    iseiQ.utility.validFullHalfSize($("#EST_NO_PREFIX"));
+    iseiQ.utility.validFullHalfSize($("#DELIVERY_NO_PREFIX"));
+    iseiQ.utility.validFullHalfSize($("#PLC_ORDER_NO_PREFIX"));
+
+    iseiQ.utility.checkInputNumber($("#DSP_PRIORITY"));
+    iseiQ.utility.checkInputNumber($("#EST_EFFECTIVE_INTERVAL"));
+
+    iseiQ.utility.imeControl($("#EST_NO_PREFIX"), 'disable');
+    iseiQ.utility.imeControl($("#DELIVERY_NO_PREFIX"), 'disable');
+    iseiQ.utility.imeControl($("#PLC_ORDER_NO_PREFIX"), 'disable');
+    iseiQ.utility.imeControl($("#DSP_PRIORITY"), 'disable');
+    iseiQ.utility.imeControl($("#EST_EFFECTIVE_INTERVAL"), 'disable');
+
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Event Listeners
+    ////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Check validate
+    ////////////////////////////////////////////////////////////////////////////////////
+    function validateData() {
+        var invalidMess = [];
+
+        var contractTypeDispName = $('#CONTRACT_TYPE_DISP_NAME').val();
+        var estNoPrefix = $('#EST_NO_PREFIX').val();
+        var deliveryNoPrefix = $('#DELIVERY_NO_PREFIX').val();
+        var plcOrderNoPrefix = $('#PLC_ORDER_NO_PREFIX').val();
+        var estEffectiveInterval = $('#EST_EFFECTIVE_INTERVAL').val();
+        var dspPriority = $('#DSP_PRIORITY').val();
+        var EstEffectiveType = $('#EST_EFFECTIVE_TYPE').val();
+
+        if (contractTypeDispName.trim() == "") {
+            errDisplay = '@Maint.CONTRACT_TYPE_DISP_NAME' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (estNoPrefix.trim() == "") {
+            invalidMess.push('@Maint.EST_NO_PREFIX' + Constant.ERR_REQUIRED);
+        } else if (estNoPrefix.length > Constant.MAX_PREFIX_STRING) {
+            invalidMess.push(Constant.ERR_STRING_LENGTH.replace('{0}', '@Maint.EST_NO_PREFIX').replace('{1}', Constant.MAX_PREFIX_STRING));
+        } else if (!iseiQ.utility.checkValidFullHalfSize(estNoPrefix)) {
+            invalidMess.push('@Maint.EST_NO_PREFIX' + Constant.ERR_FORMAT);
+        }
+
+        if (deliveryNoPrefix.trim() == "") {
+            invalidMess.push('@Maint.DELIVERY_NO_PREFIX' + Constant.ERR_REQUIRED);
+        } else if (deliveryNoPrefix.length > Constant.MAX_PREFIX_STRING) {
+            invalidMess.push(Constant.ERR_STRING_LENGTH.replace('{0}', '@Maint.DELIVERY_NO_PREFIX').replace('{1}', Constant.MAX_PREFIX_STRING));
+        } else if (!iseiQ.utility.checkValidFullHalfSize(deliveryNoPrefix)) {
+            invalidMess.push('@Maint.DELIVERY_NO_PREFIX' + Constant.ERR_FORMAT);
+        }
+
+        if (plcOrderNoPrefix.trim() == "") {
+            errDisplay = '@Maint.PLC_ORDER_NO_PREFIX' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        } else if (plcOrderNoPrefix.length > Constant.MAX_PREFIX_STRING) {
+            invalidMess.push(Constant.ERR_STRING_LENGTH.replace('{0}', '@Maint.PLC_ORDER_NO_PREFIX').replace('{1}', Constant.MAX_PREFIX_STRING));
+        } else if (!iseiQ.utility.checkValidFullHalfSize(plcOrderNoPrefix)) {
+            invalidMess.push('@Maint.PLC_ORDER_NO_PREFIX' + Constant.ERR_FORMAT);
+        }
+
+        if (estEffectiveInterval == "") {
+            errDisplay = '@Maint.EST_EFFECTIVE_INTERVAL' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (dspPriority == "") {
+            errDisplay = '@Maint.DSP_PRIORITY' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (EstEffectiveType == "") {
+            errDisplay = '@Maint.EST_EFFECTIVE_TYPE' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        return invalidMess;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Clear
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnClear');
+    $(document).on('click', '#btnClear', function () {
+        iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmClear)', function (action) {
+            $('.validation-summary-errors').remove();
+            if (action) {
+
+                var contractType = '@Model.CONTRACT_TYPE';
+
+                if (contractType == '0') {
+                    var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+                    if (!result) return;
+                    $('#CONTRACT_TYPE_DISP_NAME').val("");
+                    $('#DSP_PRIORITY').val("0");
+                    $('#EST_NO_PREFIX').val("");
+                    $('#EST_EFFECTIVE_TYPE').val("0");
+                    $('#EST_EFFECTIVE_INTERVAL').val("0");
+                } else {
+                    $('#CONTRACT_TYPE_DISP_NAME').val($("#CLEAR_CONTRACT_TYPE_DISP_NAME").val());
+                    $('#DSP_PRIORITY').val("@Model.DSP_PRIORITY");
+                    $('#EST_NO_PREFIX').val($("#CLEAR_EST_NO_PREFIX").val());
+                    $('#EST_EFFECTIVE_TYPE').val("@Model.EST_EFFECTIVE_TYPE");
+                    $('#EST_EFFECTIVE_INTERVAL').val("@Model.EST_EFFECTIVE_INTERVAL");
+                }
+            }
+        })
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Submit
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnSubmit');
+    $(document).on('click', '#btnSubmit', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        $('.validation-summary-errors').remove();
+        var invalidMess = validateData();
+        if (invalidMess.length > 0) {
+            iseiQ.utility.showClientError(invalidMess);
+            return false;
+        }
+
+        var contractType = '@Model.CONTRACT_TYPE';
+
+        var insFlg = false;
+        if (contractType == '0') {
+            $('#INS_DATE').val('@tempDateTime.ToString()');
+            $('#INS_DATE').css("visibility", "hidden");
+            $('#UPD_DATE').val('@tempDateTime.ToString()');
+            $('#UPD_DATE').css("visibility", "hidden");
+        }
+
+        iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmSubmitData, (Model.CONTRACT_TYPE > 0 ? Messages.Update : Messages.Register))', function (action) {
+            if (action) {
+                $("#formCategoryMaintRegis").submit();
+            }
+        })
+    });
+
+
+    $("#formCategoryMaintRegis").submit(function (event) {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+        var formData = new FormData($(this)[0]);
+        $.ajax(
+        {
+            url: '@Url.Action("Edit", "CategoryMaint")',
+            data: formData,
+            mimeType: "multipart/form-data",
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                console.log(res);
+                if (res.length == 0) {
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    window.location.href = '/Common/Common/CloseIframe/';
+                } else {
+                    var result = jQuery.parseJSON(res);
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    var message = result.isNew == true ? "@Maint.CategoryMaintRegisterSuccess" : "@Maint.CategoryMaintUpdateSuccess";
+                    iseiQ.utility.showMessageModal(message, false, function () {
+                        $('#formCategoryMaint').submit();
+                        return false;
+                    });
+                }
+            },
+            error: function (xhr) {
+                window.parent.$('.ui-dialog-content:visible').dialog('close');
+                window.location.href = '/Common/Common/CloseIframe/';
+            }
+        });
+        event.preventDefault();
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Back
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnBack');
+    $(document).on('click', '#btnBack', function () {
+        iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmBack)', function (action) {
+            if (action) {
+                var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+                if (!result) return;
+
+                $(window).off('beforeunload');
+
+                $('#formCategoryMaint').submit();
+            }
+        })
+    });
+
+</script>

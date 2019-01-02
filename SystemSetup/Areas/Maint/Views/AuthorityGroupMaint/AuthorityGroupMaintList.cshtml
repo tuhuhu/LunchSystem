@@ -1,0 +1,408 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+<!-- CSS -->
+@Styles.Render("~/Content/themes/iseiQ/maint.css")
+@model AuthorityGroupMaintModel
+
+@{
+    ViewBag.Title = Maint.AuthorityGroupMaintList;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+}
+
+<div id="authorityGroupList">
+    <div id="topContent">
+        <div id="title">@Maint.AuthorityGroupMaintList</div>
+
+        <div id="searchArea">
+            <div class="form-group">
+                @Html.Label(@Maint.COMPANY_CD, new { @class = "title-row min-width-110" })
+                @Html.DropDownListFor(m => m.COMPANY_CD, Model.CONTRACT_FIRM_LIST, "", new { @class = "no-margin ddlContractFirmMaster" })
+            </div>
+            <div class="form-group">
+                @Html.Label(@Maint.AUTHORITY_GROUP_CD, new { @class = "title-row min-width-110" })
+                @Html.TextBoxFor(m => m.AUTHORITY_GROUP_CD, new { @class = "width-100", maxlength = 10 })
+
+                @Html.Label(@Maint.AUTHORITY_GROUP_NAME, new { @class = "title-row min-width-90 margin-left-20" })
+                @Html.TextBoxFor(m => m.AUTHORITY_GROUP_NAME, new { @class = "ime-mode", maxlength = 30 })
+
+                <span>
+                    <input id="INCLUDE_DISABLE" type="checkbox" value="false">
+                    <input id="INCLUDE_DISABLE_HIDDEN" type="hidden" value="false">
+                    @Html.Label(@Maint.lblIncludeInvalid, new { @for = "INCLUDE_DISABLE" })
+                </span>
+            </div>
+        </div>
+        <hr />
+
+        <div id="searchAction">
+            <button type="button" id="btnClearConditions" class="btn btn-default">
+                <i class="btn-icon btn-clear">@Maint.btnClearConditions</i>
+            </button>
+            <button type="button" id="btnSearch" class="btn btn-green">
+                <i class="btn-icon btn-search-white">@Maint.btnSearch</i>
+            </button>
+        </div>
+    </div>
+
+    @RenderPage("~/Views/Shared/ShowHideHeaderContent.cshtml")
+
+    <div id="registButton">
+        <button type="button" id="btnCreateNew" name="btnCreateNew" class="btn btn-orange"><i class="btn-icon btn-regist">@Maint.btnCreateNew</i></button>
+    </div>
+
+    <div id="mainContent" class="auto-overflow">
+        <table id="InfoTable" class="dataTable auto-scroll-x" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>@Maint.lblNo</th>
+                    <th>@Maint.COMPANY_CD</th>
+                    <th>@Maint.AUTHORITY_GROUP_CD</th>
+                    <th class="width-200">@Maint.AUTHORITY_GROUP_NAME</th>
+                    <th>@Maint.lblUpdateTime</th>
+                    <th>@Maint.lblUpdateUser</th>
+                    <th>@Maint.EDIT</th>
+                    <th>@Maint.DELETE</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    @using (Html.BeginForm("AuthorityGroupMaintEdit", "AuthorityGroupMaint", FormMethod.Post, new
+        {
+            area = "Maint",
+            id = "AuthorityGroupMaintRegist",
+            enctype = "multipart/form-data"
+        }))
+    {
+        
+        @Html.HiddenFor(m => m.ACTION_TYPE)
+        @Html.HiddenFor(m => m.REGIST_PARAM.COMPANY_CD)
+        @Html.HiddenFor(m => m.REGIST_PARAM.AUTHORITY_GROUP_CD)
+        @Html.HiddenFor(m => m.SEARCH_COMPANY_CD)
+        @Html.HiddenFor(m => m.SEARCH_AUTHORITY_GROUP_CD)
+        @Html.HiddenFor(m => m.SEARCH_AUTHORITY_GROUP_NAME)
+        @Html.HiddenFor(m => m.SEARCH_DISABLE_FLG)
+        @Html.HiddenFor(m => m.SEARCH_START)
+        @Html.HiddenFor(m => m.SEARCH_LENGTH)
+    }
+</div>
+
+<script type="text/javascript">
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Variables Declaration
+    ////////////////////////////////////////////////////////////////////////////////////
+    var dataTable;
+    var AuthorityGroupMaintSearchUrl = '@Url.Action("AuthorityGroupMaintSearch", "AuthorityGroupMaint", new { area = "Maint" })';
+    var custMaintRegisterUrl = '@Url.Action("CustMaintEdit", "AuthorityGroupMaint", new { area = "Maint" })';
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+    editlink = "編集";
+    var deletelink = "削除";
+    var ORDER = 0;
+    var COMPANY_CD = 1;
+    var AUTHORITY_GROUP_CD = 2;
+    var AUTHORITY_GROUP_NAME = 3;
+    var UPD_DATE = 4;
+    var UPD_USERNAME = 5;
+    var EDIT = 6;
+    var DELETE = 7;
+
+    var doServerSide = false;
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Initialization functions
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(function () {
+        iseiQ.utility.checkInputNumber($("#AUTHORITY_GROUP_CD"));
+
+        iseiQ.utility.imeControl($("#AUTHORITY_GROUP_CD"), 'disable');
+        iseiQ.utility.imeControl($("#AUTHORITY_GROUP_NAME"), 'active');
+
+        var oSorting = {
+            "bSort": false
+        };
+
+        var oPaginate = {
+            "bPaginate": true,
+            "iDisplayStart": parseInt(@Model.SEARCH_START),
+            "iDisplayLength": parseInt(@Model.SEARCH_LENGTH),
+            "bStateSave": false
+        };
+
+        var oServerSide = {
+            "bServerSide": true,
+            "sAjaxSource": AuthorityGroupMaintSearchUrl,
+            "fnServerParams": serverParams,
+            "fnInitComplete": bindData,
+            "fnDrawCallback": drawCallback,
+            "fnBeforeSend": fnBeforeSend
+        };
+
+        var aoColumnDefs = [
+            { "bSortable": false, "aTargets": [ORDER], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [COMPANY_CD], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [AUTHORITY_GROUP_CD], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [AUTHORITY_GROUP_NAME], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [UPD_DATE], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [UPD_USERNAME], "sWidth": "10%", "sClass": "cell_left" },
+            { "bSortable": false, "aTargets": [EDIT], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return buildActionLink(full[AUTHORITY_GROUP_CD], 'post-AuthorityGroupmaint-register', editlink); } },
+            { "bSortable": false, "aTargets": [DELETE], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return data == 0 ? '' : buildActionLink(full[AUTHORITY_GROUP_CD], 'delete-AuthorityGroupmaint-link btn btn-red', deletelink); } }
+        ];
+
+        function fnBeforeSend() {
+            // Controller へ送信前にチェック
+            return doServerSide;
+
+        }
+
+        function serverParams(aoData) {
+            //検索条件を保持
+            $("#COMPANY_CD").val($("#SEARCH_COMPANY_CD").val());
+            $("#AUTHORITY_GROUP_CD").val($("#SEARCH_AUTHORITY_GROUP_CD").val());
+            $("#AUTHORITY_GROUP_NAME").val($("#SEARCH_AUTHORITY_GROUP_NAME").val());
+            if ($("#SEARCH_DISABLE_FLG").val() == 'true') {
+                $("#INCLUDE_DISABLE").prop('checked', true).change();
+                $('#INCLUDE_DISABLE_HIDDEN').val('true');
+            }
+
+            if ($("#COMPANY_CD").val() != "") {
+                doServerSide = true;
+            }
+
+            aoData.push(
+                { "name": "COMPANY_CD", "value": $("#COMPANY_CD").val() },
+                { "name": "AUTHORITY_GROUP_CD", "value": $("#AUTHORITY_GROUP_CD").val() },
+                { "name": "AUTHORITY_GROUP_NAME", "value": $("#AUTHORITY_GROUP_NAME").val() },
+                { "name": "DISABLE_FLG", "value": $("#INCLUDE_DISABLE_HIDDEN").val() }
+            );
+        }
+
+        function bindData(data) {
+            dataList = data.aaData;
+        }
+
+        function drawCallback() {
+            if ($('#tbLeft').length > 0) {
+                $('#InfoTable').unwrap();
+                $('.col-left, .rBarOn, .bBarOn').remove();
+            }
+
+            var htmlTbLeft = '<table id="tbLeft" class="dataTable" cellspacing="0">'
+                + ' <thead>'
+                + ' <tr>'
+                + ' <th>@Maint.lblNo</th>'
+                + ' <th>@Maint.COMPANY_CD</th>'
+                + ' <th>@Maint.AUTHORITY_GROUP_CD</th>'
+                + ' <th>@Maint.AUTHORITY_GROUP_NAME</th>'
+                + ' </tr>'
+                + ' </thead>'
+                + ' <tbody>';
+
+            if (dataList !== null && dataList.length > 0) {
+                for (var i = 0; i < dataList.length; i++) {
+                    var classRow = i % 2 == 0 ? 'odd' : 'even';
+                    var height = $($('#InfoTable tbody tr')[i]).outerHeight();
+
+                    htmlTbLeft += ' <tr class="' + classRow + '" style="height: ' + height + 'px">'
+                        + ' <td class="cell_center">' + iseiQ.utility.buildColumShortText(dataList[i][ORDER]) + '</td>'
+                        + ' <td class="cell_center">' + iseiQ.utility.buildColumShortText(dataList[i][COMPANY_CD]) + '</td>'
+                        + ' <td class="cell_center">' + iseiQ.utility.buildColumShortText(dataList[i][AUTHORITY_GROUP_CD]) + '</td>';
+                    htmlTbLeft += ' <td class="cell_center"> <div>' + iseiQ.utility.buildColumShortText(dataList[i][AUTHORITY_GROUP_NAME], 'special-wrap') + '</div></td></tr>';
+                }
+            }
+
+            htmlTbLeft += '</tbody></table>';
+
+            $("#InfoTable").wrap('<div class="col-right dragOn"></div>').removeClass('no-footer');
+            $('div.col-right').before('<div class="col-left"> ' + htmlTbLeft + '</div>');
+            $('#tbLeft thead tr').height($('#InfoTable thead').height());
+
+            $("#tbLeft tbody tr").each(function (i) {
+                if ($(this).height() != 40) {
+                    $("#InfoTable tbody tr").eq(i).height($(this).height() + 1);
+                    $(this).height($(this).height() + 1);     //jQueryでは高さの少数を取得できないため
+                }
+            });
+
+            $('.dragOn').dragOn();
+            $('.dragOn').barOn();
+
+            $('#InfoTable thead tr th').eq(ORDER).hide();
+            $('#InfoTable thead tr th').eq(COMPANY_CD).hide();
+            $('#InfoTable thead tr th').eq(AUTHORITY_GROUP_CD).hide();
+            $('#InfoTable thead tr th').eq(AUTHORITY_GROUP_NAME).hide();
+            if (dataList.length > 0) {
+                $('#InfoTable tbody tr').each(function (i) {
+                    $('td', this).eq(ORDER).hide();
+                    $('td', this).eq(COMPANY_CD).hide();
+                    $('td', this).eq(AUTHORITY_GROUP_CD).hide();
+                    $('td', this).eq(AUTHORITY_GROUP_NAME).hide();
+                });
+            }
+        }
+
+
+
+        dataTable = CreateDataTable('#InfoTable', oSorting, oPaginate, oServerSide, aoColumnDefs);
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Event Listeners
+    ////////////////////////////////////////////////////////////////////////////////////
+
+    $(document).off('#btnCreateNew');
+    $(document).on('click', '#btnCreateNew', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        if ($("#SEARCH_COMPANY_CD").val() == "") {
+            iseiQ.utility.showMessageModal('@string.Format(@Messages.Required, "企業コード")', false)
+            return false;
+        }
+
+        RegistSubmit('0');
+    });
+
+    $(document).off('#btnSearch');
+    $(document).on('click', '#btnSearch', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        searchAuthorityGroupMaint();
+    });
+
+    $(document).off('#btnClearConditions');
+    $(document).on('click', '#btnClearConditions', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        $('#COMPANY_CD').val('');
+        $('#AUTHORITY_GROUP_CD').val('');
+        $('#AUTHORITY_GROUP_NAME').val('');
+        $("#INCLUDE_DISABLE").prop('checked', false).change();
+        $('#INCLUDE_DISABLE_HIDDEN').val('false');
+
+        $("#SEARCH_COMPANY_CD").val('');
+        $("#SEARCH_AUTHORITY_GROUP_CD").val('');
+        $("#SEARCH_AUTHORITY_GROUP_NAME").val('');
+        $('#SEARCH_DISABLE_FLG').val('');
+
+        $('#InfoTable_info').empty();
+        $('#InfoTable_paginate').empty();
+        $('tbody').empty();
+    });
+
+    $(document).off('#INCLUDE_DISABLE');
+    $(document).on('change', '#INCLUDE_DISABLE', function () {
+        if ($('#INCLUDE_DISABLE').is(":checked")) {
+            $('#INCLUDE_DISABLE_HIDDEN').val('true');
+        } else {
+            $('#INCLUDE_DISABLE_HIDDEN').val('false');
+        }
+    });
+
+    $(document).off('.post-AuthorityGroupmaint-register');
+    $(document).on('click', '.post-AuthorityGroupmaint-register', function () {
+        RegistSubmit('1', $(this).data('authority-group-cd'));
+    });
+
+    function RegistSubmit(ActionType, AuthorityGroupCd) {
+        var oSettings = dataTable.fnSettings();
+
+        $('#SEARCH_START').val(oSettings._iDisplayStart);
+        $('#SEARCH_LENGTH').val(oSettings._iDisplayLength);
+
+        $('#ACTION_TYPE').val(ActionType);
+        $('#REGIST_PARAM_COMPANY_CD').val($("#SEARCH_COMPANY_CD").val());
+        $('#REGIST_PARAM_AUTHORITY_GROUP_CD').val(AuthorityGroupCd);
+        $('#AuthorityGroupMaintRegist').submit();
+    }
+
+    $(document).off('.delete-AuthorityGroupmaint-link');
+    $(document).on('click', '.delete-AuthorityGroupmaint-link', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        var companyCd = $("#SEARCH_COMPANY_CD").val();
+        var AuthorityGroupCd = $(this).data('authority-group-cd');
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: '@Url.Action("DeleteBeforeCheck")',
+            data: { "COMPANY_CD": companyCd, "AUTHORITY_GROUP_CD": AuthorityGroupCd },
+            success: function (data) {
+                if (data.statusCode == true) {
+                    iseiQ.utility.showMessageModal('@string.Format(Maint.AuthorityGroupMaintDeleteError)', true)
+                } else {
+                    Delete(companyCd, AuthorityGroupCd);
+                }
+            },
+            error: function (xhr) {
+                console.log(xhr);
+            }
+        });
+    });
+    
+    function Delete(companyCd, AuthorityGroupCd) {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        // Get Project Dsp Name
+        iseiQ.utility.showConfirmModal('@string.Format(@Maint.AuthorityGroupMaintDelete)', function (action) {
+            if (action) {
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: '@Url.Action("DELETE")',
+                    data: { "COMPANY_CD": companyCd, "AUTHORITY_GROUP_CD": AuthorityGroupCd },
+                    success: function (data) {
+                        dataTable.fnStandingRedraw();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        iseiQ.utility.showMessageModal("@string.Format(Maint.MaintDeleteError)", true);
+                    }
+                });
+            }
+        });
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Misc Functions
+    ////////////////////////////////////////////////////////////////////////////////////
+    function validateData() {
+        var invalidMess = [];
+        var AuthorityGroupCd = $('#AUTHORITY_GROUP_CD').val();
+
+        if (AuthorityGroupCd > 2147483647) {
+            invalidMess.push("@string.Format(@Messages.InputNumErr, @Maint.AUTHORITY_GROUP_CD)");
+        }
+        return invalidMess;
+    }
+
+    function searchAuthorityGroupMaint() {
+        $('.validation-summary-errors').remove();
+        var invalidMess = validateData();
+
+        if (invalidMess.length > 0) {
+            iseiQ.utility.showClientError(invalidMess);
+            return false;
+        }
+
+        if ($("#COMPANY_CD").val() == "") {
+            iseiQ.utility.showMessageModal('@string.Format(@Messages.Required, "企業コード")', false)
+            return false;
+        }
+
+        doServerSide = true;
+
+        $("#SEARCH_COMPANY_CD").val($("#COMPANY_CD").val());
+        $("#SEARCH_AUTHORITY_GROUP_CD").val($("#AUTHORITY_GROUP_CD").val());
+        $("#SEARCH_AUTHORITY_GROUP_NAME").val($("#AUTHORITY_GROUP_NAME").val());
+        $("#SEARCH_DISABLE_FLG").val($("#INCLUDE_DISABLE_HIDDEN").val());
+
+        dataTable.fnPageChange('first');
+    }
+
+    function buildActionLink(AuthorityGroupCd, className, label) {
+        return '<a class="' + className + '" data-authority-group-cd="' + AuthorityGroupCd + '" >' + label + '</a>';
+    }
+</script>

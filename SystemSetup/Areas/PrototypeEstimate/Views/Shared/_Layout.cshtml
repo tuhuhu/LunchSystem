@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link href="~/favicon3.ico" rel="shortcut icon" type="image/x-icon" />
+        @*<link href="~/Content/themes/iseiQ/default.style.css" rel="stylesheet" type="text/css" />*@
+        @Styles.Render("~/Content/themes/base/css")
+        @Styles.Render("~/Content/themes/iseiQ/css")
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/modernizr")
+    </head>
+    <body id="home" class="mozilla">
+        @*<div id="wrapper">
+            <div id="bg_wrapper">
+                    @RenderBody()
+                <div id="wrapper_footer">
+                    <div id="block_partners">
+                        <div class=" jcarousel-skin-tango">
+
+                        </div>
+                    </div>
+                    <div id="block_copyright">
+                        <p>Copyright &copy; 2014 i-seiQ V0.1 i-enter corporation LTD. All rights reserved. <a href="#">
+                                <span class="blue"></span></a>&nbsp;&nbsp;</p>
+                    </div>
+                    <span id="scroll-top"><a class="scrollup"></a></span>
+                </div>
+            </div>
+        </div>*@
+
+        <div id="fixed-top" class="sb-slide">
+            <div class="sb-toggle-left">
+                <div class="navicon-line"></div>
+                <div class="navicon-line"></div>
+                <div class="navicon-line"></div>
+            </div>
+            <div id="logo">
+
+            </div>
+            @*<div class="sb-toggle-right">
+                <div class="navicon-line"></div>
+                <div class="navicon-line"></div>
+                <div class="navicon-line"></div>
+            </div>*@
+            @*<span class="sb-toggle-left">Toggle left Slidebar</span>*@
+            @*<span class="sb-toggle-right">Toggle right Slidebar</span>*@
+        </div>
+
+        <div id="sb-site" class="top-padding container body-content">
+            @RenderBody()
+            <hr />
+            <footer></footer>
+        </div>
+
+        <div class="sb-slidebar sb-left">
+            <ul>
+                <li>
+                    <a href="#">Contract Info</a>
+                </li>
+                <li>
+                <li><a href="/PrototypeEstimate/Register/Add">Prototype Estimate Register</a></li>
+            </ul>
+        </div>
+
+        @*<div class="sb-slidebar sb-right">
+            <p>Toi la giang.</p>
+
+
+        </div>*@
+
+        <script>
+            (function ($) {
+                $(document).ready(function () {
+                    $.slidebars();
+                });
+            })(jQuery);
+        </script>
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/jqueryui")
+        @Scripts.Render("~/bundles/input")
+        @RenderSection("scripts", required: false)
+    </body>
+</html>

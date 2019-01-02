@@ -1,0 +1,468 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+@*CSS*@
+@Styles.Render("~/Content/themes/iseiQ/maint.css")
+@model SetUpUserMaintModel
+@{
+    ViewBag.Title = Maint.SetUpUserRegiser;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+    var tempDateTime = new DateTime();
+}
+<div id="MaintRegister" class="edit-screen">
+    @using (Html.BeginForm("Edit", "SetUpUserMaint", FormMethod.Post, new { id = "formUserMaintRegis", enctype = "multipart/form-data", @class = "form-horizontal" }))
+    {
+        <div id="title">@Maint.SetUpUserRegiser</div>
+        @Html.HiddenFor(m => m.SETUP_USER_SEQ_CD, new { @class = "sp-id" })
+        @Html.HiddenFor(m => m.DEL_FLG, new { @class = "sp-id" })
+        <input type="hidden" id="ACTION_TYPE" name="ACTION_TYPE" value="0">
+        <div class="form-group">
+            <input type="hidden" id="CLEAR_SETUP_USER_NAME" name="CLEAR_SETUP_USER_NAME" value="@Model.SETUP_USER_NAME">
+            <input type="hidden" id="CLEAR_SETUP_USER_ACCOUNT" name="CLEAR_SETUP_USER_ACCOUNT" value="@Model.SETUP_USER_ACCOUNT">
+        </div>
+
+        //オートコンプリートの補完を無効化
+        <span style="display:none">
+            <input name="autoComplete" type="text" value="reset" />
+        </span>
+        <div class="width-700 setupbox">
+            <div class="form-group">
+                <label class="title-row">@Maint.SetUpUser_Account<span class="RequiredField">*</span></label>
+                @Html.TextBoxFor(m => m.SETUP_USER_ACCOUNT, new { @class = "txt-w-350", style = "ime-mode: auto; ", maxlength = 30 })
+            </div>
+
+            <div class="form-group">
+                <label class="title-row">@Maint.SetUpUser_Name<span class="RequiredField">*</span></label>
+                @Html.TextBoxFor(m => m.SETUP_USER_NAME, new { @class = "txt-w-450", @style = "ime-mode: auto;", maxlength = 30 })
+            </div>
+
+            <div>
+                @if (String.IsNullOrEmpty(Model.SETUP_USER_ACCOUNT))
+                {
+                    <div class="form-group">
+                        <label class="title-row">@Maint.Temporary_Password<span class="RequiredField">*</span></label>
+                        @Html.PasswordFor(m => m.SETUP_USER_PASSWORD, new { @class = "txt-w-250  ", style = "ime-mode: auto; " })
+                    </div>
+                    <div>
+                        <label class="title-row">@Maint.Confirm_Password<span class="RequiredField">*</span></label>
+                        @Html.PasswordFor(m => m.SETUP_USER_PASSWORD_REPEAT, new { @class = "txt-w-250 ", style = "ime-mode: auto; " })
+                    </div>
+                }
+            </div>
+
+            <div class="form-group">
+                @if (!String.IsNullOrEmpty(Model.SETUP_USER_ACCOUNT))
+                {
+                    if (String.IsNullOrEmpty(Model.LOGIN_LOCK_FLG) || Model.LOGIN_LOCK_FLG.Equals("0"))
+                    {
+                        <input id="LOGIN_LOCK_FLG" type="checkbox" class="flg" style="margin-left: 125px;">
+                        <input id="LOGIN_LOCK_FLG_HIDDEN" name="LOGIN_LOCK_FLG" type="hidden" value="0">
+                    }
+                    else
+                    {
+                        <input id="LOGIN_LOCK_FLG" type="checkbox" checked="checked" class="flg" style="margin-left: 125px;">
+                        <input id="LOGIN_LOCK_FLG_HIDDEN" name="LOGIN_LOCK_FLG" type="hidden" value="1">
+                    }
+                    @Html.Label(@Maint.LOGIN_LOCK_FLG, new { @for = "LOGIN_LOCK_FLG", @class = "title-row" });
+                }
+                else
+                {
+                    <input id="LOGIN_LOCK_FLG_HIDDEN" name="LOGIN_LOCK_FLG" type="hidden" value="0">
+                }
+
+
+            </div>
+
+            <div class="form-group">
+                @if (String.IsNullOrEmpty(Model.DISABLE_FLG) || Model.DISABLE_FLG.Equals("0"))
+                {
+                    <input id="DISABLE_FLG" type="checkbox" style="margin-left: 125px;">
+                    <input id="DISABLE_FLG_HIDDEN" name="DISABLE_FLG" type="hidden" value="0">
+                }
+                else
+                {
+                    <input id="DISABLE_FLG" type="checkbox" checked="checked" style="margin-left: 125px;">
+                    <input id="DISABLE_FLG_HIDDEN" name="DISABLE_FLG" type="hidden" value="1">
+                }
+                @Html.Label(@Maint.set_Disable, new { @for = "DISABLE_FLG", @class = "title-row" })
+            </div>
+        </div>
+
+        if (!String.IsNullOrEmpty(Model.SETUP_USER_ACCOUNT))
+        {
+            <div class="password setupbox">
+                <div class="form-group">
+                    <label class="title-row">@Maint.Temporary_Password</label>
+                    @Html.PasswordFor(m => m.SETUP_USER_PASSWORD, new { @class = "txt-w-250  ", style = "ime-mode: auto; " })
+                </div>
+                <div>
+                    <label class="title-row">@Maint.Confirm_Password</label>
+                    @Html.PasswordFor(m => m.SETUP_USER_PASSWORD_REPEAT, new { @class = "txt-w-250 ", style = "ime-mode: auto; " })
+                </div>
+                <div>
+                    <button type="button" id="btnPasswordChange" name="btnPasswordChange" class="btn btn-orange title-row600right pull-right psresetbtn">@Maint.btnPasswordReset</button>
+                </div>
+            </div>
+
+        }
+
+
+        <div class="form-group action-button-bottom">
+            <button type="button" id="btnBack" name="btnBack" class="btn btn-default"><i class="btn-icon btn-back">@EstimationRegister.btnBack</i></button>
+            <button type="button" id="btnSubmit" name="btnSubmit" class="btn btn-orange pull-right"><i class="btn-icon btn-edit">@EstimationRegister.btnRegister</i></button>
+            <button type="button" id="btnClear" name="btnClear" class="btn btn-default pull-right"><i class="btn-icon btn-clear">@EstimationRegister.btnClear</i></button>
+        </div>
+    }
+    @using (Html.BeginForm("SetUpUserMaintList", "SetUpUserMaint", FormMethod.Post, new
+        {
+            area = "Maint",
+            id = "formUserMaintBack",
+            enctype = "multipart/form-data"
+        }))
+    {
+        @Html.HiddenFor(m => m.SEARCH_PARAM.SETUP_USER_ACCOUNT)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.SETUP_USER_NAME)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.LOGIN_LOCK_FLG)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.DISABLE_FLG)
+        @Html.HiddenFor(m => m.DISPLAY_START)
+        @Html.HiddenFor(m => m.DISPLAY_LENGTH)
+    }
+</div>
+
+<script type="text/javascript">
+
+    //入力文字制限
+    iseiQ.utility.validLoginScreen($("#SETUP_USER_ACCOUNT"));
+    iseiQ.utility.validLoginScreen($("#SETUP_USER_PASSWORD"));
+
+    iseiQ.utility.imeControl($("#SETUP_USER_ACCOUNT"), 'disable');
+
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+    var UserMaintListUrl = '@Url.Action("UserMaintList", "UserMaint", new { area = "Maint" })';
+
+    $(function () {
+        var regX = Constant.REGEX_PASSWORD;
+        $("#SETUP_USER_PASSWORD").on("change keyup", function (e) {
+            var text = $(this).val();
+            if (regX.test(text)) {
+                text = text.replace(regX, '');
+                $(this).val(text);
+            }
+
+        });
+
+        $("#SETUP_USER_PASSWORD_REPEAT").on("change keyup", function (e) {
+            var text = $(this).val();
+            if (regX.test(text)) {
+                text = text.replace(regX, '');
+                $(this).val(text);
+            }
+
+        });
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Check validate
+    ////////////////////////////////////////////////////////////////////////////////////
+    function validateData() {
+        var invalidMess = [];
+        var setupUserAccount = $('#SETUP_USER_ACCOUNT').val();         //ユーザーアカウント
+        var password = $('#SETUP_USER_PASSWORD').val();                   //一時パスワード
+        var repassword = $('#SETUP_USER_PASSWORD_REPEAT').val();          //パスワードの確認
+        var setupUserName = $('#SETUP_USER_NAME').val();               //ユーザー名
+        var loginLock = $('LOGIN_LOCK_FLG').val();
+        var disableflg = $('#DISABLE_FLG').val();                            //無効にする
+        var errContent = [];
+        var errDisplay = [];
+        //var invalidMess = [];
+        var errStartDate = null;
+        var errEndDate = null;
+        //bigint型で入力した値が保障される範囲
+        var bigintcheck = 999999999999999;　//15桁
+
+        //入力文字数制限
+        if (setupUserAccount.trim() == "") { // required content
+            errDisplay = '@Maint.User_Account' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+        else {
+            if (setupUserAccount.length < Constant.MIN_INPUT_ACCOUNT || setupUserAccount.length > Constant.MAX_INPUT_ACCOUNT) {
+                invalidMess.push("@string.Format(Maint.AccountLength)");
+            }
+        }
+        if (setupUserName.trim() == "") { // required DSP_Priority
+            errDisplay = '@Maint.User_Name' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if ('@Model.SETUP_USER_SEQ_CD' == 0) {
+            if (password.trim() == "") {
+                invalidMess.push("@string.Format(Messages.Required, @Maint.Temporary_Password)");
+            }
+            else {
+                if (password.length < Constant.MIN_INPUT_PASS || password.length > Constant.MAX_INPUT_PASS) {
+                    invalidMess.push("@string.Format(Maint.PasswordSetupUserLength)");
+                }
+                if (!iseiQ.utility.validAccount(password)) {
+                    invalidMess.push("@string.Format(Maint.PasswordInvalidCharacter)");
+                }
+            }
+
+            if (repassword.trim() == "") {
+                invalidMess.push("@string.Format(Messages.Required, @Maint.Confirm_Password)");
+            }
+            else {
+                if (password !== repassword) {
+                    invalidMess.push("@string.Format(Maint.PasswordNotMatch)");
+                }
+
+                if (!iseiQ.utility.validAccount(repassword)) {
+                    invalidMess.push("@string.Format(Maint.RePasswordInvalidCharacter)");
+                }
+            }
+
+
+        }
+
+
+
+
+
+        return invalidMess;
+    }
+
+    function validateData2() {
+        var invalidMess = [];
+
+        var password = $('#SETUP_USER_PASSWORD').val();
+        var repassword = $('#SETUP_USER_PASSWORD_REPEAT').val();
+        var account = $('#SETUP_USER_ACCOUNT').val();
+        var errContent = [];
+        var errDisplay = [];
+        var invalidMess = [];
+        var errStartDate = null;
+        var errEndDate = null;
+
+        //入力文字数制限
+        if (account.trim() == "") {
+            invalidMess.push("@string.Format(Messages.Required, @Maint.SetUpUser_Account)");
+        }
+        else {
+            if (account.length < Constant.MIN_INPUT_ACCOUNT || account.length > Constant.MAX_INPUT_ACCOUNT) {
+                invalidMess.push("@string.Format(Maint.SetUpUser_Account)");
+            }
+        }
+
+        if (password.trim() == "") {
+            invalidMess.push("@string.Format(Messages.Required, @Maint.Temporary_Password)");
+        }
+        else {
+            if (password.length < Constant.MIN_INPUT_PASS || password.length > Constant.MAX_INPUT_PASS) {
+                invalidMess.push("@string.Format(Maint.PasswordSetupUserLength)");
+            }
+            if (password !== repassword) {
+                invalidMess.push("@string.Format(Maint.PasswordNotMatch)");
+            }
+            if (!iseiQ.utility.validAccount(password)) {
+                invalidMess.push("@string.Format(Maint.PasswordInvalidCharacter)");
+            }
+        }
+
+        return invalidMess;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Clear
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnClear');
+    $(document).on('click', '#btnClear', function () {
+        iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmClear)', function (action) {
+            $('.validation-summary-errors').remove();
+            if (action) {
+                if ($('#SETUP_USER_SEQ_CD').val() == "0") {
+                    var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+                    if (!result) return;
+                    $("#SETUP_USER_ACCOUNT").val("");
+                    $("#SETUP_USER_PASSWORD").val("");
+                    $("#SETUP_USER_PASSWORD_REPEAT").val("");
+                    $("#SETUP_USER_NAME").val("");
+                    $("#LOGIN_LOCK_FLG").prop('checked', false).change();
+                    $("#LOGIN_LOCK_FLG_HIDDEN").val('0');
+                    $("#DISABLE_FLG").prop('checked', false).change();
+                    $('#DISABLE_FLG_HIDDEN').val('0');
+                } else {
+                    $("#SETUP_USER_PASSWORD").val('');
+                    $("#SETUP_USER_PASSWORD_REPEAT").val('');
+                    $("#SETUP_USER_NAME").val($("#CLEAR_SETUP_USER_NAME").val());
+                    $("#SETUP_USER_ACCOUNT").val($("#CLEAR_SETUP_USER_ACCOUNT").val());
+                    $("#LOGIN_LOCK_FLG_HIDDEN").val('@Model.LOGIN_LOCK_FLG').change();
+                    if ('@Model.LOGIN_LOCK_FLG' == '0') {
+                        $("#LOGIN_LOCK_FLG").prop("checked", false);
+                    } else {
+                        $("#LOGIN_LOCK_FLG").prop("checked", true);
+                    }
+                    $("#DISABLE_FLG_HIDDEN").val('@Model.DISABLE_FLG').change();
+                    if ('@Model.DISABLE_FLG' == '0') {
+                        $("#DISABLE_FLG").prop("checked", false);
+                    } else {
+                        $("#DISABLE_FLG").prop("checked", true);
+                    }
+
+                }
+            }
+        })
+    });
+
+    $(document).off('#LOGIN_LOCK_FLG');
+    $(document).on('change', '#LOGIN_LOCK_FLG', function () {
+        if ($('#LOGIN_LOCK_FLG').is(":checked")) {
+            $('#LOGIN_LOCK_FLG_HIDDEN').val('1');
+        } else {
+            $('#LOGIN_LOCK_FLG_HIDDEN').val('0');
+        }
+    });
+
+    $(document).off('#DISABLE_FLG');
+    $(document).on('change', '#DISABLE_FLG', function () {
+        if ($('#DISABLE_FLG').is(":checked")) {
+            $('#DISABLE_FLG_HIDDEN').val('1');
+        } else {
+            $('#DISABLE_FLG_HIDDEN').val('0');
+        }
+    });
+
+    $(document).off('#btnPasswordChange');
+    $(document).on('click', '#btnPasswordChange', function () {
+        var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!result) return;
+        $('.validation-summary-errors').remove();
+        var invalidMess = validateData2();
+        if (invalidMess.length > 0) {
+            iseiQ.utility.showClientError(invalidMess);
+            return false;
+        }
+
+        iseiQ.utility.showConfirmModal('@string.Format(@Maint.Password_Reset)', function (action) {
+            if (action) {
+                $("#ACTION_TYPE").val('1');
+                $("#formUserMaintRegis").submit();
+            }
+        })
+
+    });
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Submit
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnSubmit');
+    $(document).on('click', '#btnSubmit', function () {
+        var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!result) return;
+        $('.validation-summary-errors').remove();
+        var invalidMess = validateData();
+        if (invalidMess.length > 0) {
+            iseiQ.utility.showClientError(invalidMess);
+            return false;
+        }
+        var infoSeqNo = '@Model.SETUP_USER_SEQ_CD';
+        if (infoSeqNo == '0') {
+            $('#INS_DATE').val('@tempDateTime.ToString()');
+            $('#INS_DATE').css("visibility", "hidden");
+            $('#UPD_DATE').val('@tempDateTime.ToString()');
+            $('#UPD_DATE').css("visibility", "hidden");
+        }
+
+        var dataToSend = JSON.stringify({
+            SeqNo: $('#SETUP_USER_SEQ_CD').val(),
+            Account: $('#SETUP_USER_ACCOUNT').val(),
+            Delflg: $('#DEL_FLG').val()
+        });
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetDefaultAccount", "SetUpUserMaint")',
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            data: dataToSend,
+            success: function (result) {
+                if (result.IsExited.length > 0) {
+                    errDisplay = '@Maint.UsedUserAccount';
+                    invalidMess.push(errDisplay);
+                    iseiQ.utility.showClientError(invalidMess);
+                    return false;
+                } else {
+                    iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmSubmitData, (Model.SETUP_USER_SEQ_CD > 0 ? Messages.Update : Messages.Register))', function (action) {
+                        if (action) {
+                            $("#formUserMaintRegis").submit();
+                        }
+                    })
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+
+    });
+
+    $("#formUserMaintRegis").submit(function (event) {
+        var timeout = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!timeout) return;
+        var formData = new FormData($(this)[0]);
+        $.ajax(
+        {
+            url: '@Url.Action("Edit", "SetUpUserMaint")',
+            data: formData,
+            mimeType: "multipart/form-data",
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                console.log(res);
+                if (res.length == 0) {
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    window.location.href = '/Common/Common/CloseIframe/';
+                } else {
+                    var result = jQuery.parseJSON(res);
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    if ($("#ACTION_TYPE").val() == "1") {
+                        var message = "@Maint.Password_Reset_OK";
+                    } else {
+                        var message = result.isNew == true ? "@Maint.User_RegisterSuccess" : "@Maint.User_UpdateSuccess";
+                    }
+                    iseiQ.utility.showMessageModal(message, false, function () {
+                        $("#formUserMaintBack").submit();
+                        return false;
+                    });
+                }
+            },
+            error: function (xhr) {
+                window.parent.$('.ui-dialog-content:visible').dialog('close');
+                window.location.href = '/Common/Common/CloseIframe/';
+            }
+        });
+        event.preventDefault();
+    });
+
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Back
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnBack');
+    $(document).on('click', '#btnBack', function () {
+        iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmBack)', function (action) {
+            if (action) {
+                var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+                if (!result) return;
+
+                $(window).off('beforeunload');
+
+                $("#formUserMaintBack").submit();
+            }
+        })
+    });
+
+</script>

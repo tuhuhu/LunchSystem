@@ -1,0 +1,164 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+@*CSS*@
+@Styles.Render("~/Content/themes/iseiQ/maint.css")
+@model LunchInformationEntity
+@{
+    ViewBag.Title = "Lunch Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+    var tempDateTime = new DateTime();
+}
+
+<div id="MaintRegister" class="edit-screen">
+    @using (Html.BeginForm("Edit", "LunchRegister", FormMethod.Post, new { id = "frmMealEdit", enctype = "multipart/form-data", @class = "form-horizontal" }))
+    {
+        <div id="title">Today's Lunch Information</div>
+        @*@Html.HiddenFor(m => m.DEL_FLG, new { @class = "sp-id" })*@
+        <div class="form-group">
+            <label class="title-row">Your Balance</label>
+            @Html.DisplayFor(m => m.BALANCE)
+            <label>VND</label>    
+        </div>
+        <div class="form-group">
+            <label class="title-row">Date<span class="RequiredField">*</span></label>
+            @Html.DisplayFor(m => m.LUNCH_DATE, "{0:yyyy/MM/dd}")
+        </div>
+        <div class="form-group">
+            <label class="title-row">Choose item<span class="RequiredField">*</span></label>
+            @foreach (var item in (SelectList)ViewBag.DurationType)
+            {
+                <div class="form-group">
+                    <label class="control-label">
+                        @Html.RadioButtonFor(m => m.LUNCH_MENU_TYPE, item.Value, new { id = "ID_" + item.Value })
+                        @item.Text
+                    </label>
+                </div>
+            }
+            @*@Html.TextBoxFor(m => m.ACCOUNT_GROUP_NAME, new { @class = "width-300 margin-left-15", style = "ime-mode: active;", maxlength = 30 })
+            <input type="hidden" id="CLEAR_ACCOUNT_GROUP_NAME" name="CLEAR_ACCOUNT_GROUP_NAME" value="@Model.ACCOUNT_GROUP_NAME">*@
+        </div>
+        
+        @Html.HiddenFor(m => m.LUNCH_SEQ_CD)
+        @Html.HiddenFor(m => m.HAVE_MENU)
+        <div class="form-group action-button-bottom">
+                <button type="button" id="btnBack" name="btnBack" class="btn btn-default"><i class="btn-icon btn-back">Back</i></button>
+                <button type="button" id="btnSubmit" name="btnSubmit" class="btn btn-orange "><i class="btn-icon btn-edit">Register</i></button>
+            
+        </div>
+        
+    }    
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        if ($('#HAVE_MENU').val() == '0')         // use this if you are using id to check
+        {
+            // it not exists menu items
+            $('#btnBack').attr('disabled', 'disabled');
+            $('#btnSubmit').attr('disabled', 'disabled');
+        }
+        else
+        {
+            $('#btnBack').removeAttr('disabled');
+            $('#btnSubmit').removeAttr('disabled');
+        }
+    });
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+    var LunchList = '@Url.Action("LunchList", "LunchRegister", new { area = "LunchRegister" })';
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Submit
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnSubmit');
+    $(document).on('click', '#btnSubmit', function () {
+
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+        var hourNow = new Date().getHours();
+        var minuteNow = new Date().getMinutes();
+
+        if (hourNow >= 11 && minuteNow > 30 )
+        {
+            iseiQ.utility.showMessageModal("Please Order Meal before 11h30AM !!!", true);
+        }
+        else {
+            var result = iseiQ.utility.getDataByAjax('@Url.Action("GetBalance", "LunchRegister", new { area = "LunchRegister" })');
+            if (result <= -70000)
+            {
+                iseiQ.utility.showMessageModal("Your balance is not enought to order lunch !!!", true);
+            }
+            else {
+                var infoSeqNo = '@Model.LUNCH_SEQ_CD';
+                iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmSubmitData, (Model.LUNCH_SEQ_CD > 0 ? "Update" : "Register"))', function (action) {
+                    if (action) {
+                        $("#frmMealEdit").submit();
+                    }
+                })
+            }
+            
+        }
+        
+    });
+
+
+    $("#frmMealEdit").submit(function (event) {
+        //if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+        var formData = new FormData($(this)[0]);
+        $.ajax(
+        {
+            url: '@Url.Action("EditMeal", "LunchRegister")',
+            data: formData,
+            mimeType: "multipart/form-data",
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res.length == 0) {
+                    // EMPTY result
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    window.location.href = '/Common/Common/CloseIframe/';
+                } else {
+
+                    var result = jQuery.parseJSON(res);
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    if (result.ErrorMessages) {
+                        var message = "";
+                        for (var i = 0; i < result.ErrorMessages.length; i++) {
+                            message += result.ErrorMessages[i] + "\n";
+                        }
+                        iseiQ.utility.showMessageModal(message, true);
+                    } else {
+                        iseiQ.utility.showMessageModal(Constant.REGISTER_SUCCESS_EN.replace('{0}', 'Deal for Lunch').replace('{1}', result.action), false, function () {
+                            //$('#EstimateCode').val(result.EST_SEQ_NO);
+                            //$('#frmEstimateRegistTranfer').submit();
+                            window.location.href = LunchList;
+                        });
+                    }
+                }
+            },
+            error: function (xhr) {
+                window.parent.$('.ui-dialog-content:visible').dialog('close');
+                window.location.href = '/Common/Common/CloseIframe/';
+            }
+        });
+        event.preventDefault();
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Back
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnBack');
+    $(document).on('click', '#btnBack', function () {
+        iseiQ.utility.showConfirmModal('Do you want to back to Lunch Information Screen ?', function (action) {
+            if (action) {
+                var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+                if (!result) return;
+                $(window).off('beforeunload');
+                window.location.href = LunchList;
+            }
+        })
+    });
+
+</script>

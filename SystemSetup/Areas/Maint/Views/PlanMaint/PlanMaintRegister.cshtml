@@ -1,0 +1,269 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+@*CSS*@
+@Styles.Render("~/Content/themes/iseiQ/maint.css")
+@model PlanMaintModel
+@{
+    ViewBag.Title = Maint.PlanMaintRegister;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+    var tempDateTime = new DateTime();
+}
+<div id="MaintRegister" class="edit-screen">
+    @using (Html.BeginForm("Edit", "PlanMaint", FormMethod.Post, new { id = "Regis", enctype = "multipart/form-data", @class = "form-horizontal" }))
+    {
+        <div id="title">@Maint.PlanMaintRegister</div>
+        @Html.HiddenFor(m => m.DEL_FLG, new { @class = "sp-id" })
+
+        <div class="form-group">
+            <label class="title-row">@Maint.PLAN_CD <span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.PLAN_CD, new { @class = "width-100 margin-left-30", style = "ime-mode: disabled;", maxlength = 5 })
+        </div>
+        <div class="form-group">
+            <label class="title-row">@Maint.PLAN_NAME <span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.PLAN_NAME, new { @class = "width-300 margin-left-30", style = "ime-mode: active;", maxlength = 30 })
+            <input type="hidden" id="CLEAR_PLAN_NAME" name="CLEAR_PLAN_NAME" value="@Model.PLAN_NAME">
+        </div>
+        <div class="form-group">
+            <label class="title-row">@Maint.PLAN_BASE_PRICE<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.PLAN_BASE_PRICE, new { @class = "width-200 margin-left-30", style = "ime-mode: disabled; text-align: right;", maxlength = 9 })
+            <input type="hidden" id="CLEAR_PLAN_BASE_PRICE" name="CLEAR_PLAN_BASE_PRICE" value="@Model.PLAN_BASE_PRICE">
+        </div>
+        <div class="form-group">
+            <label class="title-row">@Maint.LOGIN_ACCOUNT_UPPER<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.LOGIN_ACCOUNT_UPPER, new { @class = "width-200 margin-left-30", style = "ime-mode: disabled; text-align: right;", maxlength = 6 })
+            <input type="hidden" id="CLEAR_LOGIN_ACCOUNT_UPPER" name="CLEAR_LOGIN_ACCOUNT_UPPER" value="@Model.LOGIN_ACCOUNT_UPPER">
+        </div>
+        <div class="form-group">
+            <label class="title-row">@Maint.MONTHLY_BILL_DATA_UPPER<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.MONTHLY_BILL_DATA_UPPER, new { @class = "width-200 margin-left-30", style = "ime-mode: disabled; text-align: right;", maxlength = 6 })
+            <input type="hidden" id="CLEAR_MONTHLY_BILL_DATA_UPPER" name="CLEAR_MONTHLY_BILL_DATA_UPPER" value="@Model.MONTHLY_BILL_DATA_UPPER">
+        </div>
+        <div class="form-group">
+            @Html.Label(@Maint.PLAN_DISABLE, new { @for = "DISABLE_FLG", @class = "title-row" })
+            @if (String.IsNullOrEmpty(Model.DISABLE_FLG) || Model.DISABLE_FLG.Equals("0"))
+            {
+                <input id="DISABLE_FLG" type="checkbox" class="margin-left-30">
+                <input id="DISABLE_FLG_HIDDEN" name="DISABLE_FLG" type="hidden" value="0">
+            }
+            else
+            {
+                <input id="DISABLE_FLG" type="checkbox" checked="checked" class="margin-left-30">
+                <input id="DISABLE_FLG_HIDDEN" name="DISABLE_FLG" type="hidden" value="1">
+            }
+        </div>
+        <div class="form-group action-button-bottom">
+            <button type="button" id="btnBack" name="btnBack" class="btn btn-default"><i class="btn-icon btn-back">@EstimationRegister.btnBack</i></button>
+            <div class="pull-right">
+                <button type="button" id="btnClear" name="btnClear" class="btn btn-default"><i class="btn-icon btn-clear">@EstimationRegister.btnClear</i></button>
+                <button type="button" id="btnSubmit" name="btnSubmit" class="btn btn-orange"><i class="btn-icon btn-edit">@EstimationRegister.btnRegister</i></button>
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.PLAN_SEQ_NO)
+    }
+    @using (Html.BeginForm("PlanMaintList", "PlanMaint", FormMethod.Post, new
+            {
+                area = "Maint",
+                id = "Back",
+                enctype = "multipart/form-data"
+            }))
+    {
+        @Html.HiddenFor(m => m.PLAN_SEQ_NO)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.PLAN_CD)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.PLAN_NAME)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.DISABLE_FLG)
+        @Html.HiddenFor(m => m.DISABLE_FLG)
+        @Html.HiddenFor(m => m.SEARCH_START)
+        @Html.HiddenFor(m => m.SEARCH_LENGTH)
+    }
+</div>
+<script type="text/javascript">
+    iseiQ.utility.checkInputAlphanumeric($("#PLAN_CD"));
+    iseiQ.utility.checkInputAlphanumeric($("#PLAN_BASE_PRICE"));
+    iseiQ.utility.checkInputAlphanumeric($("#LOGIN_ACCOUNT_UPPER"));
+    iseiQ.utility.checkInputAlphanumeric($("#MONTHLY_BILL_DATA_UPPER"));
+
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+    var UserMaintListUrl = '@Url.Action("UserMaintList", "UserMaint", new { area = "Maint" })';
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Event Listeners
+    ////////////////////////////////////////////////////////////////////////////////////
+
+    ////タブ順の切り替え
+    //window.onload = function () {
+    //    alert(123456);
+    //    document.getElementById('btnBack').tabIndex = '1';
+    //    document.getElementById('btnClear').tabIndex = '2';
+    //    document.getElementById('btnSubmit').tabIndex = '3';
+    //}
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Check validate
+    ////////////////////////////////////////////////////////////////////////////////////
+    function validateData() {
+        var invalidMess = [];
+
+        var planCd = $('#PLAN_CD').val();
+        var planName = $('#PLAN_NAME').val();
+        var planBasePrice = $('#PLAN_BASE_PRICE').val();
+        var loginAccountUpper = $('#LOGIN_ACCOUNT_UPPER').val();
+        var monthlyBillDataUpper = $('#MONTHLY_BILL_DATA_UPPER').val();
+
+        if (planCd == "") {
+            errDisplay = '@Maint.PLAN_CD' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (planName.trim() == "") { // required content
+            errDisplay = '@Maint.PLAN_NAME' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+        return invalidMess;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Clear
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnClear');
+    $(document).on('click', '#btnClear', function () {
+        iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmClear)', function (action) {
+            $('.validation-summary-errors').remove();
+            if (action) {
+                if ($('#PLAN_SEQ_NO').val() == "0") {
+                    var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+                    if (!result) return;
+                    $("#PLAN_CD").val("");
+                    $("#PLAN_NAME").val("");
+                    $("#PLAN_BASE_PRICE").val("0");
+                    $("#LOGIN_ACCOUNT_UPPER").val("0");
+                    $("#MONTHLY_BILL_DATA_UPPER").val("0");
+                    $("#DISABLE_FLG").prop('checked', false).change();
+                    $('#DISABLE_FLG_HIDDEN').val('0');
+                }
+                else {
+                    $("#PLAN_CD").val('@Model.PLAN_CD');
+                    $("#PLAN_NAME").val($("#CLEAR_PLAN_NAME").val());
+                    $("#PLAN_BASE_PRICE").val($("#CLEAR_PLAN_BASE_PRICE").val());
+                    $("#LOGIN_ACCOUNT_UPPER").val($("#CLEAR_LOGIN_ACCOUNT_UPPER").val());
+                    $("#MONTHLY_BILL_DATA_UPPER").val($("#CLEAR_MONTHLY_BILL_DATA_UPPER").val());
+                    $("#DISABLE_FLG_HIDDEN").val('@Model.DISABLE_FLG').change();
+                    if ('@Model.DISABLE_FLG' == '0') {
+                        $("#DISABLE_FLG").prop("checked", false);
+                    } else {
+                        $("#DISABLE_FLG").prop("checked", true);
+                    }
+                }
+            }
+        })
+    });
+
+    $(document).off('#DISABLE_FLG');
+    $(document).on('change', '#DISABLE_FLG', function () {
+        if ($('#DISABLE_FLG').is(":checked")) {
+            $('#DISABLE_FLG_HIDDEN').val('1');
+        } else {
+            $('#DISABLE_FLG_HIDDEN').val('0');
+        }
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Submit
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnSubmit');
+    $(document).on('click', '#btnSubmit', function () {
+
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        $('.validation-summary-errors').remove();
+        var invalidMess = validateData();
+        if (invalidMess.length > 0) {
+            iseiQ.utility.showClientError(invalidMess);
+            return false;
+        }
+
+        var planCd = '@Model.PLAN_CD';
+        var planName = '@Model.PLAN_NAME';
+
+        var insFlg = false;
+        var infoSeqNo = '@Model.PLAN_SEQ_NO';
+
+        if (infoSeqNo == 0) {
+            $('#UPD_DATE').val('@tempDateTime.ToString()');
+            $('#UPD_DATE').css("visibility", "hidden");
+            insFlg = true;
+        } else {
+            insFlg = true;
+        }
+
+        if (insFlg) {
+            iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmSubmitData, (!String.IsNullOrEmpty(Model.PLAN_CD) ? Messages.Update : Messages.Register))', function (action) {
+                if (action) {
+                    $("#Regis").submit();
+                }
+            })
+        }
+    });
+
+    $("#Regis").submit(function (event) {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+        var formData = new FormData($(this)[0]);
+        $.ajax(
+        {
+            url: '@Url.Action("Edit", "PlanMaint")',
+            data: formData,
+            mimeType: "multipart/form-data",
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                var data = JSON.parse(res);
+                if (data.statusCode == HTTPCode.CREATED) {
+                    console.log(res);
+                    if (res.length == 0) {
+                        window.parent.$('.ui-dialog-content:visible').dialog('close');
+                        window.location.href = '/Common/Common/CloseIframe/';
+                    } else {
+                        var result = jQuery.parseJSON(res);
+                        window.parent.$('.ui-dialog-content:visible').dialog('close');
+                        var message = result.isNew == true ? "@Maint.PlanMaintRegisterSuccess" : "@Maint.PlanMaintUpdateSuccess";
+                        iseiQ.utility.showMessageModal(message, false, function () {
+                            $('#Back').submit();
+                            return false;
+                        });
+                    }
+                }
+                else {
+                    var invalidMess = [];
+                    invalidMess.push('@Maint.PlanMaintDuplicateCode');
+                    iseiQ.utility.showClientError(invalidMess);
+                    return false;
+                }
+            },
+            error: function (xhr) {
+                window.parent.$('.ui-dialog-content:visible').dialog('close');
+                window.location.href = '/Common/Common/CloseIframe/';
+            }
+        });
+        event.preventDefault();
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Back
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnBack');
+    $(document).on('click', '#btnBack', function () {
+        iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmBack)', function (action) {
+            if (action) {
+                var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+                if (!result) return;
+                $(window).off('beforeunload');
+                $('#Back').submit();
+            }
+        })
+    });
+
+</script>

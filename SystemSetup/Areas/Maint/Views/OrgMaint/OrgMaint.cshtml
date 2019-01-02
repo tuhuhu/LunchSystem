@@ -1,0 +1,453 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Resources;
+<!-- CSS -->
+@Styles.Render("~/Content/themes/iseiQ/maint.css")
+@model OrgMaintModel
+
+@{
+    ViewBag.Title = Maint.lblOrgMaint;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+}
+<style>
+    .row-selected {
+        background: #eea;
+    }
+</style>
+@Styles.Render("~/Content/jstree")
+@Scripts.Render("~/bundles/jquery/plugins/jstreeJS")
+@Scripts.Render("~/Scripts/OrgMaint.js")
+<script type="text/javascript" charset="utf-8">
+    iseiQ.utility.imeControl($("#GROUP_NAME"), 'active');
+    iseiQ.utility.imeControl($("#GROUP_NAME_KANA"), 'active');
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+    var selectedID = "";
+    var isMoveError = false;
+
+    $(function () {
+        iseiQ.utility.validFullHalfSize($("#ANY_GROUP_CD"));
+        iseiQ.utility.imeControl($("#ANY_GROUP_CD"), 'disable');
+
+        $('.search-zone .Organization').show();
+        var groupName = $('#searchTextOrganization').val();
+        var existData = false;
+
+        $('#gray .node-name').each(function () {
+            var text = $(this).html();
+
+            if (groupName.length > 0 && text.indexOf(groupName) != -1) {
+                $(this).parents('a.jstree-anchor').click();
+                existData = true;
+
+                return false;
+            }
+        });
+
+        if (!existData) {
+            $('#gray a.jstree-anchor').removeClass('jstree-clicked');
+            $('div.search-mail-dialog .div-right-mail-list .dataTable').css('width', '100%');
+            $('#content_result').empty();
+        }
+
+        //追加ボタン押下時
+        $('#btnAdd').click(function () {
+            var ref = $('#gray').jstree(true);
+
+            var sel = ref.get_selected();
+            if (!sel.length) {
+                iseiQ.utility.showMessageModal('@Maint.OrgMaintAddSelectError', true, null);
+                return false;
+            }
+            //組織の数をチェック
+            var rootNode = ref.get_node("#");
+            var orgCount = rootNode.children_d.length;
+            if (orgCount >= 99) {
+                iseiQ.utility.showMessageModal('@Maint.OrgMaintAddMaxError', true, null);
+                return;
+            }
+            //親の数をチェック
+            var parentCount = ref.get_node(sel[0]).parents.length;
+            if (parentCount >= 10) {
+                iseiQ.utility.showMessageModal('@Maint.OrgMaintAddColError', true, null);
+                return;
+            }
+            var childrentCount = ref.get_node(sel[0]).children.length;
+            if (childrentCount >= 9) {
+                iseiQ.utility.showMessageModal('@Maint.OrgMaintAddRowError', true, null);
+                return;
+            }
+            //同階層の数をチェック
+            addnode(ref, sel[0]);
+        });
+
+        //更新ボタン押下時
+        $('#btnUpdate').click(function () {
+            var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+            if (!result) return;
+            $('.validation-summary-errors').remove();
+            var invalidMess = validateData();
+            if (invalidMess.length > 0) {
+                iseiQ.utility.showClientError(invalidMess);
+                return false;
+            }
+            var ref = $('#gray').jstree(true);
+            var sel = ref.get_selected();
+            if (!sel.length) {
+                iseiQ.utility.showMessageModal('@Maint.OrgMaintUpdateSelectError', true, null);
+                return false;
+            }
+
+            iseiQ.utility.showConfirmModal('@Maint.OrgMaintConfirmUpdate', function (action) {
+                if (action) {
+                    var ref = $('#gray').jstree(true);
+                    var gname = $('#GROUP_NAME').val();
+                    var gnamekana = $('#GROUP_NAME_KANA').val();
+                    var anyGroupCd = $('#ANY_GROUP_CD').val();
+                    updatenode(ref, gname, gnamekana, anyGroupCd);
+                }
+            })
+
+        });
+
+        function validateData() {
+            var invalidMess = [];
+
+            var groupname = $('#GROUP_NAME').val();
+            var groupnamekana = $('#GROUP_NAME_KANA').val();
+
+            //組織名
+            if (groupname.trim() == "") {
+                errContent = '@Maint.OrgGroupName' + Constant.ERR_REQUIRED;
+                invalidMess.push(errContent);
+            }
+            if (groupname.length > 50) {
+                invalidMess.push("@string.Format(@Messages.MaxLength, @Maint.OrgGroupName, "50")");
+            }
+            if (groupnamekana.length > 50) {
+                invalidMess.push("@string.Format(@Messages.MaxLength, @Maint.OrgGroupNameKana, "50")");
+            }
+            var anyGroupCode = $('#ANY_GROUP_CD').val().trim();
+            if (anyGroupCode.length > Constant.MAX_ANY_GROUP_CODE) {
+                invalidMess.push(Constant.ERR_STRING_LENGTH.replace('{0}', Constant.ANY_GROUP_CODE).replace('{1}', Constant.MAX_ANY_GROUP_CODE));
+            }
+
+            return invalidMess;
+        }
+
+        //削除ボタン押下時
+        $('#btnDelete').click(function () {
+            var ref = $('#gray').jstree(true)
+
+            sel = ref.get_selected(false);
+
+            var node = ref.get_node(sel[0]);
+            var dom = $(node.text);
+            var groupType = dom.attr('data-group-type');
+
+            if (groupType == 1) {
+                iseiQ.utility.showMessageModal('@Maint.OrgMaintDeleteSelectRoot', true, null);
+                return false;
+            }
+
+            if (!sel.length) {
+                iseiQ.utility.showMessageModal('@Maint.OrgMaintDeleteSelectError', true, null);
+                return false;
+            }
+
+            iseiQ.utility.showConfirmModal('@Maint.OrgMaintConfirmDelete', function (action) {
+                if (action) {
+                    var ref = $('#gray').jstree(true);
+
+                    ref.delete_node(sel[0]);
+
+                    clearText();
+                }
+            })
+
+        });
+
+        $(document).off('.table-content');
+        $(document).on('click', '.table-content', function () {
+            $(this).parent().children().removeClass('row-selected');
+            $(this).addClass('row-selected');
+        });
+
+        function SearchByGroupID(groupId) {
+            var param = { GROUP_ID: groupId };
+            var data = iseiQ.utility.getDataByAjax('/OrgMaint/SearchByGroupId', param);
+
+            if (data != null) {
+                $('#GROUP_NAME').val(data.GROUP_NAME);
+                $('#GROUP_NAME_KANA').val(data.GROUP_NAME_KANA);
+                $('#ANY_GROUP_CD').val(data.ANY_GROUP_CD);
+                $('#INS_DATE').val(data.FM_INS_DATE);
+                $('#INS_USERNAME').val(data.INS_USERNAME);
+                $('#UPD_DATE').val(data.FM_UPD_DATE);
+                $('#UPD_USERNAME').val(data.UPD_USERNAME);
+            }
+
+        }
+
+        function SetOrgInfoToText(obj) {
+            if (obj != null) {
+                $('#GROUP_NAME').val(obj.attr('data-group-name'));
+                $('#GROUP_NAME_KANA').val(obj.attr('data-group-name-kana'));
+                $('#ANY_GROUP_CD').val(obj.attr('data-any-group-code'));
+                $('#INS_DATE').val(obj.attr('data-ins-date'));
+                $('#INS_USERNAME').val(obj.attr('data-ins-username'));
+                $('#UPD_DATE').val(obj.attr('data-upd-date'));
+                $('#UPD_USERNAME').val(obj.attr('data-upd-username'));
+            }
+        }
+
+        function SearchByGroupName(groupNAME) {
+            var param = { GROUP_NAME: groupNAME };
+            var data = iseiQ.utility.getDataByAjax('/OrgMaint/SearchByGroupName', param);
+
+        }
+
+        //$(document).off('#btnSearch');
+        //$(document).on('click', '#btnSearch', function () {
+        //    var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        //    if (!result) return;
+        //    SearchByGroupName($('#GROUP_NAME').val());
+        //});
+
+        $(document).off('#btnSubmit');
+        $(document).on('click', '#btnSubmit', function () {
+            var jstree = $('#gray').jstree(true);
+
+            iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmSubmitData, (Messages.Update))', function (action) {
+                if (action) {
+                    var jstree = $('#gray').jstree(true);
+                    setGroupType(jstree);
+                    var data = jsGetData(jstree);
+                    enabledButton(true);
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("Regist", "OrgMaint")',
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(data),
+                        success: function (result) {
+                            jsReload();
+                            enabledButton(false);
+                            iseiQ.utility.showMessageModal("@Maint.OrgMaintUpdateSuccess", false, null);
+                        }, error: function (xhr) {
+                            window.parent.$('.ui-dialog-content:visible').dialog('close');
+                            window.location.href = '/Common/Common/CloseIframe/';
+                        }
+                    });
+                }
+            })
+
+        });
+
+        function jsReload() {
+            var ref = $('#gray').jstree(true);
+            ref.refresh();
+            clearText();
+        }
+
+        function enabledButton(flg) {
+            $('#btnAdd').prop('disabled', flg);
+            $('#btnDelete').prop('disabled', flg);
+            $('#btnSubmit').prop('disabled', flg);
+            $('#btnUpdate').prop('disabled', flg);
+        }
+
+        function clearText() {
+            $('#GROUP_NAME').val('');
+            $('#GROUP_NAME_KANA').val('');
+            $('#ANY_GROUP_CD').val('');
+            $('#INS_DATE').val('');
+            $('#INS_USERNAME').val('');
+            $('#UPD_DATE').val('');
+            $('#UPD_USERNAME').val('');
+        }
+
+
+        //条件クリア
+        $(document).off('#btnClearConditions');
+        $(document).on('click', '#btnClearConditions', function () {
+            var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+            if (!result) return;
+
+            $("#COMPANY_CD").val("");
+            jsReload();
+            enabledButton(true);
+        });
+
+        //検索ボタン押下時
+        $(document).off('#btnSearch');
+        $(document).on('click', '#btnSearch', function () {
+            var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+            if (!result) return;
+
+            if ($("#COMPANY_CD").val() == "") {
+                iseiQ.utility.showMessageModal('@string.Format(@Messages.Required, "企業コード")', false)
+                return false;
+            }
+
+            $("#SEARCH_COMPANY_CD").val($("#COMPANY_CD").val());
+            jsReload();
+            enabledButton(false);
+        });
+
+        enabledButton(true);
+
+        $('#gray')
+        .on('loaded.jstree', function () {
+        })
+        .on('refresh.jstree', function () {
+            $('#gray').jstree('open_all');
+        })
+        .on('select_node.jstree', function (e, data) {
+            var groupId = data.selected[0];
+            selectedID = groupId;
+            if (typeof (groupId) != 'undefined') {
+                var jstree = $('#gray').jstree(true);
+                var node = jstree.get_node(groupId);
+                var dom = $(node.text);
+                SetOrgInfoToText(dom);
+            }
+        })
+        .on('move_node.jstree', function (obj, par) {
+            if (isMoveError) {
+                isMoveError = false;
+                return false;
+            }
+            var ref = $('#gray').jstree(true);
+            var id = par.node.id;
+            var node = ref.get_node(id);
+            if (par.parent == '#') {
+                iseiQ.utility.showMessageModal('@Maint.OrgMaintMoveError', true, null);
+
+                isMoveError = true;
+                ref.move_node(node, ref.get_node(par.old_parent), 0);
+                return false;
+            }
+
+            ref.open_node(par.parent);
+        })
+        .jstree({
+            'core': {
+                'data': {
+                    'cache': false,
+                    'url': function (node) {
+                        var url = '/OrgMaint/GetGroup/';
+                        return url;
+                    },
+                    'data': function (node) {
+                        return { 'id': (node.id === '#' ? '0' : node.id), 'companyCd': $("#COMPANY_CD").val() };
+                    }
+                },
+                'check_callback': function (operation, node, node_parent, node_position, more) {
+                    if (operation == 'move_node' || operation == 'create_node' || operation == 'rename_node' || operation == 'delete_node') {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                },
+            },
+            'plugins': ['dnd', 'create_node', 'rename_node', 'delete_node']
+        });
+    });
+
+
+
+</script>
+@using (Html.BeginForm("", "OrgMaint", FormMethod.Post, new { id = "formOrgMaint", enctype = "multipart/form-data" }))
+{
+    <input type="hidden" id="SEARCH_COMPANY_CD" name="SEARCH_COMPANY_CD" value="" />
+
+    <div class="org-maint-dialog clearfix">
+        <div id="topContent">
+            <div id="title">@Maint.lblOrgMaint</div>
+            <div id="searchArea">
+                @Html.Label(@Maint.COMPANY_CD, new { @class = "title-row" })
+                @Html.DropDownListFor(m => m.COMPANY_CD, Model.CONTRACT_FIRM_LIST, "", new { @class = "ddlContractFirmMaster" })
+            </div>
+            <hr />
+            <div id="searchAction">
+                <button type="button" id="btnClearConditions" class="btn btn-default">
+                    <i class="btn-icon btn-clear">@Maint.btnClearConditions</i>
+                </button>
+                <button type="button" id="btnSearch" class="btn btn-green">
+                    <i class="btn-icon btn-search-white">@Maint.btnSearch</i>
+                </button>
+            </div>
+        </div>
+        @RenderPage("~/Views/Shared/ShowHideHeaderContent.cshtml")
+        <div class="action">
+            <div id="registButton">
+                <button type="button" id="btnAdd" name="btnAdd" class="btn btn-green no-margin-left">
+                    <i class="btn-icon btn-add-item">@Maint.OrgMaintAdd</i>
+                </button>
+                <button type="button" id="btnDelete" name="btnDelete" class="btn btn-red no-margin-left">
+                    <i class="btn-icon btn-delete-left">@Maint.OrgMaintDelete</i>
+                </button>
+
+                <button type="button" id="btnSubmit" name="btnSubmit" class="btn btn-orange">
+                    <i class="btn-icon btn-edit">@Maint.REGIST</i>
+                </button>
+
+            </div>
+        </div>
+        <div id="Organization" class="tab-pane fade in active">
+            <div class="organization-content clearfix">
+                <input type="hidden" id="chosen-group-id" />
+                <div class="div-left" style="height:400px;width:500px;">
+                    <div class="title">@Maint.OrgTitle</div>
+                    <div class="content clearfix" style="height:400px;width:500px;">
+                        <ul id="gray" class="treeview-gray"></ul>
+                    </div>
+                </div>
+                <div id="MaintRegister" class="clearfix" style="height:400px;">
+                    <div id="title"></div>
+                    <div class="form-group">
+                        <label class="title-row" for="">@Maint.OrgGroupName<span class="RequiredField">*</span></label>
+                        <input type="text" class="txt-w-500" style="ime-mode: auto;" id="GROUP_NAME" name="GROUP_NAME" value="" maxlength="50">
+                    </div>
+                    <div class="form-group">
+                        <label class="title-row" for="">@Maint.OrgGroupNameKana</label>
+                        <input type="text" class="txt-w-500" style="ime-mode: auto;" id="GROUP_NAME_KANA" name="GROUP_NAME_KANA" value="" maxlength="50">
+                    </div>
+                    <div class="form-group">
+                        <label class="title-row" for="">@Maint.lblAnyGroupCode</label>
+                        <input type="text" class="txt-w-500" style="ime-mode: auto;" id="ANY_GROUP_CD" name="ANY_GROUP_CD" value="" maxlength="15">
+                    </div>
+                    <div class="form-group">
+                        <label class="title-row" for="">@Maint.OrgRegist</label>
+                        <input type="text" class="value-selected txt-w-250" style="ime-mode: auto;" readonly="readonly" id="INS_DATE" name="INS_DATE" value="">
+                    </div>
+                    <div class="form-group">
+                        <label class="title-row" for="">@Maint.OrgRegister</label>
+                        <input type="text" class="value-selected txt-w-250" style="ime-mode: auto;" readonly="readonly" id="INS_USERNAME" name="INS_USERNAME" value="">
+                    </div>
+                    <div class="form-group">
+                        <label class="title-row" for="">@Maint.OrgUpdate</label>
+                        <input type="text" class="value-selected txt-w-250" style="ime-mode: auto;" readonly="readonly" id="UPD_DATE" name="UPD_DATE" value="">
+                    </div>
+                    <div class="form-group">
+                        <label class="title-row" for="">@Maint.OrgUpdater</label>
+                        <input type="text" class="value-selected txt-w-250" style="ime-mode: auto;" readonly="readonly" id="UPD_USERNAME" name="UPD_USERNAME" value="">
+                    </div>
+                    <div class="form-group">
+                        <label class="title-row" for=""></label>
+                        <button type="button" id="btnUpdate" name="btnUpdate" class="btn btn-orange no-margin-left">
+                            <i class="btn-icon btn-edit">@Maint.OrgMaintUpdate</i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+}

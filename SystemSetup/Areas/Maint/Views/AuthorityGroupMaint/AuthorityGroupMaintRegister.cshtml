@@ -1,0 +1,657 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+@*CSS*@
+@Styles.Render("~/Content/themes/iseiQ/maint.css")
+@model AuthorityGroupMaintModel
+@{
+    ViewBag.Title = Maint.AuthorityGroupMaintRegister;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+    var tempDateTime = new DateTime();
+}
+<div id="MaintRegister" class="edit-screen">
+    @using (Html.BeginForm("Edit", "AuthorityGroupMaint", FormMethod.Post, new { id = "formAuthorityGroupMaintRegis", enctype = "multipart/form-data", @class = "form-horizontal" }))
+    {
+        <div id="title">@Maint.AuthorityGroupMaintRegister</div>
+        @Html.HiddenFor(m => m.ACTION_TYPE, new { @class = "sp-id" })
+        @Html.HiddenFor(m => m.COMPANY_CD, new { @class = "sp-id" })
+        @Html.HiddenFor(m => m.AUTHORITY_GROUP_CD, new { @class = "sp-id" })
+
+        <div class="form-group">         
+            <label class="title-row">@Maint.AUTHORITY_GROUP_NAME<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.AUTHORITY_GROUP_NAME, new { @class = "txt-w-300 ", maxlength = 30 })
+
+            <input type="hidden" id="CLEAR_AUTHORITY_GROUP_NAME" name="CLEAR_AUTHORITY_GROUP_NAME" value="@Model.AUTHORITY_GROUP_NAME">
+        </div>
+        <div class="form-group">
+            @Html.Label(@Maint.To_Disable, new { @class = "title-row" })
+            @Html.CheckBoxFor(m => m.VIEW_DISABLE_FLG)
+        </div>
+    <div class="form-group">
+        <input id="CHECK_Estimate_EstimateList" type="checkbox" value="false">
+        @Html.Label(@Maint.VIEW_Estimate_EstimateList, new { @class = "title-row AuthorityGroupkList-title" })
+    </div>
+    <div class="AuthorityGroupCheckList" id="LIST_Estimate_EstimateList">
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.ESTIMATE_VIEWESTIMATE)
+            @Html.Label(@Maint.VIEW_Estimate_ViewEstimate, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.ESTIMATE_EDIT)
+            @Html.Label(@Maint.VIEW_Estimate_Edit, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.ESTIMATE_ISSUEESTIMATEFILE)
+            @Html.Label(@Maint.VIEW_Estimate_IssueEstimateFile, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.ESTIMATE_SENDESTIMATE)
+            @Html.Label(@Maint.VIEW_Estimate_SendEstimate, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.ESTIMATE_DELETE)
+            @Html.Label(@Maint.VIEW_Estimate_Delete, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.ESTIMATE_COLLECTION)
+            @Html.Label(@Maint.VIEW_Estimate_Collection, new { @class = "title-row" })
+        </div>
+    </div>
+        <div class="form-group">
+            <input id="CHECK_Contract_List" type="checkbox" value="false">
+            @Html.Label(@Maint.VIEW_Contract_List, new { @class = "title-row AuthorityGroupkList-title" })
+        </div>
+    <div class="AuthorityGroupCheckList" id="LIST_Contract_List">
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.CONTRACT_VIEW)
+            @Html.Label(@Maint.VIEW_Contract_View, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.CONTRACT_EDIT)
+            @Html.Label(@Maint.VIEW_Contract_Edit, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.CONTRACT_FINISHCONTRACT)
+            @Html.Label(@Maint.VIEW_Contract_FinishContract, new {@class = "title-row"})
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.CONTRACT_FINISHCONTRACTDIRECT)
+            @Html.Label(@Maint.VIEW_Contract_FinishContractDirect, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.CONTRACT_DELETE)
+            @Html.Label(@Maint.VIEW_Contract_Delete, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.CONTRACT_EXPORTCSVCONTRACTLIST)
+            @Html.Label(@Maint.VIEW_Contract_ExportCsvContractList, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.CONTRACT_RESEND)
+            @Html.Label(@Maint.VIEW_Contract_Resend, new { @class = "title-row" })
+        </div>      
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.ESTIMATE_ESTIMATELISTCONTRACT)
+            @Html.Label(@Maint.VIEW_Estimate_EstimateListContract, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.CONTRACT_CANCELCONTRACTEND)
+            @Html.Label(@Maint.VIEW_Contract_CancelContractEnd, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.PAYMENT_PAYMENTEDITORDERSTATUS)
+            @Html.Label(@Maint.VIEW_Payment_EditOrderStatus, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.BILLING_BILLINGEDITORDERSTATUS)
+            @Html.Label(@Maint.VIEW_Billing_EditOrderStatus, new { @class = "title-row" })
+        </div>
+    </div>
+        <div class="form-group">
+            <input id="CHECK_Billing_BillingListIndex" type="checkbox" value="false">
+            @Html.Label(@Maint.VIEW_Billing_BillingListIndex, new { @class = "title-row AuthorityGroupkList-title" })
+        </div>
+    <div class="AuthorityGroupCheckList" id="LIST_Billing_BillingListIndex">
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.BILLING_CREATEBILLINGDATA)
+            @Html.Label(@Maint.VIEW_Billing_CreateBillingData, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.BILLING_EXPORTBILLINGDATACSV)
+            @Html.Label(@Maint.VIEW_Payment_ExportSalesPaymentsDataCsv, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.BILLING_BILLINGINPUTOPERATETIME)
+            @Html.Label(@Maint.VIEW_Billing_BillingInputOperateTime, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.BILLING_BILLING_ISSUE_DEBIT_NOTE)
+            @Html.Label(@Maint.VIEW_Billing_IssueDebitNoteList, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.BILLING_EDITDEBITNOTE)
+            @Html.Label(@Maint.VIEW_Billing_EditDebitNote, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.BILLING_BILLINGINPUTDATE)
+            @Html.Label(@Maint.VIEW_Billing_BillingInputDate, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.BILLING_BILLINGSETTING)
+            @Html.Label(@Maint.VIEW_Billing_BillingSetting, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.BILLING_INPUTBILLINGPREPARE)
+            @Html.Label(@Maint.VIEW_Billing_InputBillingPrepare, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.BILLING_DELETE_DEBIT_NOTE)
+            @Html.Label(@Maint.VIEW_Billing_DeleteDebitNote, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.BILLING_NOTE_ISSUE_CONTROL)
+            @Html.Label(@Maint.VIEW_Billing_NoteIssueControl, new { @class = "title-row" })
+        </div>
+    </div>
+        <div class="form-group">
+            <input id="CHECK_Payment_PaymentNotPayment" type="checkbox" value="false">
+            @Html.Label(@Maint.VIEW_Payment_PaymentNotPayment, new { @class = "title-row AuthorityGroupkList-title" })
+        </div>
+    <div class="AuthorityGroupCheckList" id="LIST_Payment_PaymentNotPayment">
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.PAYMENT_PAYMENTCLEARSETTING)
+            @Html.Label(@Maint.VIEW_Payment_PaymentClearSetting, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.PAYMENT_PACKAGE_CLEAR_DEPOSIT)
+            @Html.Label(@Maint.VIEW_Payment_PackageClearDeposit, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.PAYMENT_CREATEREDINVOICE)
+            @Html.Label(@Maint.VIEW_Payment_CreateRedInvoice, new { @class = "title-row" })
+        </div>
+    </div>
+        <div class="form-group">
+            <input id="CHECK_Payment_PaymentList" type="checkbox" value="false">
+            @Html.Label(@Maint.VIEW_Payment_PaymentList, new { @class = "title-row AuthorityGroupkList-title" })
+        </div>
+        <div class="AuthorityGroupCheckList" id="LIST_Payment_PaymentList">
+            <div class="form-group">
+                @Html.CheckBoxFor(m => m.PAYMENT_PAYMENTINPUTPRIVATE)
+                @Html.Label(@Maint.VIEW_Payment_PaymentInputPrivate, new {@class = "title-row"})
+            </div>
+            <div class="form-group">
+                @Html.CheckBoxFor(m => m.PAYMENT_EXPORTSALESPAYMENTSDATACSV)
+                @Html.Label(@Maint.VIEW_Payment_ExportSalesPaymentsDataCsv, new {@class = "title-row"})
+            </div>
+        </div>
+    <div class="form-group">
+        <input id="CHECK_Sheet" type="checkbox" value="false">
+        @Html.Label(@Maint.VIEW_Sheet, new { @class = "title-row AuthorityGroupkList-title" })
+    </div>
+    <div class="AuthorityGroupCheckList" id="LIST_Sheet">
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.CONTRACT_ISSUEDESTIMATE)
+            @Html.Label(@Maint.VIEW_Contract_IssuedEstimate, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.CONTRACT_ISSUEPACKAGEDELIVERY)
+            @Html.Label(@Maint.VIEW_CONTRACT_ISSUEPACKAGEDELIVERY, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.PARTNERSTAFF_COVERLETTER)
+            @Html.Label(@Maint.VIEW_PartnerStaff_CoverLetter, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.PAYMENT_ISSUEORDERFORPAYMENT)
+            @Html.Label(@Maint.VIEW_Payment_IssueOrderForPayment, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.ISSUE_DISPATCHCONTRACT)
+            @Html.Label(@Maint.VIEW_Issue_Dispatch_Contract, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.ISSUE_DISPATCH_PAYMENT)
+            @Html.Label(@Maint.VIEW_IssueDispatchPayment, new { @class = "title-row" })
+        </div>
+        <div class="form-group">           
+            @Html.CheckBoxFor(m => m.PAYMENT_PAYMENT_NOTICE_ISSUE)
+            @Html.Label(@Maint.VIEW_Payment_Notice_Issue, new { @class = "title-row" })
+        </div>
+    </div>
+        <div class="form-group">
+            <input id="CHECK_Business_Analysis" type="checkbox" value="false">
+            @Html.Label(@Maint.VIEW_Business_Analysis, new {@class = "title-row AuthorityGroupkList-title"})
+        </div>
+    <div class="AuthorityGroupCheckList" id="LIST_Business_Analysis">
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.PROCEEDS_PAYMENT_PLAN)
+            @Html.Label(@Maint.VIEW_Proceeds_Payment_Plan, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.PROCEEDS_PAYMENT_CONFIRM)
+            @Html.Label(@Maint.VIEW_Proceeds_Payment_Confirm, new {@class = "title-row"})
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.CASH_FLOW)
+            @Html.Label(@Maint.VIEW_Cash_Flow, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.SALE_ACTUAL)
+            @Html.Label(@Maint.VIEW_Sale_Actual, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.SALE_ACTUAL_BY_CUSTOMER)
+            @Html.Label(@Maint.VIEW_Sale_Actual_By_Customer, new { @class = "title-row" })
+        </div>
+    </div>
+        
+    <div class="form-group">
+            <input id="CHECK_SalesAnalysis_Dashboard" type="checkbox" value="false">
+            @Html.Label(@Maint.VIEW_SalesAnalysis_Dashboard, new { @class = "title-row AuthorityGroupkList-title" })
+        </div>
+    <div class="AuthorityGroupCheckList" id="LIST_SalesAnalysis_Dashboard">
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.DASHBOARD_DISPLAY)
+            @Html.Label(@Maint.VIEW_Dashboard_Display, new { @class = "title-row" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input id="CHECK_ExternalLink" type="checkbox" value="false">
+        @Html.Label(@Maint.VIEW_ExternalLink, new { @class = "title-row AuthorityGroupkList-title" })
+    </div>
+    <div class="AuthorityGroupCheckList" id="LIST_ExternalLink">
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.ACRECEIVABLE_CSV_OUTPUT)
+            @Html.Label(@Maint.VIEW_AcReceivable_CsvOutput, new {@class = "title-row"})
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.ACPAYABLE_CSV_OUTPUT)
+            @Html.Label(@Maint.VIEW_AcPayable_CsvOutput, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.DEPOSIT_CSV_OUTPUT)
+            @Html.Label(@Maint.VIEW_Deposit_CsvOutput, new {@class = "title-row"})
+        </div>
+
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.SETTING_ACRECEIVABLE)
+            @Html.Label(@Maint.VIEW_External_Link_Setting_AcReceivable, new {@class = "title-row"})
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.SETTING_ACPAYABLE)
+            @Html.Label(@Maint.VIEW_External_Link_Setting_AcPayable, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.SETTING_DEPOSIT)
+            @Html.Label(@Maint.VIEW_External_Link_Setting_Deposit, new {@class = "title-row"})
+        </div>
+    </div>
+
+        //技術者管理機能
+        <div class="form-group">
+            <input id="CHECK_ManageEngineer" type="checkbox" value="false">
+            @Html.Label(@Maint.VIEW_ManageEngineer, new { @class = "title-row AuthorityGroupkList-title" })
+        </div>
+        <div id="LIST_ManageEngineer" class="AuthorityGroupCheckList">
+            <div class="form-group">
+                @Html.CheckBoxFor(m => m.MANAGE_ENGINEER_LIST)
+                @Html.Label(@Maint.VIEW_EngineerList, new { @class = "title-row" })
+            </div>
+            <div class="form-group">
+                @Html.CheckBoxFor(m => m.MANAGE_ENGINEER_DELETE)
+                @Html.Label(@Maint.VIEW_EngineerDelete, new { @class = "title-row" })
+            </div>
+            <div class="form-group">
+                @Html.CheckBoxFor(m => m.MANAGE_ENGINEER_CATEGORY)
+                @Html.Label(@Maint.VIEW_EngineerCategory, new { @class = "title-row" })
+            </div>
+
+            <div class="form-group">
+                @Html.CheckBoxFor(m => m.MANAGE_ENGINEER_UPLOAD_FILE)
+                @Html.Label(@Maint.VIEW_EngineerUploadFile, new { @class = "title-row" })
+            </div>
+        </div>
+        
+        //マスタメンテナンス機能
+        <div class="form-group">
+            <input id="CHECK_Mst_Maintenance" type="checkbox" value="false">
+            @Html.Label(@Maint.VIEW_Mst_Maintenance, new { @class = "title-row AuthorityGroupkList-title" })
+        </div>
+    <div class="AuthorityGroupCheckList" id="LIST_Mst_Maintenance">
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.CUSTMAINT_CUSTMAINTLIST)
+            @Html.Label(@Maint.VIEW_CustMaint_CustMaintList, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.CONTACTPERSMAINT_CONTACTPERSMAINTLIST)
+            @Html.Label(@Maint.VIEW_ContactPersMaint_ContactPersMaintList, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.ORGMAINT_ORGMAINTLIST)
+            @Html.Label(@Maint.VIEW_OrgMaint_OrgMaintList, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.PERSINCHARMAINT_PERSINCHARMAINTLIST)
+            @Html.Label(@Maint.VIEW_PersInCharMaint_PersInCharMaintList, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.TRANSMAINT_TRANSMAINTLIST)
+            @Html.Label(@Maint.VIEW_TransMaint_TransMaintList, new {@class = "title-row"})
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.ACCOUNTCODEMAINT_ACCOUNTCODEMAINTLIST)
+            @Html.Label(@Maint.VIEW_AccountCodeMaint_AccountCodeMaintList, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.SUBJECTMAINT_SUBJECTMAINTLIST)
+            @Html.Label(@Maint.VIEW_SubjectMaint_SubjectMaintList, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.CATEGORYMAINT_CATEGORYMAINTLIST)
+            @Html.Label(@Maint.VIEW_CategoryMaint_CategoryMaintList, new {@class = "title-row"})
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.NOMEN_LIST)
+            @Html.Label(@Maint.VIEW_Nomen_Info, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.PAYMENTSTATE_PAYMENTSTATEMAINTLIST)
+            @Html.Label(@Maint.VIEW_PaymentState_PaymentStateMaintList, new {@class = "title-row"})
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.AUTHORITYGROUPMAINT_AUTHORITYGROUPMAINTLIST)
+            @Html.Label(@Maint.VIEW_AuthorityGroupMaint_AuthorityGroupMaintList, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.USERMAINT_USERMAINTLIST)
+            @Html.Label(@Maint.VIEW_UserMaint_UserMaintList, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.INFORMATION_POSTINFORMATIONLIST)
+            @Html.Label(@Maint.VIEW_Information_PostInformationList, new {@class = "title-row"})
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.CONTRACT_PLAN_CONFIRM)
+            @Html.Label(@Maint.VIEW_Contract_Plan_Confirm, new { @class = "title-row" })
+        </div>
+    </div>
+        <div class="form-group">
+            <input id="CHECK_Other" type="checkbox" value="false">
+            @Html.Label(@Maint.VIEW_Other, new { @class = "title-row AuthorityGroupkList-title" })
+        </div>
+    <div class="AuthorityGroupCheckList" id="LIST_Other">
+        <!--
+		<div class="form-group">
+            @Html.CheckBoxFor(m => m.ESTIMATE_VIEWATTACHEDFILE)
+            @Html.Label(@Maint.VIEW_Estimate_ViewAttachedFile, new { @class = "title-row" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.SHOWLOG_SHOWLOG)
+            @Html.Label(@Maint.VIEW_ShowLog_ShowLog, new {@class = "title-row"})
+        </div>
+		-->
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.LOCK_OUT_DISABLE)
+            @Html.Label(@Maint.VIEW_Lock_Out_Disable, new { @class = "title-row" })
+        </div>
+    </div>
+        <div class="form-group action-button-bottom">
+            <button type="button" id="btnBack" name="btnBack" class="btn btn-default"><i class="btn-icon btn-back">@EstimationRegister.btnBack</i></button>
+            <button type="button" id="btnSubmit" name="btnSubmit" class="btn btn-orange pull-right"><i class="btn-icon btn-edit">@EstimationRegister.btnRegister</i></button>
+            @*<button type="button" id="btnClear" name="btnClear" class="btn btn-default pull-right"><i class="btn-icon btn-clear">@EstimationRegister.btnClear</i></button>*@
+        </div>
+        }
+        @using (Html.BeginForm("AuthorityGroupMaintList", "AuthorityGroupMaint", FormMethod.Post, new
+    {
+        area = "Maint",
+        id = "formAuthorityGroupMaint",
+        enctype = "multipart/form-data"
+    }))
+    {
+            @Html.HiddenFor(m => m.SEARCH_COMPANY_CD)
+            @Html.HiddenFor(m => m.SEARCH_AUTHORITY_GROUP_CD)
+            @Html.HiddenFor(m => m.SEARCH_AUTHORITY_GROUP_NAME)
+            @Html.HiddenFor(m => m.SEARCH_DISABLE_FLG)
+            @Html.HiddenFor(m => m.SEARCH_START)
+            @Html.HiddenFor(m => m.SEARCH_LENGTH)
+    }
+    </div>
+
+<script type="text/javascript">
+    iseiQ.utility.imeControl($("#AUTHORITY_GROUP_NAME"), 'active');
+
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Check Event
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#CHECK_Estimate_EstimateList');
+    $(document).on('change', '#CHECK_Estimate_EstimateList', function () {
+        if ($('#CHECK_Estimate_EstimateList').is(":checked")) {
+            $('#LIST_Estimate_EstimateList').find('input[type=checkbox]').prop('checked', true).change();
+        } else {
+            $('#LIST_Estimate_EstimateList').find('input[type=checkbox]').prop('checked', false).change();
+        }
+    });
+
+    $(document).off('#CHECK_Contract_List');
+    $(document).on('change', '#CHECK_Contract_List', function () {
+        if ($('#CHECK_Contract_List').is(":checked")) {
+            $('#LIST_Contract_List').find('input[type=checkbox]').prop('checked', true).change();
+        } else {
+            $('#LIST_Contract_List').find('input[type=checkbox]').prop('checked', false).change();
+        }
+    });
+
+    $(document).off('#CHECK_Billing_BillingListIndex');
+    $(document).on('change', '#CHECK_Billing_BillingListIndex', function () {
+        if ($('#CHECK_Billing_BillingListIndex').is(":checked")) {
+            $('#LIST_Billing_BillingListIndex').find('input[type=checkbox]').prop('checked', true).change();
+        } else {
+            $('#LIST_Billing_BillingListIndex').find('input[type=checkbox]').prop('checked', false).change();
+        }
+    });
+
+    $(document).off('#CHECK_Payment_PaymentNotPayment');
+    $(document).on('change', '#CHECK_Payment_PaymentNotPayment', function () {
+        if ($('#CHECK_Payment_PaymentNotPayment').is(":checked")) {
+            $('#LIST_Payment_PaymentNotPayment').find('input[type=checkbox]').prop('checked', true).change();
+        } else {
+            $('#LIST_Payment_PaymentNotPayment').find('input[type=checkbox]').prop('checked', false).change();
+        }
+    });
+
+    $(document).off('#CHECK_Payment_PaymentList');
+    $(document).on('change', '#CHECK_Payment_PaymentList', function () {
+        if ($('#CHECK_Payment_PaymentList').is(":checked")) {
+            $('#LIST_Payment_PaymentList').find('input[type=checkbox]').prop('checked', true).change();
+        } else {
+            $('#LIST_Payment_PaymentList').find('input[type=checkbox]').prop('checked', false).change();
+        }
+    });
+
+    $(document).off('#CHECK_Business_Analysis');
+    $(document).on('change', '#CHECK_Business_Analysis', function () {
+        if ($('#CHECK_Business_Analysis').is(":checked")) {
+            $('#LIST_Business_Analysis').find('input[type=checkbox]').prop('checked', true).change();
+        } else {
+            $('#LIST_Business_Analysis').find('input[type=checkbox]').prop('checked', false).change();
+        }
+    });
+
+    $(document).off('#CHECK_SalesAnalysis_Dashboard');
+    $(document).on('change', '#CHECK_SalesAnalysis_Dashboard', function () {
+        if ($('#CHECK_SalesAnalysis_Dashboard').is(":checked")) {
+            $('#LIST_SalesAnalysis_Dashboard').find('input[type=checkbox]').prop('checked', true).change();
+        } else {
+            $('#LIST_SalesAnalysis_Dashboard').find('input[type=checkbox]').prop('checked', false).change();
+        }
+    });
+
+    $(document).off('#CHECK_ExternalLink');
+    $(document).on('change', '#CHECK_ExternalLink', function () {
+        if ($('#CHECK_ExternalLink').is(":checked")) {
+            $('#LIST_ExternalLink').find('input[type=checkbox]').prop('checked', true).change();
+        } else {
+            $('#LIST_ExternalLink').find('input[type=checkbox]').prop('checked', false).change();
+        }
+    });
+
+    $(document).off('#CHECK_ManageEngineer');
+    $(document).on('change', '#CHECK_ManageEngineer', function () {
+        if ($('#CHECK_ManageEngineer').is(":checked")) {
+            $('#LIST_ManageEngineer').find('input[type=checkbox]').prop('checked', true).change();
+        } else {
+            $('#LIST_ManageEngineer').find('input[type=checkbox]').prop('checked', false).change();
+        }
+    });
+
+    $(document).off('#CHECK_Sheet');
+    $(document).on('change', '#CHECK_Sheet', function () {
+        if ($('#CHECK_Sheet').is(":checked")) {
+            $('#LIST_Sheet').find('input[type=checkbox]').prop('checked', true).change();
+        } else {
+            $('#LIST_Sheet').find('input[type=checkbox]').prop('checked', false).change();
+        }
+    });
+
+    $(document).off('#CHECK_Mst_Maintenance');
+    $(document).on('change', '#CHECK_Mst_Maintenance', function () {
+        if ($('#CHECK_Mst_Maintenance').is(":checked")) {
+            $('#LIST_Mst_Maintenance').find('input[type=checkbox]').prop('checked', true).change();
+        } else {
+            $('#LIST_Mst_Maintenance').find('input[type=checkbox]').prop('checked', false).change();
+        }
+    });
+
+    $(document).off('#CHECK_Other');
+    $(document).on('change', '#CHECK_Other', function () {
+        if ($('#CHECK_Other').is(":checked")) {
+            $('#LIST_Other').find('input[type=checkbox]').prop('checked', true).change();
+        } else {
+            $('#LIST_Other').find('input[type=checkbox]').prop('checked', false).change();
+        }
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Event Listeners
+    ////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Check validate
+    ////////////////////////////////////////////////////////////////////////////////////
+    function validateData() {
+        var invalidMess = [];
+        var AuthorityGroupCd = $('#AUTHORITY_GROUP_NAME').val();
+
+        //必須項目
+        if (AuthorityGroupCd.trim() == "") {
+            errDisplay = '@Maint.AUTHORITY_GROUP_NAME' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        return invalidMess;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Clear
+    ////////////////////////////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Submit
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnSubmit');
+    $(document).on('click', '#btnSubmit', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        $('.validation-summary-errors').remove();
+        var invalidMess = validateData();
+        if (invalidMess.length > 0) {
+            iseiQ.utility.showClientError(invalidMess);
+            return false;
+        }
+
+        var type = '@Model.ACTION_TYPE';
+        var companyCd = '@Model.COMPANY_CD';
+        var AuthorityGroupCd = '@Model.AUTHORITY_GROUP_CD';
+
+        var insFlg = false;
+        if (type == '0') {
+            $('#INS_DATE').val('@tempDateTime.ToString()');
+            $('#INS_DATE').hide();
+            $('#UPD_DATE').val('@tempDateTime.ToString()');
+            $('#UPD_DATE').hide();
+
+        }
+
+        iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmSubmitData, (!String.IsNullOrEmpty(Model.COMPANY_CD) && Model.ACTION_TYPE != "0" ? Messages.Update : Messages.Register))', function (action) {
+            if (action) {
+                $("#formAuthorityGroupMaintRegis").submit();
+            }
+        })
+    });
+
+
+    $("#formAuthorityGroupMaintRegis").submit(function (event) {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+        var formData = new FormData($(this)[0]);
+        $.ajax(
+        {
+            url: '@Url.Action("Edit", "AuthorityGroupMaint")',
+            data: formData,
+            mimeType: "multipart/form-data",
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                console.log(res);
+                if (res.length == 0) {
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    window.location.href = '/Common/Common/CloseIframe/';
+                } else {
+                    var result = jQuery.parseJSON(res);
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    var message = result.isNew == true ? "@Maint.AuthorityGroupMaintRegisterSuccess" : "@Maint.AuthorityGroupMaintUpdateSuccess";
+                    iseiQ.utility.showMessageModal(message, false, function () {
+                        $('#formAuthorityGroupMaint').submit();
+                        return false;
+                    });
+                }
+            },
+            error: function (xhr) {
+                window.parent.$('.ui-dialog-content:visible').dialog('close');
+                window.location.href = '/Common/Common/CloseIframe/';
+            }
+        });
+        event.preventDefault();
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Back
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnBack');
+    $(document).on('click', '#btnBack', function () {
+        iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmBack)', function(action) {
+            if (action) {
+                var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+                if (!result) return;
+
+                $(window).off('beforeunload');
+
+                $('#formAuthorityGroupMaint').submit();
+            }
+        });
+    });
+    $('#AUTHORITY_GROUP_NAME').on('keypress', function (event) {
+        if (event.keyCode === 13) {
+            return false;
+        }
+    });
+</script>

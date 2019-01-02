@@ -1,0 +1,17 @@
+﻿{
+    "sProcessing": "",
+    "sLengthMenu": "_MENU_ RECORDS",
+    "sZeroRecords": "No Records",
+    "sInfo": "Total _TOTAL_ From item _START_ ～ _END_",
+    "sInfoEmpty": "",
+    "sInfoFiltered": "（全 _MAX_ 件より抽出）",
+    "sInfoPostFix": "",
+    "sSearch": "検索:",
+    "sUrl": "",
+    "oPaginate": {
+        "sFirst": "First",
+        "sPrevious": "<i class='btn-previous'></i>",
+        "sNext": "<i class='btn-next'></i>",
+        "sLast": "Last"
+    }
+}

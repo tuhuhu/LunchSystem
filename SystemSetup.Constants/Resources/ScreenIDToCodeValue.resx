@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ANNOUNCEMENT" xml:space="preserve">
+    <value>040</value>
+    <comment>お知らせ</comment>
+  </data>
+  <data name="CMB0010" xml:space="preserve">
+    <value>025</value>
+    <comment>本部・ロジコ用権限メニュー</comment>
+  </data>
+  <data name="CMC0010" xml:space="preserve">
+    <value>028</value>
+    <comment>本部・ロジコ用権限メニュー</comment>
+  </data>
+  <data name="CMD0010" xml:space="preserve">
+    <value>039</value>
+  </data>
+  <data name="CME0010" xml:space="preserve">
+    <value>036</value>
+    <comment>本部用権限メニュー</comment>
+  </data>
+  <data name="CMI0010" xml:space="preserve">
+    <value>033</value>
+    <comment>本部用権限メニュー</comment>
+  </data>
+  <data name="CMJ0010" xml:space="preserve">
+    <value>029</value>
+    <comment>本部・ロジコ用権限メニュー</comment>
+  </data>
+  <data name="CML0010" xml:space="preserve">
+    <value>030</value>
+    <comment>本部・ロジコ用権限メニュー</comment>
+  </data>
+  <data name="CMN0010" xml:space="preserve">
+    <value>034</value>
+    <comment>本部用権限メニュー</comment>
+  </data>
+  <data name="CMO0010" xml:space="preserve">
+    <value>035</value>
+    <comment>本部用権限メニュー</comment>
+  </data>
+  <data name="CMS0010" xml:space="preserve">
+    <value>031</value>
+    <comment>本部用権限メニュー</comment>
+  </data>
+  <data name="CMT0010" xml:space="preserve">
+    <value>032</value>
+    <comment>本部用権限メニュー</comment>
+  </data>
+  <data name="COA0010" xml:space="preserve">
+    <value>022</value>
+    <comment>本部用権限メニュー</comment>
+  </data>
+  <data name="COB0010" xml:space="preserve">
+    <value>023</value>
+    <comment>本部用権限メニュー</comment>
+  </data>
+  <data name="COC0010" xml:space="preserve">
+    <value>024</value>
+    <comment>本部用権限メニュー</comment>
+  </data>
+  <data name="MAA0010" xml:space="preserve">
+    <value>008</value>
+    <comment>本部・ロジコ用権限メニュー</comment>
+  </data>
+  <data name="MAB0010" xml:space="preserve">
+    <value>009</value>
+    <comment>本部・ロジコ用権限メニュー</comment>
+  </data>
+  <data name="MAC0010" xml:space="preserve">
+    <value>010</value>
+    <comment>本部・ロジコ・業者用権限メニュー</comment>
+  </data>
+  <data name="MAD0010" xml:space="preserve">
+    <value>011</value>
+    <comment>本部・ロジコ・業者用権限メニュー</comment>
+  </data>
+  <data name="MPA0010" xml:space="preserve">
+    <value>015</value>
+    <comment>本部・ロジコ用権限メニュー</comment>
+  </data>
+  <data name="MPB0010" xml:space="preserve">
+    <value>017</value>
+    <comment>本部・ロジコ用権限メニュー</comment>
+  </data>
+  <data name="MPB0015" xml:space="preserve">
+    <value>018</value>
+    <comment>本部・ロジコ用権限メニュー</comment>
+  </data>
+  <data name="MPC0010" xml:space="preserve">
+    <value>019</value>
+    <comment>本部用権限メニュー</comment>
+  </data>
+  <data name="MPD0010" xml:space="preserve">
+    <value>020</value>
+    <comment>本部用権限メニュー</comment>
+  </data>
+  <data name="MPE0010" xml:space="preserve">
+    <value>021</value>
+    <comment>本部・ロジコ用権限メニュー</comment>
+  </data>
+  <data name="MRA0010" xml:space="preserve">
+    <value>001</value>
+    <comment>本部用権限メニュー</comment>
+  </data>
+  <data name="MRB0020" xml:space="preserve">
+    <value>002</value>
+    <comment>本部用権限メニュー</comment>
+  </data>
+  <data name="MRC0010" xml:space="preserve">
+    <value>003</value>
+    <comment>本部用権限メニュー</comment>
+  </data>
+  <data name="MRC0015" xml:space="preserve">
+    <value>004</value>
+    <comment>本部用権限メニュー</comment>
+  </data>
+  <data name="MRD0010" xml:space="preserve">
+    <value>005</value>
+    <comment>本部用権限メニュー</comment>
+  </data>
+  <data name="TAA0010" xml:space="preserve">
+    <value>006</value>
+    <comment>業者用権限メニュー</comment>
+  </data>
+  <data name="TAB0010" xml:space="preserve">
+    <value>007</value>
+    <comment>業者用権限メニュー</comment>
+  </data>
+  <data name="TAC0010" xml:space="preserve">
+    <value>037</value>
+    <comment>業者用権限メニュー</comment>
+  </data>
+  <data name="TAD0010" xml:space="preserve">
+    <value>038</value>
+    <comment>業者用権限メニュー</comment>
+  </data>
+  <data name="TCA0020" xml:space="preserve">
+    <value>012</value>
+    <comment>業者用権限メニュー</comment>
+  </data>
+  <data name="TCA0020_DLDATA" xml:space="preserve">
+    <value>041</value>
+    <comment>受注データダウンロード</comment>
+  </data>
+  <data name="TMU0010" xml:space="preserve">
+    <value>026</value>
+    <comment>業者用権限メニュー</comment>
+  </data>
+  <data name="TMU0011" xml:space="preserve">
+    <value>026</value>
+  </data>
+  <data name="TMW0010" xml:space="preserve">
+    <value>027</value>
+    <comment>本部・ロジコ・業者用権限メニュー</comment>
+  </data>
+  <data name="TPA0010" xml:space="preserve">
+    <value>014</value>
+    <comment>業者用権限メニュー</comment>
+  </data>
+  <data name="TPB0010" xml:space="preserve">
+    <value>016</value>
+    <comment>業者用権限メニュー</comment>
+  </data>
+</root>

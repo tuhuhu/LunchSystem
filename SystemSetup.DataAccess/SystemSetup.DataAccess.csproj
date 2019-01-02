@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{85261325-354A-4C6F-A687-7DF8C39F4C6F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SystemSetup.DataAccess</RootNamespace>
+    <AssemblyName>SystemSetup.DataAccess</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DapperExtensions">
+      <HintPath>..\packages\DapperExtensions.1.4.4\lib\net40\DapperExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.Ado">
+      <HintPath>..\packages\Glimpse.Ado.1.7.3\lib\net45\Glimpse.Ado.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.AspNet, Version=1.9.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Glimpse.AspNet.1.9.2\lib\net45\Glimpse.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.Core">
+      <HintPath>..\packages\Glimpse.1.8.6\lib\net45\Glimpse.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.Mvc4">
+      <HintPath>..\packages\Glimpse.Mvc4.1.5.3\lib\net40\Glimpse.Mvc4.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseDa.cs" />
+    <Compile Include="Information\InformationDa.cs" />
+    <Compile Include="Common\CommonDa.cs" />
+    <Compile Include="GlimpseSecurityPolicy.cs" />
+    <Compile Include="Lunch\LunchDa.cs" />
+    <Compile Include="Maint\AccountingSubjectGroupMaintDa.cs" />
+    <Compile Include="Maint\CategoryMaintDa.cs" />
+    <Compile Include="Maint\AccountingSubjectMaintDa.cs" />
+    <Compile Include="Maint\CategorySetDuplicateDa.cs" />
+    <Compile Include="Maint\ContractCompanyMaintDa.cs" />
+    <Compile Include="Maint\DispatchContractOverheadDa.cs" />
+    <Compile Include="Maint\DebitNoteMaintDa.cs" />
+    <Compile Include="Maint\PlanMaintDa.cs" />
+    <Compile Include="Maint\OrgMaintDa.cs" />
+    <Compile Include="Maint\ProductMaintDa.cs" />
+    <Compile Include="Maint\AuthorityGroupMaintDa.cs" />
+    <Compile Include="Maint\SetUpUserMaintDa.cs" />
+    <Compile Include="Maint\SubCategoryMaintDa.cs" />
+    <Compile Include="Maint\SystemStatusDa.cs" />
+    <Compile Include="Maint\TaxRateMaintDa.cs" />
+    <Compile Include="Maint\BillingNumberMaintDa.cs" />
+    <Compile Include="Maint\UserMaintDa.cs" />
+    <Compile Include="UserManagement\LoginDa.cs" />
+    <Compile Include="UserManagement\PasswordReissueDa.cs" />
+    <Compile Include="Utility\MessageDa.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dapper NET40\Dapper NET40.csproj">
+      <Project>{daf737e1-05b5-4189-a5aa-dac6233b64d7}</Project>
+      <Name>Dapper NET40</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SystemSetup.Constants\SystemSetup.Constants.csproj">
+      <Project>{16945a79-74d5-4017-853e-21c9386db5dc}</Project>
+      <Name>SystemSetup.Constants</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SystemSetup.Models\SystemSetup.Models.csproj">
+      <Project>{498be419-2f92-4441-bad2-889c4ec0c99b}</Project>
+      <Name>SystemSetup.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SystemSetup.UtilityServices\SystemSetup.UtilityServices.csproj">
+      <Project>{caa5f09e-d141-46c7-8be9-a5c1a8f16e81}</Project>
+      <Name>SystemSetup.UtilityServices</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>このプロジェクトは、このコンピューターにはない NuGet パッケージを参照しています。これらをダウンロードするには、NuGet パッケージの復元を有効にしてください。詳細については、http://go.microsoft.com/fwlink/?LinkID=322105 を参照してください。不足しているファイルは {0} です。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

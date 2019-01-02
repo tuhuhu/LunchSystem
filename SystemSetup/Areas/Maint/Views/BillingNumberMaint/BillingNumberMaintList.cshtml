@@ -1,0 +1,212 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+@using SystemSetup.UtilityServices;
+<!-- CSS -->
+@Styles.Render("~/Content/themes/iseiQ/maint.css")
+@model BillingNumberMaintModel
+
+@{
+    ViewBag.Title = Maint.ContractBillingNumberMaintList;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+}
+
+<div id="maintInputDateList" class="ContractCompanyMaintList">
+    <div id="topContent">
+        <div id="title">@BillingNumberList.lblTitle</div>
+        <div id="searchArea">
+            <div class="form-group">
+                @Html.Label(@BillingNumberList.lblContractCompanyName, new {@class = "title-row min-width-60"})
+                @Html.TextBoxFor(m => m.COMPANY_NAME, new {@class = "txt-w-250", @style = "ime-mode: disabled;", maxlength = 40})
+            </div>
+        </div>
+        <hr />
+
+        <div id="searchAction">
+            <button type="button" id="btnClearConditions" class="btn btn-default">
+                <i class="btn-icon btn-clear">@Maint.btnClearConditions</i>
+            </button>
+            <button type="button" id="btnSearch" class="btn btn-green">
+                <i class="btn-icon btn-search-white">@Maint.btnSearch</i>
+            </button>
+        </div>
+    </div>
+    
+
+    @RenderPage("~/Views/Shared/ShowHideHeaderContent.cshtml")
+
+
+    <div id="mainContent">
+        <table id="InfoTable" class="dataTables_wrapper no-footer" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>@BillingNumberList.TH_SerialNumber</th>
+                    <th>@BillingNumberList.TH_ContractCompanyName</th>
+                    <th>@BillingNumberList.TH_ContractPlanName</th>
+                    <th>@BillingNumberList.TH_MaximumNumberData</th>
+                    @{
+                        DateTime dtNow = Utility.GetCurrentDateOnly();
+                        string yearMonth = dtNow.ToString("yyyy年MM月");
+                        string prevYearMonth = dtNow.AddMonths(-1).ToString("yyyy年MM月");
+                        string nextYearMonth = dtNow.AddMonths(1).ToString("yyyy年MM月");
+                    }
+                    <th>@prevYearMonth</th>
+                    <th>@yearMonth</th>
+                    <th>@nextYearMonth</th>
+                    <th>@BillingNumberList.TH_FileSizeTotal</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="bottom-buttons clearfix">
+        <div class="pull-right">
+            <button type="button" id="btnExportOutputCsv" name="btnExportCsv" class="btn btn-default no-margin-right">
+                @BillingNumberList.btnOutputCSV
+            </button>
+        </div>
+    </div>
+    @using (Html.BeginForm("ExportBillingDataCsv", "BillingNumberMaint", FormMethod.Post, new
+        {
+            area = "Maint",
+            id = "BillingNumberExportData",
+            enctype = "multipart/form-data"
+        }))
+    {
+        @Html.HiddenFor(m => m.SEARCH_COMPANY_NAME)
+        @Html.HiddenFor(m => m.DISPLAY_START)
+        @Html.HiddenFor(m => m.DISPLAY_LENGTH)
+    }
+</div>
+
+<script type="text/javascript">
+
+    //前回の検索条件を値をセット
+    $("#COMPANY_NAME").val($("#SEARCH_COMPANY_NAME").val());
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Variables Declaration
+    ////////////////////////////////////////////////////////////////////////////////////
+    var dataTable;
+    var billingNumberMaintSearchUrl = '@Url.Action("BillingNumberMaintSearch", "BillingNumberMaint", new { area = "Maint" })';
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+
+    var ORDER = 0;
+    var COMPANY_NAME = 1;
+    var PLAN_NAME = 2;
+    var MONTHLY_BILL_DATA_UPPER = 3;
+    var BILLING_NUMBER_DATA_PREV_MONTH = 4;
+    var BILLING_NUMBER_DATA_THIS_MONTH = 5;
+    var BILLING_NUMBER_DATA_NEXT_MONTH = 6;
+    var FILE_SIZE_TOTAL = 7;
+
+    var dataTable = null;
+    var dataList = null;
+
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Initialization functions
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(function () {
+        var oSorting = {
+            "bSort": false
+        };
+
+        var oPaginate = {
+            "bPaginate": true,
+            "iDisplayStart": parseInt(@Model.DISPLAY_START),
+            "iDisplayLength": parseInt(@Model.DISPLAY_LENGTH),
+            "bStateSave": false
+        };
+
+        var oServerSide = {
+            "bServerSide": true,
+            "sAjaxSource": billingNumberMaintSearchUrl,
+            "fnServerParams": serverParams,
+            "fnInitComplete": function () { },
+            "fnDrawCallback": function () { }
+        };
+
+        var aoColumnDefs = [
+            { "bSortable": false, "aTargets": [ORDER], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [COMPANY_NAME], "sWidth": "20%", "sClass": "cell_left", "mRender": function (data, type, full) { return buildActionLink(full[COMPANY_NAME]); }},
+            { "bSortable": false, "aTargets": [PLAN_NAME], "sWidth": "20%", "sClass": "cell_left", "mRender": function (data, type, full) { return buildActionLink(full[PLAN_NAME]); } },
+            { "bSortable": false, "aTargets": [MONTHLY_BILL_DATA_UPPER], "sWidth": "10%", "sClass": "cell_right" },
+            { "bSortable": false, "aTargets": [BILLING_NUMBER_DATA_PREV_MONTH], "sWidth": "10%", "sClass": "cell_right" },
+            { "bSortable": false, "aTargets": [BILLING_NUMBER_DATA_THIS_MONTH], "sWidth": "10%", "sClass": "cell_right", "mRender": function (data, type, full) { return buildBoldCell(full[BILLING_NUMBER_DATA_THIS_MONTH]); } },
+            { "bSortable": false, "aTargets": [BILLING_NUMBER_DATA_NEXT_MONTH], "sWidth": "10%", "sClass": "cell_right" },
+            { "bSortable": false, "aTargets": [FILE_SIZE_TOTAL], "sWidth": "10%", "sClass": "cell_right", "mRender": function (data, type, full) { return buildTextFileSize(full[FILE_SIZE_TOTAL]); } }
+        ];
+
+        function serverParams(aoData) {
+            //検索条件を保持
+            $("#SEARCH_COMPANY_NAME").val($("#COMPANY_NAME").val());
+
+            aoData.push(
+                { "name": "SEARCH_COMPANY_NAME", "value": $("#SEARCH_COMPANY_NAME").val() }
+            );
+        }
+
+        dataTable = CreateDataTable('#InfoTable', oSorting, oPaginate, oServerSide, aoColumnDefs);
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Event Listeners
+    ////////////////////////////////////////////////////////////////////////////////////
+
+    $(document).off('#btnSearch');
+    $(document).on('click', '#btnSearch', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        searchBillingNumberMaint();
+    });
+
+    $(document).off('#btnClearConditions');
+    $(document).on('click', '#btnClearConditions', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+        $('#COMPANY_NAME').val('');
+        $('#btnSearch').trigger("click");
+
+    });
+    $(document).off('#btnExportOutputCsv');
+    $(document).on('click', '#btnExportOutputCsv', function () {
+        $('#BillingNumberExportData').submit();
+    });
+    
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Misc Functions
+    ////////////////////////////////////////////////////////////////////////////////////
+
+    function buildActionLink(content) {
+        var html = '';
+        html += iseiQ.utility.buildColumShortText(content, 'special-wrap');
+        return html;
+    }
+    function buildBoldCell(content) {
+        var html = '';
+        html += '<div class="short-text text-overflow bold-cell" title="' + content + '">' + content + '</div>';
+        return html;
+    }
+
+    function buildTextFileSize(content) {
+        var html = '';
+        if (content == 0) {
+            content = "0.00" + "MB";
+        } else {
+            content = content + "MB";
+        }
+        html += '<div class="short-text text-overflow" title="' + content + '">' + content + '</div>';
+        return html;
+    }
+   
+   function searchBillingNumberMaint() {
+        doServerSide = true;
+        $("#SEARCH_COMPANY_NAME").val($("#COMPANY_NAME").val());
+        dataTable.fnPageChange('first');
+    }
+
+</script>

@@ -1,0 +1,493 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+
+<!-- CSS -->
+@Styles.Render("~/Content/themes/iseiQ/maint.css")
+@model DebitNoteFormatModel
+
+@{
+    ViewBag.Title = Maint.DebitNoteFormat;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+}
+<style>
+    .div-scroll-y {
+        margin-top: 20px;
+        max-height: 300px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        display: block;
+    }
+</style>
+
+<div id="debitNoteFormat" class="debitNoteFormat">
+    <div id="topContent">
+        <div id="title">@Maint.DebitNoteFormat</div>
+
+        <div id="searchArea">
+            <div class="form-group">
+                <label class="title-row min-width-60">@Maint.COMPANY_CD <span class="RequiredField">*</span></label>
+                @Html.DropDownListFor(m => m.COMPANY_CD, Model.CONTRACT_FIRM_LIST, "", new { @class = "ddlContractFirmMaster" })
+            </div>
+        </div>
+        <hr />
+
+        <div id="searchAction">
+            <button type="button" id="btnClearConditions" class="btn btn-default">
+                <i class="btn-icon btn-clear">@Maint.btnClearConditions</i>
+            </button>
+            <button type="button" id="btnSearch" class="btn btn-green">
+                <i class="btn-icon btn-search-white">@Maint.btnSearch</i>
+            </button>
+        </div>
+    </div>
+
+    @RenderPage("~/Views/Shared/ShowHideHeaderContent.cshtml")
+
+    <div id="registButton">
+        <button type="button" id="btnCreateNew" name="btnCreateNew" disabled="disabled" class="btn btn-green"><i class="btn-icon btn-add-item">@Maint.btnCreateNewline</i></button>
+    </div>
+    @using (Html.BeginForm("DebitNoteFormatEdit", "DebitNote", FormMethod.Post, new { id = "frmDebitNoteFormatEdit", enctype = "multipart/form-data" }))
+    {
+    <div id="mainContent">
+        <div class="div-scroll-y">
+            <table id="InfoTable" cellspacing="0" style="width:100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>@Maint.lblNo</th>
+                        <th>@Maint.DeleteLine</th>
+                        <th>@Maint.NewLine</th>
+                        <th class="width-100">@Maint.DebitNoteType <span class="RequiredField">*</span></th>
+                        <th class="width-100">@Maint.FormatDisplayName <span class="RequiredField">*</span></th>
+                        <th>@Maint.FormatPath <span class="RequiredField">*</span></th>
+                        <th class="width-50">@Maint.LineDetail <span class="RequiredField">*</span></th>
+                        <th>@Maint.CheckInValid</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    @Html.HiddenFor(m => m.SEARCH_COMPANY_CD)
+    }
+    <div class="form-group action-button-bottom">
+        <div class="pull-right">
+            <button type="button" id="btnSubmit" name="btnSubmit" disabled ="disabled" class="btn btn-orange" style="margin-right:30px; margin-bottom:30px"><i class="btn-icon btn-edit">@EstimationRegister.btnRegister</i></button>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    var dataTable = null;
+    var SearchDebitNoteUrl = '@Url.Action("DebitNoteFormatSearch", "DebitNote", new { area = "Maint" })';
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+    var BILLING_ADD_FORMAT_SEQ_NO = 0;
+    var ORDER = 1;
+    var DELETE = 2;
+    var ADD_LINE = 3;
+    var BILLING_TYPE = 4;
+    var BILLING_FORMAT_DISP_NAME = 5;
+    var BILLING_FORMAT_PATH = 6;
+    var BILLING_FORMAT_DETAIL_LINE = 7;
+    var DISABLE_FLG = 8;
+    var doServerSide = false;
+    var max_format_name = 15;
+    var max_format_path = 255;
+    var max_detail_line = 2;
+    var dataList = null;
+    var regX = /[^a-zA-Z0-9\!\""\#\$\%\&\'\(\)\=\~\|\-\^\@@\[\;\:\]\,\.\/\`\{\+\*\}\>\?\<\'\?\/\\\_\ ]/g;
+
+    function validateData() {
+        var invalidMess = [];
+        // Check auxiliary in table
+        $('.billing-type').each(function () {
+            var valid = false;
+            if (this.value == "" || this.value == "0") {
+                errContent = '@Maint.DebitNoteType' + Constant.ERR_REQUIRED;
+                invalidMess.push(errContent);
+                valid = true;
+            }
+            if (valid) {
+                return false;
+            }
+        });
+
+        $('.format-name').each(function () {
+            var text = this.value;
+            var valid = false;
+            if (this.value == "" || this.value.trim() == "") {
+                errContent = '@Maint.FormatDisplayName' + Constant.ERR_REQUIRED;
+                invalidMess.push(errContent);
+                valid = true;
+            }
+            else if ($(this).val().length > max_format_name) {
+                invalidMess.push(Constant.ERR_STRING_LENGTH.replace('{0}', '@Maint.FormatDisplayName').replace('{1}', max_format_name));
+                valid = true;
+            }
+            if (valid) {
+                return false;
+            }
+        });
+
+        $('.format-path').each(function () {
+            var text = this.value;
+            var path = text !=null? text.trim():"";
+            var valid = false;
+            countPath = encodeURIComponent(path).replace(/%../g, "x").length;
+            if (path == "") {
+                errContent = '@Maint.FormatPath' + Constant.ERR_REQUIRED;
+                invalidMess.push(errContent);
+                valid = true;
+            }
+            else if (countPath > max_format_path) {
+                invalidMess.push("@string.Format(@Messages.InputLengthErr, @Maint.FormatPath)");
+                valid = true;
+            }
+            if (valid) {
+                return false;
+            }
+        });
+
+        $('.format-detail-line').each(function () {
+            var valid = false;
+            if (this.value == "") {
+                errContent = '@Maint.LineDetail' + Constant.ERR_REQUIRED;
+                invalidMess.push(errContent);
+                valid = true;
+            }
+            else if ($(this).val().length > max_detail_line) {
+                invalidMess.push(Constant.ERR_STRING_LENGTH.replace('{0}', '@Maint.LineDetail').replace('{1}', max_detail_line));
+                valid = true;
+            }
+            // check numberic
+            if (!iseiQ.utility.validPhone(this.value)) {
+                invalidMess.push("@string.Format(@Messages.IncorrectFormat, @Maint.LineDetail)");
+                valid = true;
+            }
+            if (valid) {
+                return false;
+            }
+        });
+
+        return invalidMess;
+    }
+
+    $(function () {
+
+        var oSorting = {
+            "bSort": true
+        };
+
+        var oScorllX = {
+            "bScorllX": false
+        };
+
+        var oPaginate = {
+            "bPaginate": false,
+            "iDisplayLength": parseInt(@App[ConfigurationKeys.LIST_ITEMS_PER_PAGE]),
+            "bStateSave": false
+        };
+
+        var oServerSide = {
+            "bServerSide": true,
+            "sAjaxSource": '@Url.Action("DebitNoteFormatSearch", "DebitNote")',
+            "fnServerParams": serverParams,
+            "fnDrawCallback": displayComplete,
+            "fnBeforeSend": fnBeforeSend, //Can hide table when go to screen
+            "fnInitComplete": bindData,
+        };
+
+        function fnBeforeSend() {
+            // Controller へ送信前にチェック
+            return doServerSide;
+
+        }
+
+        function serverParams(aoData) {
+            if ($("#COMPANY_CD").val() != "") {
+                doServerSide = true;
+            }
+            aoData.push(
+                 { "name": "COMPANY_CD", "value": $("#COMPANY_CD").val() }
+            );
+        }
+
+        function bindData(data) {
+            dataList = data.aaData;
+            if (dataList.length > 0) {
+                $('#btnSubmit').prop('disabled', false);
+            }
+            else {
+                $('#btnSubmit').attr('disabled', 'disabled');
+            }
+        }
+
+        var aoColumnDefs = [
+           { "sName": "BILLING_ADD_FORMAT_SEQ_NO", "bVisible": false, "aTargets": [BILLING_ADD_FORMAT_SEQ_NO], "sClass": "cell_center seq-no" },
+           { "bSortable": false, "aTargets": [ORDER], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return buildColumRowNum(data); } },
+           { "bSortable": false, "aTargets": [DELETE], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return bindCheckboxElement(data, full[0]); } },
+           { "bSortable": false, "aTargets": [ADD_LINE], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return iseiQ.utility.buildColumShortText(data); } },
+           { "bSortable": false, "aTargets": [BILLING_TYPE], "sWidth": "10%", "sClass": "cell_center", "mRender": function (data, type, full) { return bindBillingType(data); } },
+           { "bSortable": false, "aTargets": [BILLING_FORMAT_DISP_NAME], "sWidth": "20%", "sClass": "cell_center", "mRender": function (data, type, full) { return bindFormatName(data, 'format-name'); } },
+           { "bSortable": false, "aTargets": [BILLING_FORMAT_PATH], "sWidth": "30%", "sClass": "cell_center", "mRender": function (data, type, full) { return bindFormatPath(data, 'format-path'); } },
+           { "bSortable": false, "aTargets": [BILLING_FORMAT_DETAIL_LINE], "sWidth": "10%", "sClass": "cell_center", "mRender": function (data, type, full) { return bindFormatDetailLine(data, 'format-detail-line numeric'); } },
+           { "bSortable": false, "aTargets": [DISABLE_FLG], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return bindCheckboxDisable(data, 'disable-line'); } }
+        ];
+
+        dataTable = CreateDataTable('#InfoTable', oSorting, oPaginate, oServerSide, aoColumnDefs);
+    });
+
+    $(document).off('#btnSearch');
+    $(document).on('click', '#btnSearch', function () {
+        // check time out
+        var sUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+        var result = iseiQ.utility.getDataByAjax(sUrl, null);
+
+        if (!result)
+            return;
+
+        searchDebitNote();
+
+    });
+
+    function searchDebitNote() {
+        $('.validation-summary-errors').remove();
+
+        if ($("#COMPANY_CD").val() == "") {
+            iseiQ.utility.showMessageModal('@string.Format(@Messages.Required, "企業コード")', true)
+            return false;
+        }
+        doServerSide = true;
+        var companyCode = $("#COMPANY_CD").val();
+        $("#SEARCH_COMPANY_CD").val($("#COMPANY_CD").val());
+        $('#btnSubmit').attr('disabled', 'disabled');
+        $('#btnCreateNew').attr('disabled', false);
+
+        dataTable.fnPageChange('first');
+        $('.tableHead').hide();
+
+    }
+
+    function buildColumRowNum(data, className) {
+        data = data != null ? data : '';
+        className = className != null ? className : '';
+
+        var html = '<input class="txt-no-border row-num text-center" style="width:42px;" type="text" title="' + data + '" value="' + data + '" disabled="disabled">';
+        return html;
+    }
+
+    function bindCheckboxElement(data, id) {
+        var html = '';
+        html += '<input class="seq-no" name="" type="hidden" value="' + id + '">'
+        if (data == 0) {
+            html += '<input type="checkbox" name="action" class="delete-line">';
+        }
+        else {
+            html += '<input type="checkbox" name="action" class="delete-line" checked>';
+        }
+
+        return html;
+    }
+
+    function bindCheckboxDisable(data, css) {
+        var html = '';
+        if (data == 0) {
+            html += '<input type="checkbox" name="action" class="' + css + ' ">';
+        }
+        else {
+            html += '<input type="checkbox" name="action" class="' + css + '" checked>';
+        }
+
+        return html;
+    }
+
+    function bindBillingType(data) {
+        var html = '';
+        if (data == 1) {
+            html = '<label class="billing-type text-normal" title="' + nvl("請負", '') + '">' + nvl("請負", '') + '</label>'
+        }
+        else if (data == 2) {
+            html = '<label class="billing-type text-normal" title="' + nvl("SES", '') + '">' + nvl("SES", '') + '</label>'
+        }
+        else {
+            html = '<label class="billing-type text-normal" title="' + nvl("派遣", '') + '">' + nvl("派遣", '') + '</label>'
+        }
+
+        return html;
+    }
+
+    function bindFormatName(data, css) {
+        var html = '<input class="' + css + '" maxlength="15" type="text" value="' + nvl(data, '') + '">';
+
+        return html;
+    }
+
+    function bindFormatPath(data, css) {
+        var html = '<input class="' + css + '" maxlength="255" type="text" value="' + nvl(data, '') + '">';
+
+        return html;
+    }
+
+    function bindFormatDetailLine(data, css) {
+        var html = '<input class="' + css + '" maxlength="2" type="text" value="' + nvl(data, '') + '">';
+
+        return html;
+    }
+
+    $(document).off('#btnClearConditions');
+    $(document).on('click', '#btnClearConditions', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+        $('.validation-summary-errors').remove();
+
+        $('#COMPANY_CD').val('');
+        $('#SEARCH_COMPANY_CD').val('');
+        $('#btnSubmit').attr('disabled', 'disabled');
+        $('#btnCreateNew').attr('disabled', 'disabled');
+
+        $('#InfoTable_info').empty();
+        $('#InfoTable_paginate').empty();
+        $('tbody').empty();
+    });
+
+    $(document).off('#btnCreateNew');
+    $(document).on('click', '#btnCreateNew', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+        if ($("#SEARCH_COMPANY_CD").val() == "" || $("#SEARCH_COMPANY_CD").val() == null) {
+            iseiQ.utility.showMessageModal('@string.Format(@Messages.Required, "企業コード")', true)
+            return false;
+        }
+        $('#btnSubmit').prop('disabled', false);
+
+        AddNewRowIntoDataTable();
+    });
+
+    function AddNewRowIntoDataTable() {
+        var html = '';
+        $('.dataTables_empty').empty();
+        var totalCurrentRow;
+        if ($('.dataTables_empty').val() == 0) {
+            totalCurrentRow = $('#InfoTable > tbody >tr').length - 1;
+        }
+        else {
+            totalCurrentRow = $('#InfoTable > tbody >tr').length;
+        }
+
+        var No = totalCurrentRow + 1;
+        html = (totalCurrentRow % 2 == 0) ? '<tr role="row" class="odd">' : '<tr role="row" class="even">';
+        html += '<td class="cell_center">' + '<input class="txt-no-border row-num text-center" style=width:42px;" type ="text" title ="' + No + '" value="' + No + '" disabled = "disabled">' + '</td>'
+                + '<td class="cell_center">'
+                + '<input class="seq-no" name="DEBIT_NOTE_FORMAT_LIST[' + totalCurrentRow + '].BILLING_ADD_FORMAT_SEQ_NO" type="hidden" value="0">'
+                + '<input type="checkbox" name="DEBIT_NOTE_FORMAT_LIST[' + totalCurrentRow + '].DEL_FLG" class="delete-line" >'
+                + '</td>'
+                + '<td class="cell_center">' + '<div class="short-text text-overflow is-new-record" title="' + '○' + '">' + '○' + '</div>' + '</td>'
+
+                + '<td class="cell_center">'
+                + '<select name="DEBIT_NOTE_FORMAT_LIST[' + totalCurrentRow + '].BILLING_TYPE" class="billing-type" >'
+                    + '<option value="0">' + '' + '</option>'
+                    + '<option value="1">' + '請負' + '</option>'
+                    + '<option value="2">' + 'SES' + '</option>'
+                    + '<option value="3">' + '派遣' + '</option>'
+                + '</select>'
+                + '</td>'
+
+                + '<td class="cell_center">'
+                + '<input type="text" name="DEBIT_NOTE_FORMAT_LIST[' + totalCurrentRow + '].BILLING_FORMAT_DISP_NAME" maxlength="15" class="format-name" >'
+                + '</td>'
+
+                + '<td class="cell_center">'
+                + '<input type="text" name="DEBIT_NOTE_FORMAT_LIST[' + totalCurrentRow + '].BILLING_FORMAT_PATH" maxlength="255" class="format-path" >'
+                + '</td>'
+                + '<td class="cell_center">'
+                + '<input type="text" name="DEBIT_NOTE_FORMAT_LIST[' + totalCurrentRow + '].BILLING_FORMAT_DETAIL_LINE" maxlength="2" value="0" class="format-detail-line numeric" >'
+                + '</td>'
+
+                + '<td class="cell_center">'
+                + '<input type="checkbox" name="DEBIT_NOTE_FORMAT_LIST[' + totalCurrentRow + '].DISABLE_FLG" class="disable-line" >'
+                + '</td>'
+
+        $('#InfoTable tbody').append(html);
+    }
+
+    function displayComplete(data) {
+        resetElementName();
+    }
+
+    function resetElementName() {
+        $('#InfoTable tbody tr').each(function (index, element) {
+            var prefix = 'DEBIT_NOTE_FORMAT_LIST[' + index + '].';
+            $(element).find('.row-num').attr('value', index + 1);
+            $(element).find('.seq-no').attr('name', prefix + 'BILLING_ADD_FORMAT_SEQ_NO');
+            $(element).find('.delete-line').attr('name', prefix + 'DEL_FLG');
+            $(element).find('.billing-type').attr('name', prefix + 'BILLING_TYPE');
+            $(element).find('.format-name').attr('name', prefix + 'BILLING_FORMAT_DISP_NAME');
+            $(element).find('.format-path').attr('name', prefix + 'BILLING_FORMAT_PATH');
+            $(element).find('.format-detail-line').attr('name', prefix + 'BILLING_FORMAT_DETAIL_LINE');
+            $(element).find('.disable-line').attr('name', prefix + 'DISABLE_FLG');
+
+        });
+    }
+
+    $(document).off('#btnSubmit');
+    $(document).on('click', '#btnSubmit', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        if ($("#SEARCH_COMPANY_CD").val() == "" || $("#SEARCH_COMPANY_CD").val() == null) {
+            iseiQ.utility.showMessageModal('@string.Format(@Messages.Required, "企業コード")', true)
+            return false;
+        }
+        $('.validation-summary-errors').remove();
+
+        if ($('.seq-no').length == 0) {
+            $('#btnSubmit').attr('disabled', 'disabled');
+
+            return;
+        }
+
+        var invalidMess = validateData();
+
+        if (invalidMess.length > 0) {
+            iseiQ.utility.showClientError(invalidMess);
+            return;
+        }
+
+        iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmRegistDebitNote)', function (action) {
+            if (action) {
+                $('#frmDebitNoteFormatEdit').submit();
+            }
+        });
+    });
+    $("#frmDebitNoteFormatEdit").submit(function (event) {
+        $.ajax({
+            url: '@Url.Action("DebitNoteFormatEdit", "DebitNote")',
+            dataType: 'json',
+            data: $(this).serialize(),
+            type: 'POST',
+            success: function (res) {
+                if (res.ErrorMessages) {
+                    var message = "";
+                    for (var i = 0; i < res.ErrorMessages.length; i++) {
+                        message += res.ErrorMessages[i] + "\n";
+                    }
+                    iseiQ.utility.showMessageModal(message, true);
+                }
+                else {
+                    iseiQ.utility.showMessageModal("@string.Format(Messages.UpdateDebitNoteSuccess)", false);
+                    $("#COMPANY_CD").val($("#SEARCH_COMPANY_CD").val());
+                    dataTable.fnStandingRedraw();
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                iseiQ.utility.showMessageModal("@string.Format(Messages.UpdateDebitNoteFailed)", true);
+                $("#COMPANY_CD").val($("#SEARCH_COMPANY_CD").val());
+                dataTable.fnStandingRedraw();
+            }
+        });
+        event.preventDefault();
+    });
+
+</script>

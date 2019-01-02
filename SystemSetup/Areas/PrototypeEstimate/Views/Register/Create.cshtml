@@ -1,0 +1,314 @@
+﻿@model iEnterAsia.iseiQ.Areas.PrototypeEstimate.ViewModels.EstimateViewModel
+
+@{
+    ViewBag.Title = "見積登録";
+    var path = Request.Path;
+    HttpContext.Current.Session["SESSION_TRANSITION_DESTINATION"] = path;
+}
+
+<h2>見積登録</h2>
+
+@using (Html.BeginForm("Register", "Register", new { area = "ProtyotypeEstimate" }, FormMethod.Post, new { id = "frmEstimateRegister" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>見積登録</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.Estimate.est_no, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.Estimate.est_no, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(m => m.Estimate.est_no_sc, new { htmlAttributes = new { @class = "form-control", maxlength = 6 } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Estimate.bp_name_disp, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.Estimate.bp_name_disp, new { htmlAttributes = new { @class = "form-control", maxlength = 50 } })
+                @Html.ValidationMessageFor(m => m.Estimate.bp_name_disp, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Estimate.prj_name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.Estimate.prj_name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.Estimate.prj_name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Estimate.prj_dsp_name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.Estimate.prj_dsp_name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.Estimate.prj_dsp_name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Estimate.prj_desc_name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.Estimate.prj_desc_name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.Estimate.prj_desc_name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group col_12">
+            <span class="col_1">
+                @Html.Label("契約期間")
+            </span>
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.Estimate.prj_period_start, new { htmlAttributes = new { @class = "form-control datefield", type = "text" } })
+            <span>～</span>
+                @Html.EditorFor(m => m.Estimate.prj_period_end, new { htmlAttributes = new { @class = "form-control datefield", type = "text" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Estimate.delivery_date, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.Estimate.delivery_date, new { htmlAttributes = new { @class = "form-control datefield", type = "text" } })
+                @Html.ValidationMessageFor(m => m.Estimate.delivery_date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Estimate.acceptance_date, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.Estimate.acceptance_date, new { htmlAttributes = new { @class = "form-control datefield", type = "text" } })
+                @Html.ValidationMessageFor(m => m.Estimate.acceptance_date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col_12">
+            <span class="col_1">
+                @Html.LabelFor(m => m.Estimate.closing_site_type, htmlAttributes: new { @class = "control-label col-md-2" })
+            </span>
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.Estimate.closing_site_type, Model.closing_site_type_list, new { @class = "col_2 col_2_textbox" }, true)
+                <span class="">
+                    @Html.LabelFor(m => m.Estimate.closing_day, htmlAttributes: new { @class = "control-label col-md-2" })
+                </span>
+                @Html.DropDownListFor(m => m.Estimate.closing_day, Model.closing_site_type_list, new { @class = "col_2 col_2_textbox" }, true)
+            </div>
+        </div>
+
+        <div class="form-group col_12">
+            <span class="col_1">
+                @Html.LabelFor(m => m.Estimate.payment_site_type, htmlAttributes: new { @class = "control-label col-md-2" })
+            </span>
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.Estimate.payment_site_type, Model.closing_site_type_list, new { @class = "col_2 col_2_textbox" }, true)
+                <span class="">
+                    @Html.LabelFor(m => m.Estimate.payment_day, htmlAttributes: new { @class = "control-label col-md-2" })
+                </span>
+                @Html.DropDownListFor(m => m.Estimate.payment_day, Model.closing_site_type_list, new { @class = "col_2 col_2_textbox" }, true)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Estimate.quotation_type, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @{
+                    var listItemsQuotationTypes = new List<SelectListItem>();
+                    listItemsQuotationTypes.Add(new SelectListItem
+                            {
+                                Text = "概算",
+                                Value = "01",
+                                Selected = true
+                            });
+                    listItemsQuotationTypes.Add(new SelectListItem
+                            {
+                                Text = "詳細",
+                                Value = "02"
+                            });
+                }
+                @Html.DropDownListFor(m => m.Estimate.quotation_type, listItemsQuotationTypes, new { @class = "col_2 col_2_textbox" }, true)
+                @Html.ValidationMessageFor(m => m.Estimate.quotation_type, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Estimate.est_amount_total, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.Estimate.est_amount_total, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.Estimate.est_amount_total, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="div-estimatedetail">
+            <div class="estimatedetail-info">
+                @*@Html.Label("", "詳細", new { @class = "first" })*@
+                <button type="button" class="btnAddEstimateDetail blue button common-style-button">追加</button>
+            </div>
+            <div class="category-list">
+                @for (int i = 0; i < Model.ESTIMATE_DETAIL_LIST.Count; i++)
+                {
+                    <div class="estimatedetail-content">
+                        @Html.EditorFor(m => m.ESTIMATE_DETAIL_LIST[i].ProductName, new { @class = "ddlCategory sWidth_2" })
+                        @Html.EditorFor(m => m.ESTIMATE_DETAIL_LIST[i].UnitPrice, new { @class = "txtUnitPrice sWidth_2" })
+                        @Html.EditorFor(m => m.ESTIMATE_DETAIL_LIST[i].Quantity, new { @class = "txtQuantity sWidth_2" })
+                        @Html.DropDownListFor(m => m.ESTIMATE_DETAIL_LIST[i].UnitType, new List<SelectListItem>(), new { @class = "ddlUnitType sWidth_2" })
+                        @Html.EditorFor(m => m.ESTIMATE_DETAIL_LIST[i].Amount, new { @class = "txtAmount sWidth_2" })
+                        @*@Html.Hidden("hdnCategory", Model.ESTIMATE_DETAIL_LIST[i].ProductName)
+                        @Html.Hidden("hdnUnitType", Model.ESTIMATE_DETAIL_LIST[i].UnitType)*@
+                        <button type="button" class="btnDeleteEstimateDetail blue button common-style-button">削除</button>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <script>
+
+            function clearEstimateDetailInputFields($categoryLast)
+            {
+                $categoryLast.children('.ddlCategory').val('');
+                $categoryLast.children('.txtUnitPrice').val('');
+                $categoryLast.children('.txtQuantity').val('');
+                $categoryLast.children('.txtAmount').val('');
+                $categoryLast.children('.ddlUnitType').empty();
+                $categoryLast.children('#hdnCategory, #hdnUnitType').val('0');
+            }
+
+            // Action add a target category
+            $(document).off('button.btnAddEstimateDetail');
+            $(document).on('click', 'button.btnAddEstimateDetail', function () {
+                $('div.estimatedetail-content').last().after($('div.estimatedetail-content').first().prop('outerHTML'));
+
+                var $categoryLast = $('div.estimatedetail-content').last();
+                clearEstimateDetailInputFields($categoryLast);
+
+                $('.category-list').animate({ scrollTop: $('.category-list')[0].scrollHeight }, 400);
+                resetArrCategory();
+
+                //$('#hdnUserChangeValue').val(true);
+            });
+
+            // Action delete a target category
+            $(document).off('button.btnDeleteEstimateDetail');
+            $(document).on('click', 'button.btnDeleteEstimateDetail', function () {
+                $categoryDel = $(this).parent();
+
+                if ($('div.estimatedetail-content').length > 1) {
+                    $categoryDel.remove();
+                    resetArrCategory();
+                } else {
+                    clearEstimateDetailInputFields($categoryDel);
+                }
+
+                //$('#hdnUserChangeValue').val(true);
+            });
+
+            // Reset name of dropdownlist on target category list
+            function resetArrCategory() {
+                var $arrCategory = $('div.estimatedetail-content');
+
+                for (var i = 0; i < $arrCategory.length; i++) {
+                    var EstimateDetail = $arrCategory[i];
+                    var category = 'ESTIMATE_DETAIL_LIST[' + i + '].ProductName';
+                    var UnitType = 'ESTIMATE_DETAIL_LIST[' + i + '].UnitType';
+
+                    $(EstimateDetail).children('.ddlCategory').attr('name', category);
+                    $(EstimateDetail).children('.ddlUnitType').attr('name', UnitType);
+                }
+            }
+
+            // Set value for dropdownlist on target category list
+            function setArrCategory() {
+                var $arrCategory = $('div.estimatedetail-content');
+
+                $arrCategory.each(function () {
+                    var categoryId = $(this).children('#hdnCategory').val() == '0' ? '' : $(this).children('#hdnCategory').val();
+
+                    $(this).children('.ddlCategory').val(categoryId);
+
+                    if (categoryId.length > 0) {
+                        var UnitTypeList = getUnitTypeList(categoryId);
+                        var $ddlUnitType = $(this).children('.ddlUnitType');
+
+                        if (UnitTypeList.length > 0) {
+                            $ddlUnitType.append('<option value="">' + Constant.NONE_SPECIFIED + '</option>');
+
+                            $.each(UnitTypeList, function (i, item) {
+                                $ddlUnitType.append('<option value="' + item.UnitType + '">' + item.sub_category + '</option>');
+                            });
+                            $ddlUnitType.val($(this).children('#hdnUnitType').val());
+                        }
+                    }
+                });
+            }
+
+        </script>
+
+        <div class="form-group col_12 remark">
+            <span class="col_1 layout_remark">
+                @Html.LabelFor(m => m.Estimate.est_condition, htmlAttributes: new { @class = "control-label col-md-2" })
+            </span>
+            <div class="col-md-10">
+                @Html.TextAreaFor(m => m.Estimate.est_condition, new { @class = "col_2 col_2_textarea", maxlength = 200 })
+                @Html.ValidationMessageFor(m => m.Estimate.est_condition, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col_12 remark">
+            <span class="col_1 layout_remark">
+                @Html.LabelFor(m => m.Estimate.memo, htmlAttributes: new { @class = "control-label col-md-2" })
+            </span>
+            <div class="col-md-10">
+                @Html.TextAreaFor(m => m.Estimate.memo, new { @class = "col_2 col_2_textarea", maxlength = 200 })
+                @Html.ValidationMessageFor(m => m.Estimate.memo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="button" id="btnBack" name="btnBack" class="common-style-button blue button icon-reply">戻る</button>
+                <button type="button" id="btnSubmit" class="blue button icon-save common-style-button">登録</button>
+                <button type="button" id="btnClear" name="btnClear" class="blue button icon-refresh common-style-button">クリア</button>
+            </div>
+        </div>
+    </div>
+}
+
+@*<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+<script>
+    $("#btnClear").click(function () {
+        $("#Condition_DISPLAY_NAME").val("");
+        $("#Condition_GROUP_ID").val("");
+        $("#Condition_POSITION_ID").val("");
+        $("#Condition_MAIL_ADDRESS").val("");
+        $("#Condition_DELETED_INCLUDE").prop('checked', false);
+        $("#Condition_RETIREMENT_INCLUDE").prop('checked', false);
+    });
+
+    // Submit register form
+    $(document).off('#btnSubmit');
+    $(document).on('click', '#btnSubmit', function () {
+
+        //$('#dialog-confirm img').css('display', 'block');
+        //$('div.ui-dialog button').attr('disabled', 'disabled').children('span').addClass('disabled');
+
+        setTimeout(function () { $("#frmEstimateRegister").submit(); }, 1000);
+
+    });
+
+    $(document).off('#btnBack');
+    $(document).on('click', '#btnBack', function () {
+        window.location.href = '@HttpContext.Current.Session["SESSION_TRANSITION_DESTINATION"]';
+    });
+
+</script>
+

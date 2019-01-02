@@ -1,0 +1,50 @@
+﻿<div class="show-hide-search">
+    <button type="button" id="btnShowHide" class="btn btn-default btn-up-down"><i class="btn-icon btn-pull-up"></i></button>
+</div>
+
+<script>
+    $('#btnShowHide').click(function () {
+        var $current = $(this).find('i');
+        var $searchDialog = $(this).parents('.search-dialog');
+        var $searchCustomer = $(this).parents('.search-customer-dialog');
+
+        
+        if ($current.hasClass('btn-pull-up')) {
+            $current.addClass('btn-pull-down').removeClass('btn-pull-up');
+            
+            setTimeout(function () {
+                $('.search-zone, .button-zone, #searchArea, #searchAction, #topContent hr, .payment-summary-info').slideUp(300);;
+
+                if ($searchDialog.length > 0) {
+                    $searchDialog.find('.dataTables_scrollBody').addClass('dtScroll-maxHeight');
+                }
+
+                if ($searchDialog.length > 0) {
+                    $('.dataTables_scrollHead .display.dataTable').css('width', $('#InfoTable tbody').outerWidth());
+                }
+                if ($('.content-search').length > 0) {
+                    $('.content-search').css('width', '100%').css('height', ($('.validation-summary-errors').height() + 79) + 'px').css('margin-top', '-4px');
+                    $('.content-search').find('hr').css('display', 'none');
+                }
+            }, 50);
+        } else {
+            $current.addClass('btn-pull-up').removeClass('btn-pull-down');
+            
+            setTimeout(function () {
+                $('.search-zone, .button-zone, #searchArea, #searchAction, #topContent hr, .payment-summary-info').slideDown(300);
+
+                if ($searchDialog.length > 0) {
+                    $searchDialog.find('.dataTables_scrollBody').removeClass('dtScroll-maxHeight');
+                }
+
+                if ($searchDialog.length > 0) {
+                    $('.dataTables_scrollHead .display.dataTable').css('width', $('#InfoTable tbody').width());
+                }
+                if ($('.content-search').length > 0) {
+                    $('.content-search').css('width', '').css('height', '').css('margin-top', '');
+                    $('.content-search').find('hr').css('display', '');
+                }
+            }, 100);
+        }
+    });
+</script>

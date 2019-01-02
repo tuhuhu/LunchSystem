@@ -1,0 +1,1184 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+@*CSS*@
+@Styles.Render("~/Content/themes/iseiQ/maint.css")
+@model ContractCompanyMaintModel
+@{
+    ViewBag.Title = Maint.ContractCompanyMaintRegister;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+    var tempDateTime = new DateTime();
+}
+<div id="MaintRegister" class="edit-screen">
+    @using (Html.BeginForm("Edit", "ContractCompanyMaint", FormMethod.Post, new { id = "formContractCompanyMaintRegis", enctype = "multipart/form-data", @class = "form-horizontal" }))
+    {
+        <div id="title">@Maint.ContractCompanyMaintRegister</div>
+        @Html.HiddenFor(m => m.DEL_FLG, new { @class = "sp-id" })
+
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.KEIYAKU_COMPANY_CD<span class="RequiredField">*</span></label>
+            @if (String.IsNullOrEmpty(Model.COMPANY_CD))
+            {
+                @Html.TextBoxFor(m => m.COMPANY_CD, new { @class = "ime-mode txt-w-50  ", style = "ime-mode: disabled", maxlength = 5 })
+            }
+            else
+            {
+                @Html.HiddenFor(m => m.COMPANY_CD, new { @class = "sp-id" })
+                <label class="font-weight-normal">@Model.COMPANY_CD</label>
+            }
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.COMPANY_NAME<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.COMPANY_NAME, new { @class = "txt-w-300  ", style = "ime-mode: active;", maxlength = 40 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.COMPANY_ZIP_CD</label>
+            @Html.TextBoxFor(m => m.COMPANY_ZIP_CD, new { @class = "txt-w-70  ", style = "ime-mode: disabled", maxlength = 8 })
+        </div>
+        <div class="form-group">
+            @Html.Label(@Maint.COMPANY_ADDR_1, new { @class = "title-row-wide" })
+            @Html.TextBoxFor(m => m.COMPANY_ADDR_1, new { @class = "txt-w-300  ", style = "ime-mode: active;", maxlength = 50 })
+        </div>
+        <div class="form-group">
+            @Html.Label(@Maint.COMPANY_ADDR_2, new { @class = "title-row-wide" })
+            @Html.TextBoxFor(m => m.COMPANY_ADDR_2, new { @class = "txt-w-300  ", style = "ime-mode: active;", maxlength = 50 })
+        </div>
+        <div class="form-group">
+            @Html.Label(@Maint.COMPANY_GROUP_NAME, new { @class = "title-row-wide" })
+            @Html.TextBoxFor(m => m.COMPANY_GROUP_NAME, new { @class = "txt-w-300  ", style = "ime-mode: active;", maxlength = 30 })
+        </div>
+        <div class="form-group">
+            @Html.Label(@Maint.COMPANY_STAFF_NAME, new { @class = "title-row-wide" })
+            @Html.TextBoxFor(m => m.COMPANY_STAFF_NAME, new { @class = "txt-w-300  ", style = "ime-mode: active;", maxlength = 50 })
+        </div>
+        <div class="form-group">
+            @Html.Label(@Maint.COMPANY_STAFF_NAME_KANA, new { @class = "title-row-wide" })
+            @Html.TextBoxFor(m => m.COMPANY_STAFF_NAME_KANA, new { @class = "txt-w-300  ", style = "ime-mode: active;", maxlength = 50 })
+        </div>
+        <div class="form-group">
+            @Html.Label(@Maint.COMPANY_STAFF_TEL, new { @class = "title-row-wide" })
+            @Html.TextBoxFor(m => m.COMPANY_STAFF_TEL, new { @class = "txt-w-120  ", style = "ime-mode: disabled", maxlength = 13 })
+        </div>
+        <div class="form-group">
+            @Html.Label(@Maint.COMPANY_STAFF_TEL_EXT, new { @class = "title-row-wide" })
+            @Html.TextBoxFor(m => m.COMPANY_STAFF_TEL_EXT, new { @class = "txt-w-50  ", style = "ime-mode: disabled", maxlength = 3 })
+        </div>
+        <div class="form-group">
+            @Html.Label(@Maint.COMPANY_STAFF_EMAIL_ADDR, new { @class = "title-row-wide" })
+            @Html.TextBoxFor(m => m.COMPANY_STAFF_EMAIL_ADDR, new { @class = "txt-w-300  ", style = "ime-mode: active;", maxlength = 100 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide pull-left">@Maint.ROUNDING_TYPE<span class="RequiredField">*</span></label>
+            @Html.DropDownListFor(m => m.ROUNDING_TYPE, Model.ROUNDING_TYPE_LIST, new { @class = "pull-left" })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide pull-left">@Maint.CONTRACT_LEVEL_TYPE<span class="RequiredField">*</span></label>
+            @Html.DropDownListFor(m => m.CONTRACT_LEVEL_TYPE, Model.CONTRACT_LEVEL_TYPE_LIST, new { @class = "pull-left" })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide pull-left">@Maint.EST_NO_USE_PREFIX<span class="RequiredField">*</span></label>
+            @Html.DropDownListFor(m => m.EST_NO_USE_PREFIX, Model.EXISTENCE_LIST, new { @class = "pull-left" })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide pull-left">@Maint.EST_NO_USE_YM<span class="RequiredField">*</span></label>
+            @Html.DropDownListFor(m => m.EST_NO_USE_YM, Model.EXISTENCE_LIST, new { @class = "pull-left" })
+        </div>
+        
+        /////////////集約見積書//////////////////////////////////////////////////////////////
+        <div class="form-group">
+            <label class="title-row-wide pull-left">@Maint.EST_COLLECTION_NO_USE_PREFIX<span class="RequiredField">*</span></label>
+            @Html.DropDownListFor(m => m.EST_COLLECTION_NO_USE_PREFIX, Model.EXISTENCE_LIST, new { @class = "pull-left" })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.EST_COLLECTION_NO_PREFIX<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.EST_COLLECTION_NO_PREFIX, new { @class = "txt-w-50 ime-mode", style = "ime-mode: disabled", maxlength = 3 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide pull-left">@Maint.EST_COLLECTION_NO_USE_YM<span class="RequiredField">*</span></label>
+            @Html.DropDownListFor(m => m.EST_COLLECTION_NO_USE_YM, Model.EXISTENCE_LIST, new { @class = "pull-left" })
+        </div>
+        ////////EST
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.EST_COLLECTION_FORMAT_PATH<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.EST_COLLECTION_FORMAT_PATH, new { @class = "txt-w-300  ", style = "ime-mode: active;", maxlength = 255 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.EST_COLLECTION_FORMAT_DETAIL_LINE<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.EST_COLLECTION_FORMAT_DETAIL_LINE, new { @class = "txt-w-100  ", style = "ime-mode: disabled", maxlength = 10 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.EST_COLLECTION_FORMAT_NOMEN_LINE<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.EST_COLLECTION_FORMAT_NOMEN_LINE, new { @class = "txt-w-100  ", style = "ime-mode: disabled", maxlength = 10 })
+        </div>
+        ////////SES
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.EST_COLLECTION_FORMAT_SES_PATH<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.EST_COLLECTION_FORMAT_SES_PATH, new { @class = "txt-w-300  ", style = "ime-mode: active;", maxlength = 255 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.EST_COLLECTION_FORMAT_SES_DETAIL_LINE<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.EST_COLLECTION_FORMAT_SES_DETAIL_LINE, new { @class = "txt-w-100  ", style = "ime-mode: disabled", maxlength = 10 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.EST_COLLECTION_FORMAT_SES_NOMEN_LINE<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.EST_COLLECTION_FORMAT_SES_NOMEN_LINE, new { @class = "txt-w-100  ", style = "ime-mode: disabled", maxlength = 10 })
+        </div>
+        ////////ORD
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.ORD_COLLECTION_FORMAT_PATH<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.ORD_COLLECTION_FORMAT_PATH, new { @class = "txt-w-300  ", style = "ime-mode: active;", maxlength = 255 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.ORD_COLLECTION_FORMAT_DETAIL_LINE<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.ORD_COLLECTION_FORMAT_DETAIL_LINE, new { @class = "txt-w-100  ", style = "ime-mode: disabled", maxlength = 10 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.ORD_COLLECTION_FORMAT_NOMEN_LINE<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.ORD_COLLECTION_FORMAT_NOMEN_LINE, new { @class = "txt-w-100  ", style = "ime-mode: disabled", maxlength = 10 })
+        </div>
+        /////ORD_SES
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.ORD_COLLECTION_FORMAT_SES_PATH<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.ORD_COLLECTION_FORMAT_SES_PATH, new { @class = "txt-w-300  ", style = "ime-mode: active;", maxlength = 255 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.ORD_COLLECTION_FORMAT_SES_DETAIL_LINE<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.ORD_COLLECTION_FORMAT_SES_DETAIL_LINE, new { @class = "txt-w-100  ", style = "ime-mode: disabled", maxlength = 10 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.ORD_COLLECTION_FORMAT_SES_NOMEN_LINE<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.ORD_COLLECTION_FORMAT_SES_NOMEN_LINE, new { @class = "txt-w-100  ", style = "ime-mode: disabled", maxlength = 10 })
+        </div>
+            //////////////////////////////////////////////////////////////////////////////////////////////
+        <div class="form-group">
+            <label class="title-row-wide pull-left">@Maint.BILL_NO_USE_PREFIX<span class="RequiredField">*</span></label>
+            @Html.DropDownListFor(m => m.BILL_NO_USE_PREFIX, Model.EXISTENCE_LIST, new { @class = "pull-left" })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.BILL_NO_PREFIX<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.BILL_NO_PREFIX, new { @class = "txt-w-50 ime-mode", style = "ime-mode: disabled", maxlength = 3 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide pull-left">@Maint.BILL_NO_USE_YM<span class="RequiredField">*</span></label>
+            @Html.DropDownListFor(m => m.BILL_NO_USE_YM, Model.EXISTENCE_LIST, new { @class = "pull-left" })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.BILL_FORMAT_PATH<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.BILL_FORMAT_PATH, new { @class = "txt-w-300  ", style = "ime-mode: active;", maxlength = 255 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.BILL_FORMAT_DETAIL_LINE<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.BILL_FORMAT_DETAIL_LINE, new { @class = "txt-w-100  ", style = "ime-mode: disabled", maxlength = 10 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.BILL_FORMAT_SES_PATH<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.BILL_FORMAT_SES_PATH, new { @class = "txt-w-300  ", style = "ime-mode: active;", maxlength = 255 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.BILL_FORMAT_SES_DETAIL_LINE<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.BILL_FORMAT_SES_DETAIL_LINE, new { @class = "txt-w-100  ", style = "ime-mode: disabled", maxlength = 10 })
+        </div>
+        <div class="form-group" @*請求書派遣フォーマットパス*@>
+            <label class="title-row-wide">@Maint.BILL_FORMAT_TEMP_PATH</label>
+            @Html.TextBoxFor(m => m.BILL_FORMAT_TEMP_PATH, new { @class = "txt-w-300  ", style = "ime-mode: active;", maxlength = 255 })
+        </div>
+        <div class="form-group" @*請求書派遣明細行数*@>
+            <label class="title-row-wide">@Maint.BILL_FORMAT_TEMP_DETAIL_LINE<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.BILL_FORMAT_TEMP_DETAIL_LINE, new { @class = "txt-w-100  ", style = "ime-mode: disabled", maxlength = 10 })
+        </div>
+        <div class="form-group">
+            @Html.Label(@Maint.BILL_PAYEE_TITLE, new { @class = "title-row-wide" })
+            @Html.TextBoxFor(m => m.BILL_PAYEE_TITLE, new { @class = "txt-w-200  ", style = "ime-mode: active;", maxlength = 25 })
+        </div>
+        <div class="form-group">
+            @Html.Label(@Maint.BILL_PAYEE_NOTE, new { @class = "title-row-wide pull-left" })
+            @Html.TextAreaFor(m => m.BILL_PAYEE_NOTE, new { @class = "pull-left margin-left-5", style = "ime-mode: active; height: 62px; width: 300px;", maxlength = 4096 })
+        </div>
+        <div class="form-group">
+            @Html.Label(@Maint.BILL_DIRECT_TITLE, new { @class = "title-row-wide" })
+            @Html.TextBoxFor(m => m.BILL_DIRECT_TITLE, new { @class = "txt-w-200  ", style = "ime-mode: active;", maxlength = 25 })
+        </div>
+        <div class="form-group">
+            @Html.Label(@Maint.BILL_DIRECT_NOTE, new { @class = "title-row-wide pull-left" })
+            @Html.TextAreaFor(m => m.BILL_DIRECT_NOTE, new { @class = "pull-left margin-left-5", style = "ime-mode: active; height: 62px; width: 300px;", maxlength = 4096 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide pull-left">@Maint.DELIVERY_NO_USE_PREFIX<span class="RequiredField">*</span></label>
+            @Html.DropDownListFor(m => m.DELIVERY_NO_USE_PREFIX, Model.EXISTENCE_LIST, new { @class = "pull-left" })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide pull-left">@Maint.DELIVERY_NO_USE_YM<span class="RequiredField">*</span></label>
+            @Html.DropDownListFor(m => m.DELIVERY_NO_USE_YM, Model.EXISTENCE_LIST, new { @class = "pull-left" })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide pull-left">@Maint.PLC_ORDER_NO_USE_PREFIX<span class="RequiredField">*</span></label>
+            @Html.DropDownListFor(m => m.PLC_ORDER_NO_USE_PREFIX, Model.EXISTENCE_LIST, new { @class = "pull-left" })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide pull-left">@Maint.PLC_ORDER_NO_USE_YM<span class="RequiredField">*</span></label>
+            @Html.DropDownListFor(m => m.PLC_ORDER_NO_USE_YM, Model.EXISTENCE_LIST, new { @class = "pull-left" })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.PLC_ORDER_FORMAT_PATH<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.PLC_ORDER_FORMAT_PATH, new { @class = "txt-w-300  ", style = "ime-mode: active;", maxlength = 255 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.PLC_ORDER_FORMAT_DETAIL_LINE<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.PLC_ORDER_FORMAT_DETAIL_LINE, new { @class = "txt-w-100  ", style = "ime-mode: disabled", maxlength = 10 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.PLC_PAYMENT_NOTICE_FORMAT_PATH<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.PLC_PAYMENT_NOTICE_FORMAT_PATH, new { @class = "txt-w-300  ", style = "ime-mode: active;", maxlength = 255 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.DOC_COVER_LETTER_FORMAT_PATH<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.DOC_COVER_LETTER_FORMAT_PATH, new { @class = "txt-w-300  ", style = "ime-mode: active;", maxlength = 255 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.FAX_COVER_LETTER_FORMAT_PATH<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.FAX_COVER_LETTER_FORMAT_PATH, new { @class = "txt-w-300  ", style = "ime-mode: active;", maxlength = 255 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.ENVELOPE_DESTINATION_FORMAT_PATH<span class="RequiredField">*</span></label>
+            @Html.TextBoxFor(m => m.ENVELOPE_DESTINATION_FORMAT_PATH, new {@class = "txt-w-300  ", style = "ime-mode: active;", maxlength = 255})
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.COMPANY_LOGO_IMAGE_PATH</label>
+            @Html.TextBoxFor(m => m.COMPANY_LOGO_IMAGE_PATH, new { @class = "txt-w-300  ", style = "ime-mode: active;", maxlength = 255 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.lblUploadFilePassword</label>
+            @Html.PasswordFor(m => m.UPLOAD_FILE_PASSWORD, new { @class = "txt-w-300 ", autocomplete= "off"})
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide">@Maint.lblUploadFileSizeMax</label>
+            @Html.TextBoxFor(m => m.UPLOAD_FILE_SIZE_LIMIT, new { @class = "txt-w-100 money init_display_money text-left", style = "ime-mode: active;", maxlength = 4 })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide pull-left">@Maint.ACCOUNT_CLOSING_MONTH<span class="RequiredField">*</span></label>
+            @Html.DropDownListFor(m => m.ACCOUNT_CLOSING_MONTH, Model.MONTH_LIST, new { @class = "pull-left" })
+        </div>
+        <div class="form-group">
+            <label class="title-row-wide pull-left">@Maint.CONTRACT_PLAN</label>
+            @Html.DropDownListFor(m => m.PLAN_SEQ_NO, Model.PLAN_LIST, new { @class = "pull-left" })
+            @Html.HiddenFor(m => m.PLAN_REL_SEQ_NO)
+        </div>
+        <div class="form-group">           
+            <label class="title-row-wide">@Maint.AVAILABLE_PERIOD_FROM<span class="RequiredField">*</span></label>
+            <span class="date datepicker-days date-from">
+                @Html.TextBoxFor(m => m.AVAILABLE_PERIOD_FROM, "{0:yyyy/MM/dd}", new { @class = "ime-mode txt-w-100", maxlength = 10 })
+                <button type="button" id="DateFromCalendar" name="DateFromCalendar" class="btn btn-default btn-add-on"><i class="btn-icon btn-calendar"></i></button>
+            </span>
+        </div>
+        <div class="form-group">           
+            <label class="title-row-wide">@Maint.AVAILABLE_PERIOD_TO<span class="RequiredField">*</span></label>
+            <span class="date datepicker-days date-to">
+                @Html.TextBoxFor(m => m.AVAILABLE_PERIOD_TO, "{0:yyyy/MM/dd}", new { @class = "ime-mode txt-w-100", maxlength = 10 })
+                <button type="button" id="DateToCalendar" name="DateToCalendar" class="btn btn-default btn-add-on"><i class="btn-icon btn-calendar"></i></button>
+            </span>
+        </div>
+        <div class="form-group">           
+            <label class="title-row-wide pull-left">@Maint.COMPANY_CONTRACT_STATUS<span class="RequiredField">*</span></label>
+            @Html.DropDownListFor(m => m.COMPANY_CONTRACT_STATUS, Model.COMPANY_CONTRACT_STATUS_LIST, new { @class = "pull-left" })
+        </div>
+        @Html.HiddenFor(m => m.INS_DATE)
+        @Html.HiddenFor(m => m.INS_USER_ID)
+        @Html.HiddenFor(m => m.UPD_DATE)
+        @Html.HiddenFor(m => m.UPD_USER_ID)
+        if (Model.COMPANY_CD != null)
+        {
+            <div class="form-group">
+                @Html.Label(@Maint.REGISTER_DATE, new { @class = "title-row-wide" })
+                @if (Model.INS_DATE != null)
+                {
+                    <label class="font-weight-normal">@Model.INS_DATE.Value.ToString("yyyy/MM/dd HH:mm")</label>
+                }
+
+            </div>
+            <div class="form-group">
+                @Html.Label(@Maint.REGISTER_PERSON, new { @class = "title-row-wide" })
+                <label class="font-weight-normal">@Model.INS_USERNAME</label>
+            </div>
+            <div class="form-group">
+                @Html.Label(@Maint.DATE_MODIFY, new { @class = "title-row-wide" })
+                @if (Model.UPD_DATE != null)
+                {
+                    <label class="font-weight-normal">@Model.UPD_DATE.Value.ToString("yyyy/MM/dd HH:mm")</label>
+                }
+
+            </div>
+            <div class="form-group">
+                @Html.Label(@Maint.PERSON_UPDATE, new { @class = "title-row-wide" })
+                <label class="font-weight-normal">@Model.UPD_USERNAME</label>
+            </div>
+        }
+
+        <div class="form-group action-button-bottom">
+            <button type="button" id="btnBack" name="btnBack" class="btn btn-default"><i class="btn-icon btn-back">@EstimationRegister.btnBack</i></button>
+            <div class="pull-right">
+                <button type="button" id="btnClear" name="btnClear" class="btn btn-default"><i class="btn-icon btn-clear">@EstimationRegister.btnClear</i></button>
+                <button type="button" id="btnSubmit" name="btnSubmit" class="btn btn-orange"><i class="btn-icon btn-edit">@EstimationRegister.btnRegister</i></button>                
+            </div>            
+        </div>
+
+        <input type="hidden" id="CLEAR_COMPANY_NAME" name="CLEAR_COMPANY_NAME" value="@Model.COMPANY_NAME">
+        <input type="hidden" id="CLEAR_COMPANY_ZIP_CD" name="CLEAR_COMPANY_ZIP_CD" value="@Model.COMPANY_ZIP_CD">
+        <input type="hidden" id="CLEAR_COMPANY_ADDR_1" name="CLEAR_COMPANY_ADDR_1" value="@Model.COMPANY_ADDR_1">
+        <input type="hidden" id="CLEAR_COMPANY_ADDR_2" name="CLEAR_COMPANY_ADDR_2" value="@Model.COMPANY_ADDR_2">
+        <input type="hidden" id="CLEAR_COMPANY_GROUP_NAME" name="CLEAR_COMPANY_GROUP_NAME" value="@Model.COMPANY_GROUP_NAME">
+        <input type="hidden" id="CLEAR_COMPANY_STAFF_NAME" name="CLEAR_COMPANY_STAFF_NAME" value="@Model.COMPANY_STAFF_NAME">
+        <input type="hidden" id="CLEAR_COMPANY_STAFF_NAME_KANA" name="CLEAR_COMPANY_STAFF_NAME_KANA" value="@Model.COMPANY_STAFF_NAME_KANA">
+        <input type="hidden" id="CLEAR_COMPANY_STAFF_TEL" name="CLEAR_COMPANY_STAFF_TEL" value="@Model.COMPANY_STAFF_TEL">
+        <input type="hidden" id="CLEAR_COMPANY_STAFF_TEL_EXT" name="CLEAR_COMPANY_STAFF_TEL_EXT" value="@Model.COMPANY_STAFF_TEL_EXT">
+        <input type="hidden" id="CLEAR_COMPANY_STAFF_EMAIL_ADDR" name="CLEAR_COMPANY_STAFF_EMAIL_ADDR" value="@Model.COMPANY_STAFF_EMAIL_ADDR">
+        <input type="hidden" id="CLEAR_ROUNDING_TYPE" name="CLEAR_ROUNDING_TYPE" value="@Model.ROUNDING_TYPE">
+        <input type="hidden" id="CLEAR_CONTRACT_LEVEL_TYPE" name="CLEAR_CONTRACT_LEVEL_TYPE" value="@Model.CONTRACT_LEVEL_TYPE">
+        <input type="hidden" id="CLEAR_EST_NO_USE_PREFIX" name="CLEAR_EST_NO_USE_PREFIX" value="@Model.EST_NO_USE_PREFIX">
+        <input type="hidden" id="CLEAR_EST_NO_USE_YM" name="CLEAR_EST_NO_USE_YM" value="@Model.EST_NO_USE_YM">
+        
+        <input type="hidden" id="CLEAR_EST_COLLECTION_NO_USE_PREFIX" name="CLEAR_EST_COLLECTION_NO_USE_PREFIX" value="@Model.EST_COLLECTION_NO_USE_PREFIX">
+        <input type="hidden" id="CLEAR_EST_COLLECTION_NO_PREFIX" name="CLEAR_EST_COLLECTION_NO_PREFIX" value="@Model.EST_COLLECTION_NO_PREFIX">
+        <input type="hidden" id="CLEAR_EST_COLLECTION_NO_USE_YM" name="CLEAR_EST_COLLECTION_NO_USE_YM" value="@Model.EST_COLLECTION_NO_USE_YM">
+
+        <input type="hidden" id="CLEAR_EST_COLLECTION_FORMAT_PATH" name="CLEAR_EST_COLLECTION_FORMAT_PATH" value="@Model.EST_COLLECTION_FORMAT_PATH">
+        <input type="hidden" id="CLEAR_EST_COLLECTION_FORMAT_DETAIL_LINE" name="CLEAR_EST_COLLECTION_FORMAT_DETAIL_LINE" value="@Model.EST_COLLECTION_FORMAT_DETAIL_LINE">
+        <input type="hidden" id="CLEAR_EST_COLLECTION_FORMAT_NOMEN_LINE" name="CLEAR_EST_COLLECTION_FORMAT_NOMEN_LINE" value="@Model.EST_COLLECTION_FORMAT_NOMEN_LINE">
+
+        <input type="hidden" id="CLEAR_EST_COLLECTION_FORMAT_SES_PATH" name="CLEAR_EST_COLLECTION_FORMAT_SES_PATH" value="@Model.EST_COLLECTION_FORMAT_SES_PATH">
+        <input type="hidden" id="CLEAR_EST_COLLECTION_FORMAT_SES_DETAIL_LINE" name="CLEAR_EST_COLLECTION_FORMAT_SES_DETAIL_LINE" value="@Model.EST_COLLECTION_FORMAT_SES_DETAIL_LINE">
+        <input type="hidden" id="CLEAR_EST_COLLECTION_FORMAT_SES_NOMEN_LINE" name="CLEAR_EST_COLLECTION_FORMAT_SES_NOMEN_LINE" value="@Model.EST_COLLECTION_FORMAT_SES_NOMEN_LINE">
+
+        <input type="hidden" id="CLEAR_ORD_COLLECTION_FORMAT_PATH" name="CLEAR_ORD_COLLECTION_FORMAT_PATH" value="@Model.ORD_COLLECTION_FORMAT_PATH">
+        <input type="hidden" id="CLEAR_ORD_COLLECTION_FORMAT_DETAIL_LINE" name="CLEAR_ORD_COLLECTION_FORMAT_DETAIL_LINE" value="@Model.ORD_COLLECTION_FORMAT_DETAIL_LINE">
+        <input type="hidden" id="CLEAR_ORD_COLLECTION_FORMAT_NOMEN_LINE" name="CLEAR_ORD_COLLECTION_FORMAT_NOMEN_LINE" value="@Model.ORD_COLLECTION_FORMAT_NOMEN_LINE">
+
+        <input type="hidden" id="CLEAR_ORD_COLLECTION_FORMAT_SES_PATH" name="CLEAR_ORD_COLLECTION_FORMAT_SES_PATH" value="@Model.ORD_COLLECTION_FORMAT_SES_PATH">
+        <input type="hidden" id="CLEAR_ORD_COLLECTION_FORMAT_SES_DETAIL_LINE" name="CLEAR_ORD_COLLECTION_FORMAT_SES_DETAIL_LINE" value="@Model.ORD_COLLECTION_FORMAT_SES_DETAIL_LINE">
+        <input type="hidden" id="CLEAR_ORD_COLLECTION_FORMAT_SES_NOMEN_LINE" name="CLEAR_ORD_COLLECTION_FORMAT_SES_NOMEN_LINE" value="@Model.ORD_COLLECTION_FORMAT_SES_NOMEN_LINE">
+
+        <input type="hidden" id="CLEAR_BILL_NO_USE_PREFIX" name="CLEAR_BILL_NO_USE_PREFIX" value="@Model.BILL_NO_USE_PREFIX">
+        <input type="hidden" id="CLEAR_BILL_NO_PREFIX" name="CLEAR_BILL_NO_PREFIX" value="@Model.BILL_NO_PREFIX">
+        <input type="hidden" id="CLEAR_BILL_NO_USE_YM" name="CLEAR_BILL_NO_USE_YM" value="@Model.BILL_NO_USE_YM">
+        <input type="hidden" id="CLEAR_BILL_FORMAT_PATH" name="CLEAR_BILL_FORMAT_PATH" value="@Model.BILL_FORMAT_PATH">
+        <input type="hidden" id="CLEAR_BILL_FORMAT_DETAIL_LINE" name="CLEAR_BILL_FORMAT_DETAIL_LINE" value="@Model.BILL_FORMAT_DETAIL_LINE">
+        <input type="hidden" id="CLEAR_BILL_FORMAT_SES_PATH" name="CLEAR_BILL_FORMAT_SES_PATH" value="@Model.BILL_FORMAT_SES_PATH">
+        <input type="hidden" id="CLEAR_BILL_FORMAT_SES_DETAIL_LINE" name="CLEAR_BILL_FORMAT_SES_DETAIL_LINE" value="@Model.BILL_FORMAT_SES_DETAIL_LINE">
+        <input type="hidden" id="CLEAR_BILL_FORMAT_TEMP_PATH" name="CLEAR_BILL_FORMAT_TEMP_PATH" value="@Model.BILL_FORMAT_TEMP_PATH">
+        <input type="hidden" id="CLEAR_BILL_FORMAT_TEMP_DETAIL_LINE" name="CLEAR_BILL_FORMAT_TEMP_DETAIL_LINE" value="@Model.BILL_FORMAT_TEMP_DETAIL_LINE">
+        <input type="hidden" id="CLEAR_BILL_PAYEE_TITLE" name="CLEAR_BILL_PAYEE_TITLE" value="@Model.BILL_PAYEE_TITLE">
+        <input type="hidden" id="CLEAR_BILL_PAYEE_NOTE" name="CLEAR_BILL_PAYEE_NOTE" value="@Model.BILL_PAYEE_NOTE">
+        <input type="hidden" id="CLEAR_DELIVERY_NO_USE_PREFIX" name="CLEAR_DELIVERY_NO_USE_PREFIX" value="@Model.DELIVERY_NO_USE_PREFIX">
+        <input type="hidden" id="CLEAR_DELIVERY_NO_USE_YM" name="CLEAR_DELIVERY_NO_USE_YM" value="@Model.DELIVERY_NO_USE_YM">
+        <input type="hidden" id="CLEAR_PLC_ORDER_NO_USE_PREFIX" name="CLEAR_PLC_ORDER_NO_USE_PREFIX" value="@Model.PLC_ORDER_NO_USE_PREFIX">
+        <input type="hidden" id="CLEAR_PLC_ORDER_NO_USE_YM" name="CLEAR_PLC_ORDER_NO_USE_YM" value="@Model.PLC_ORDER_NO_USE_YM">
+        <input type="hidden" id="CLEAR_BILL_DIRECT_TITLE" name="CLEAR_BILL_DIRECT_TITLE" value="@Model.BILL_DIRECT_TITLE">
+        <input type="hidden" id="CLEAR_BILL_DIRECT_NOTE" name="CLEAR_BILL_DIRECT_NOTE" value="@Model.BILL_DIRECT_NOTE">
+        <input type="hidden" id="CLEAR_PLC_ORDER_FORMAT_PATH" name="CLEAR_PLC_ORDER_FORMAT_PATH" value="@Model.PLC_ORDER_FORMAT_PATH">
+        <input type="hidden" id="CLEAR_PLC_ORDER_FORMAT_DETAIL_LINE" name="CLEAR_PLC_ORDER_FORMAT_DETAIL_LINE" value="@Model.PLC_ORDER_FORMAT_DETAIL_LINE">
+        <input type="hidden" id="CLEAR_PLC_PAYMENT_NOTICE_FORMAT_PATH" name="CLEAR_PLC_PAYMENT_NOTICE_FORMAT_PATH" value="@Model.PLC_PAYMENT_NOTICE_FORMAT_PATH">
+        <input type="hidden" id="CLEAR_DOC_COVER_LETTER_FORMAT_PATH" name="CLEAR_DOC_COVER_LETTER_FORMAT_PATH" value="@Model.DOC_COVER_LETTER_FORMAT_PATH">
+        <input type="hidden" id="CLEAR_FAX_COVER_LETTER_FORMAT_PATH" name="CLEAR_FAX_COVER_LETTER_FORMAT_PATH" value="@Model.FAX_COVER_LETTER_FORMAT_PATH">
+        <input type="hidden" id="CLEAR_ENVELOPE_DESTINATION_FORMAT_PATH" name="CLEAR_ENVELOPE_DESTINATION_FORMAT_PATH" value="@Model.ENVELOPE_DESTINATION_FORMAT_PATH">
+        <input type="hidden" id="CLEAR_AVAILABLE_PERIOD_FROM" name="CLEAR_AVAILABLE_PERIOD_FROM" value="@Model.AVAILABLE_PERIOD_FROM">
+        <input type="hidden" id="CLEAR_AVAILABLE_PERIOD_TO" name="CLEAR_AVAILABLE_PERIOD_TO" value="@Model.AVAILABLE_PERIOD_TO">
+        <input type="hidden" id="CLEAR_COMPANY_CONTRACT_STATUS" name="CLEAR_COMPANY_CONTRACT_STATUS" value="@Model.COMPANY_CONTRACT_STATUS">
+        <input type="hidden" id="CLEAR_COMPANY_LOGO_IMAGE_PATH" name="CLEAR_COMPANY_LOGO_IMAGE_PATH" value="@Model.COMPANY_LOGO_IMAGE_PATH">
+        <input type="hidden" id="CLEAR_ACCOUNT_CLOSING_MONTH" name="CLEAR_ACCOUNT_CLOSING_MONTH" value="@Model.ACCOUNT_CLOSING_MONTH">
+        <input type="hidden" id="CLEAR_UPLOAD_FILE_PASSWORD" name="CLEAR_UPLOAD_FILE_PASSWORD" value="@Model.UPLOAD_FILE_PASSWORD">
+        <input type="hidden" id="CLEAR_UPLOAD_FILE_SIZE_LIMIT" name="CLEAR_UPLOAD_FILE_SIZE_LIMIT" value="@Model.UPLOAD_FILE_SIZE_LIMIT">
+    }
+    @using (Html.BeginForm("ContractCompanyMaintList", "ContractCompanyMaint", FormMethod.Post, new
+    {
+        area = "Maint",
+        id = "formContractCompanyMaint",
+        enctype = "multipart/form-data"
+    }))
+    {
+        @Html.HiddenFor(m => m.SEARCH_COMPANY_CD)
+        @Html.HiddenFor(m => m.SEARCH_COMPANY_NAME)
+        @Html.HiddenFor(m => m.SEARCH_COMPANY_GROUP_NAME)
+        @Html.HiddenFor(m => m.SEARCH_COMPANY_STAFF_NAME)
+        @Html.HiddenFor(m => m.SEARCH_COMPANY_CONTRACT_STATUS)
+        @Html.HiddenFor(m => m.SEARCH_START)
+        @Html.HiddenFor(m => m.SEARCH_LENGTH)
+    }
+</div>
+
+<script type="text/javascript">
+    iseiQ.utility.focusTextbox();
+    iseiQ.utility.checkInputAlphanumeric($("#COMPANY_CD"));
+    iseiQ.utility.checkInputAlphanumeric($("#EST_NO_USE_PREFIX"));
+
+    iseiQ.utility.checkInputPhone($("#COMPANY_ZIP_CD"));
+    iseiQ.utility.checkInputPhone($("#COMPANY_STAFF_TEL"));
+
+    iseiQ.utility.checkInputNumber($("#COMPANY_STAFF_TEL_EXT"));
+    iseiQ.utility.checkInputNumber($("#BILL_FORMAT_DETAIL_LINE"));
+    iseiQ.utility.checkInputNumber($("#BILL_FORMAT_SES_DETAIL_LINE"));
+    iseiQ.utility.checkInputNumber($("#BILL_FORMAT_TEMP_DETAIL_LINE"));
+    iseiQ.utility.checkInputNumber($("#PLC_ORDER_FORMAT_DETAIL_LINE"));
+
+    iseiQ.utility.validFullHalfSize($("#BILL_NO_PREFIX"));
+    iseiQ.utility.validFullHalfSize($("#AVAILABLE_PERIOD_FROM"));
+    iseiQ.utility.validFullHalfSize($("#AVAILABLE_PERIOD_TO"));
+
+    iseiQ.utility.validFullHalfSize($("#EST_COLLECTION_NO_PREFIX"));
+    iseiQ.utility.imeControl($("#EST_COLLECTION_NO_PREFIX"), 'disable');
+
+    iseiQ.utility.checkInputNumber($("#EST_COLLECTION_FORMAT_DETAIL_LINE"));
+    iseiQ.utility.checkInputNumber($("#EST_COLLECTION_FORMAT_NOMEN_LINE"));
+    iseiQ.utility.checkInputNumber($("#EST_COLLECTION_FORMAT_SES_DETAIL_LINE"));
+    iseiQ.utility.checkInputNumber($("#EST_COLLECTION_FORMAT_SES_NOMEN_LINE"));
+    iseiQ.utility.checkInputNumber($("#ORD_COLLECTION_FORMAT_DETAIL_LINE"));
+    iseiQ.utility.checkInputNumber($("#ORD_COLLECTION_FORMAT_NOMEN_LINE"));
+    iseiQ.utility.checkInputNumber($("#ORD_COLLECTION_FORMAT_SES_DETAIL_LINE"));
+    iseiQ.utility.checkInputNumber($("#ORD_COLLECTION_FORMAT_SES_NOMEN_LINE"));
+
+    iseiQ.utility.imeControl($("#COMPANY_CD"), 'disable');
+    iseiQ.utility.imeControl($("#COMPANY_ZIP_CD"), 'disable');
+    iseiQ.utility.imeControl($("#COMPANY_STAFF_TEL"), 'disable');
+    iseiQ.utility.imeControl($("#COMPANY_STAFF_TEL_EXT"), 'disable');
+    iseiQ.utility.imeControl($("#BILL_NO_PREFIX"), 'disable');
+    iseiQ.utility.imeControl($("#BILL_FORMAT_DETAIL_LINE"), 'disable');
+    iseiQ.utility.imeControl($("#BILL_FORMAT_SES_DETAIL_LINE"), 'disable');
+    iseiQ.utility.imeControl($("#PLC_ORDER_FORMAT_DETAIL_LINE"), 'disable');
+    iseiQ.utility.imeControl($("#AVAILABLE_PERIOD_FROM"), 'disable');
+    iseiQ.utility.imeControl($("#AVAILABLE_PERIOD_TO"), 'disable');
+
+    iseiQ.utility.formatMoneyTypeDecimal();
+    iseiQ.utility.checkInputNumber($("#UPLOAD_FILE_SIZE_LIMIT"));
+    iseiQ.utility.imeControl($("#COMPANY_STAFF_EMAIL_ADDR"), 'inactive');
+
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+    var ContractCompanyMaintListUrl = '@Url.Action("ContractCompanyMaintList", "ContractCompanyMaint", new { area = "Maint" })';
+    var isChangePassword = 0;
+    $(function () {
+        if ("@Model.COMPANY_CD" == "") {
+            $(".date.datepicker-days.date-from").datepicker("setDate", "@tempDateTime");
+            $(".date.datepicker-days.date-to").datepicker("setDate", "@tempDateTime");
+            $("#AVAILABLE_PERIOD_FROM").val("");
+            $("#AVAILABLE_PERIOD_TO").val("");
+        }
+        else {
+            if ("@Model.UPLOAD_FILE_PASSWORD" != "") {
+                $("#UPLOAD_FILE_PASSWORD").val("@Constant.DISPLAY_PASSWORD");
+
+            }
+        }
+    });
+
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Check validate
+    ////////////////////////////////////////////////////////////////////////////////////
+    function validateData() {
+        var invalidMess = [];
+        var company_cd = $('#COMPANY_CD').val();
+        var company_name = $('#COMPANY_NAME').val();
+        var company_zip_cd = $('#COMPANY_ZIP_CD').val();
+        var company_addr_1 = $('#COMPANY_ADDR_1').val();
+        var company_addr_2 = $('#COMPANY_ADDR_2').val();
+        var company_group_name = $('#COMPANY_GROUP_NAME').val();
+        var company_staff_name = $('#COMPANY_STAFF_NAME').val();
+        var company_staff_name_kana = $('#COMPANY_STAFF_NAME_KANA').val();
+        var company_staff_tel = $('#COMPANY_STAFF_TEL').val();
+        var company_staff_tel_ext = $('#COMPANY_STAFF_TEL_EXT').val();
+        var company_staff_email_addr = $('#COMPANY_STAFF_EMAIL_ADDR').val();
+        var bill_no_prefix = $('#BILL_NO_PREFIX').val();
+        var bill_format_path = $('#BILL_FORMAT_PATH').val();
+        var bill_format_detail_line = $('#BILL_FORMAT_DETAIL_LINE').val();
+        var bill_format_ses_path = $('#BILL_FORMAT_SES_PATH').val();
+        var bill_format_ses_detail_line = $('#BILL_FORMAT_SES_DETAIL_LINE').val();
+        var bill_format_temp_path = $('#BILL_FORMAT_TEMP_PATH').val();
+        var bill_format_temp_detail_line = $('#BILL_FORMAT_TEMP_DETAIL_LINE').val();
+        var bill_payee_title = $('#BILL_PAYEE_TITLE').val();
+        var bill_payee_note = $('#BILL_PAYEE_NOTE').val();
+        var bill_direct_title = $('#BILL_DIRECT_TITLE').val();
+        var bill_direct_note = $('#BILL_DIRECT_NOTE').val();
+        var plc_order_format_path = $('#PLC_ORDER_FORMAT_PATH').val();
+        var plc_order_format_detail_line = $('#PLC_ORDER_FORMAT_DETAIL_LINE').val();
+        var plc_payment_notice_format_path = $('#PLC_PAYMENT_NOTICE_FORMAT_PATH').val();
+        var doc_cover_letter_format_path = $('#DOC_COVER_LETTER_FORMAT_PATH').val();
+        var fax_cover_letter_format_path = $('#FAX_COVER_LETTER_FORMAT_PATH').val();
+        var envelope_destination_format_path = $('#ENVELOPE_DESTINATION_FORMAT_PATH').val();
+        var available_period_from = $('#AVAILABLE_PERIOD_FROM').val();
+        var available_period_to = $('#AVAILABLE_PERIOD_TO').val();
+        var roundType = $('#ROUNDING_TYPE').val();
+        var contractLevelType = $('#CONTRACT_LEVEL_TYPE').val();
+        var ESTNoUsePrefix = $('#EST_NO_USE_PREFIX').val();
+        var ESTNoUseYm = $('#EST_NO_USE_YM').val();
+
+        var EstColNoUsePrefix = $('#EST_COLLECTION_NO_USE_PREFIX').val();
+        var EstColNoPrefix = $('#EST_COLLECTION_NO_PREFIX').val();
+        var EstColNoUseYm = $('#EST_COLLECTION_NO_USE_YM').val();
+
+        var EstColFormatPath = $('#EST_COLLECTION_FORMAT_PATH').val();
+        var EstColFormatDetailLine = $('#EST_COLLECTION_FORMAT_DETAIL_LINE').val();
+        var EstColFormatNomenLine = $('#EST_COLLECTION_FORMAT_NOMEN_LINE').val();
+
+        var EstColFormatSESPath = $('#EST_COLLECTION_FORMAT_SES_PATH').val();
+        var EstColFormatSESDetailLine = $('#EST_COLLECTION_FORMAT_SES_DETAIL_LINE').val();
+        var EstColFormatSESNomenLine = $('#EST_COLLECTION_FORMAT_SES_NOMEN_LINE').val();
+
+        var OrdColFormatPath = $('#ORD_COLLECTION_FORMAT_PATH').val();
+        var OrdColFormatDetailLine = $('#ORD_COLLECTION_FORMAT_DETAIL_LINE').val();
+        var OrdColFormatNomenLine = $('#ORD_COLLECTION_FORMAT_NOMEN_LINE').val();
+
+        var OrdColFormatSESPath = $('#ORD_COLLECTION_FORMAT_SES_PATH').val();
+        var OrdColFormatSESDetailLine = $('#ORD_COLLECTION_FORMAT_SES_DETAIL_LINE').val();
+        var OrdColFormatSESNomenLine = $('#ORD_COLLECTION_FORMAT_SES_NOMEN_LINE').val();
+
+        var BillNoUsePrefix = $('#BILL_NO_USE_PREFIX').val();
+        var BillNoUseYm = $('#BILL_NO_USE_YM').val();
+        var companyContractStatus = $('#COMPANY_CONTRACT_STATUS').val();
+        var logoPath = $('#COMPANY_LOGO_IMAGE_PATH').val();
+        var filePassword = $('#UPLOAD_FILE_PASSWORD').val();
+        var sizeLimit = $('#UPLOAD_FILE_SIZE_LIMIT').val();
+
+        //必須項目
+        if (company_cd.trim() == "") {
+            errDisplay = '@Maint.KEIYAKU_COMPANY_CD' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (company_name.trim() == "") {
+            errDisplay = '@Maint.COMPANY_NAME' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (bill_no_prefix.trim() == "") {
+            errDisplay = '@Maint.BILL_NO_PREFIX' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (bill_format_path.trim() == "") {
+            errDisplay = '@Maint.BILL_FORMAT_PATH' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (bill_format_detail_line.trim() == "") {
+            errDisplay = '@Maint.BILL_FORMAT_DETAIL_LINE' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (bill_format_ses_path.trim() == "") {
+            errDisplay = '@Maint.BILL_FORMAT_SES_PATH' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (bill_format_ses_detail_line.trim() == "") {
+            errDisplay = '@Maint.BILL_FORMAT_SES_DETAIL_LINE' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (bill_format_temp_detail_line.trim() == "") {
+            errDisplay = '@Maint.BILL_FORMAT_TEMP_DETAIL_LINE' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (plc_order_format_path.trim() == "") {
+            errDisplay = '@Maint.PLC_ORDER_FORMAT_PATH' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (plc_order_format_detail_line.trim() == "") {
+            errDisplay = '@Maint.PLC_ORDER_FORMAT_DETAIL_LINE' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (plc_payment_notice_format_path.trim() == "") {
+            errDisplay = '@Maint.PLC_PAYMENT_NOTICE_FORMAT_PATH' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (doc_cover_letter_format_path.trim() == "") {
+            errDisplay = '@Maint.DOC_COVER_LETTER_FORMAT_PATH' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (fax_cover_letter_format_path.trim() == "") {
+            errDisplay = '@Maint.FAX_COVER_LETTER_FORMAT_PATH' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (envelope_destination_format_path.trim() == "") {
+            errDisplay = '@Maint.ENVELOPE_DESTINATION_FORMAT_PATH' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (available_period_from.trim() == "") {
+            errDisplay = '@Maint.AVAILABLE_PERIOD_FROM' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (roundType.trim() == "") {
+            errDisplay = '@Maint.ROUNDING_TYPE' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (contractLevelType.trim() == "") {
+            errDisplay = '@Maint.CONTRACT_LEVEL_TYPE' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (ESTNoUsePrefix.trim() == "") {
+            errDisplay = '@Maint.EST_NO_USE_PREFIX' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (ESTNoUseYm.trim() == "") {
+            errDisplay = '@Maint.EST_NO_USE_YM' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (EstColNoUsePrefix.trim() == "") {
+            errDisplay = '@Maint.EST_COLLECTION_NO_USE_PREFIX' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (EstColNoPrefix.trim() == "") {
+            errDisplay = '@Maint.EST_COLLECTION_NO_PREFIX' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+        if (EstColNoUseYm.trim() == "") {
+            errDisplay = '@Maint.EST_COLLECTION_NO_USE_YM' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (EstColFormatPath.trim() == "") {
+            errDisplay = '@Maint.EST_COLLECTION_FORMAT_PATH' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        } if (EstColFormatDetailLine.trim() == "") {
+            errDisplay = '@Maint.EST_COLLECTION_FORMAT_DETAIL_LINE' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        } if (EstColFormatNomenLine.trim() == "") {
+            errDisplay = '@Maint.EST_COLLECTION_FORMAT_NOMEN_LINE' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (EstColFormatSESPath.trim() == "") {
+            errDisplay = '@Maint.EST_COLLECTION_FORMAT_SES_PATH' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        } if (EstColFormatSESDetailLine.trim() == "") {
+            errDisplay = '@Maint.EST_COLLECTION_FORMAT_SES_DETAIL_LINE' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        } if (EstColFormatSESNomenLine.trim() == "") {
+            errDisplay = '@Maint.EST_COLLECTION_FORMAT_SES_NOMEN_LINE' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (OrdColFormatPath.trim() == "") {
+            errDisplay = '@Maint.ORD_COLLECTION_FORMAT_PATH' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        } if (OrdColFormatDetailLine.trim() == "") {
+            errDisplay = '@Maint.ORD_COLLECTION_FORMAT_DETAIL_LINE' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        } if (OrdColFormatNomenLine.trim() == "") {
+            errDisplay = '@Maint.ORD_COLLECTION_FORMAT_NOMEN_LINE' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (OrdColFormatSESPath.trim() == "") {
+            errDisplay = '@Maint.ORD_COLLECTION_FORMAT_SES_PATH' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        } if (OrdColFormatSESDetailLine.trim() == "") {
+            errDisplay = '@Maint.ORD_COLLECTION_FORMAT_SES_DETAIL_LINE' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        } if (OrdColFormatSESNomenLine.trim() == "") {
+            errDisplay = '@Maint.ORD_COLLECTION_FORMAT_SES_NOMEN_LINE' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (BillNoUsePrefix.trim() == "") {
+            errDisplay = '@Maint.BILL_NO_USE_PREFIX' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (BillNoUseYm.trim() == "") {
+            errDisplay = '@Maint.BILL_NO_USE_YM' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (companyContractStatus.trim() == "") {
+            errDisplay = '@Maint.COMPANY_CONTRACT_STATUS' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        //入力チェック
+        if (company_staff_email_addr.length > 0) {
+            // check max length of email
+            if (company_staff_email_addr.length > '@Constant.EMAIL_ADDR_MAX_LENGTH') {
+                invalidMess.push("@string.Format(@Messages.MaxLength, @PartnerStaffRegister.lblMailAddress, @Constant.EMAIL_ADDR_MAX_LENGTH)");
+            }
+            // check email
+            if (!iseiQ.utility.validEmail(company_staff_email_addr)) {
+                invalidMess.push("@string.Format(@Messages.IncorrectFormat, @PartnerStaffRegister.lblMailAddress)");
+            }
+        }
+
+        if (available_period_to != "" && available_period_from > available_period_to) {
+            invalidMess.push("@string.Format(@Messages.ErrCompareTwoDate, @Maint.AVAILABLE_PERIOD_TO, @Maint.AVAILABLE_PERIOD_FROM)");
+        }
+
+        if (EstColFormatDetailLine > 2147483647) {
+            invalidMess.push("@string.Format(@Messages.InputNumErr, @Maint.EST_COLLECTION_FORMAT_DETAIL_LINE)");
+        } if (EstColFormatNomenLine > 2147483647) {
+            invalidMess.push("@string.Format(@Messages.InputNumErr, @Maint.EST_COLLECTION_FORMAT_NOMEN_LINE)");
+        } if (EstColFormatSESDetailLine > 2147483647) {
+            invalidMess.push("@string.Format(@Messages.InputNumErr, @Maint.EST_COLLECTION_FORMAT_SES_DETAIL_LINE)");
+        } if (EstColFormatSESNomenLine > 2147483647) {
+            invalidMess.push("@string.Format(@Messages.InputNumErr, @Maint.EST_COLLECTION_FORMAT_SES_NOMEN_LINE)");
+        } if (OrdColFormatDetailLine > 2147483647) {
+            invalidMess.push("@string.Format(@Messages.InputNumErr, @Maint.ORD_COLLECTION_FORMAT_DETAIL_LINE)");
+        } if (OrdColFormatNomenLine > 2147483647) {
+            invalidMess.push("@string.Format(@Messages.InputNumErr, @Maint.ORD_COLLECTION_FORMAT_NOMEN_LINE)");
+        } if (OrdColFormatSESDetailLine > 2147483647) {
+            invalidMess.push("@string.Format(@Messages.InputNumErr, @Maint.ORD_COLLECTION_FORMAT_SES_DETAIL_LINE)");
+        } if (OrdColFormatSESNomenLine > 2147483647) {
+            invalidMess.push("@string.Format(@Messages.InputNumErr, @Maint.ORD_COLLECTION_FORMAT_SES_NOMEN_LINE)");
+        }
+
+        if (bill_format_detail_line > 2147483647) {
+            invalidMess.push("@string.Format(@Messages.InputNumErr, @Maint.BILL_FORMAT_DETAIL_LINE)");
+        }
+
+        if (bill_format_ses_detail_line > 2147483647) {
+            invalidMess.push("@string.Format(@Messages.InputNumErr, @Maint.BILL_FORMAT_SES_DETAIL_LINE)");
+        }
+
+        if (bill_format_temp_detail_line > 2147483647) {
+            invalidMess.push("@string.Format(@Messages.InputNumErr, @Maint.BILL_FORMAT_TEMP_DETAIL_LINE)");
+        }
+
+        if (plc_order_format_detail_line > 2147483647) {
+            invalidMess.push("@string.Format(@Messages.InputNumErr, @Maint.PLC_ORDER_FORMAT_DETAIL_LINE)");
+        }
+
+        sizeLimit = sizeLimit.replace(/,/g, '');
+        if (sizeLimit > 9999) {
+            invalidMess.push("@string.Format(@Messages.InputNumErr, @Maint.lblUploadFileSizeMax)");
+        }
+        //バイト数チェック
+        var str = $('input[name="str"]').val();
+        $('#result').html(encodeURIComponent(str).replace(/%../g, "x").length);
+
+        if (encodeURIComponent(EstColFormatPath).replace(/%../g, "x").length > 255) {
+            invalidMess.push("@string.Format(@Messages.InputLengthErr, @Maint.EST_COLLECTION_FORMAT_PATH)");
+        }
+        if (encodeURIComponent(EstColFormatSESPath).replace(/%../g, "x").length > 255) {
+            invalidMess.push("@string.Format(@Messages.InputLengthErr, @Maint.EST_COLLECTION_FORMAT_SES_PATH)");
+        }
+        if (encodeURIComponent(OrdColFormatPath).replace(/%../g, "x").length > 255) {
+            invalidMess.push("@string.Format(@Messages.InputLengthErr, @Maint.ORD_COLLECTION_FORMAT_PATH)");
+        }
+        if (encodeURIComponent(OrdColFormatSESPath).replace(/%../g, "x").length > 255) {
+            invalidMess.push("@string.Format(@Messages.InputLengthErr, @Maint.ORD_COLLECTION_FORMAT_SES_PATH)");
+        }
+
+        if (encodeURIComponent(bill_format_path).replace(/%../g, "x").length > 255) {
+            invalidMess.push("@string.Format(@Messages.InputLengthErr, @Maint.BILL_FORMAT_PATH)");
+        }
+
+        if (encodeURIComponent(bill_format_ses_path).replace(/%../g, "x").length > 255) {
+            invalidMess.push("@string.Format(@Messages.InputLengthErr, @Maint.BILL_FORMAT_SES_PATH)");
+        }
+
+        if (encodeURIComponent(bill_format_temp_path).replace(/%../g, "x").length > 255) {
+            invalidMess.push("@string.Format(@Messages.InputLengthErr, @Maint.BILL_FORMAT_TEMP_PATH)");
+        }
+
+        if (encodeURIComponent(plc_order_format_path).replace(/%../g, "x").length > 255) {
+            invalidMess.push("@string.Format(@Messages.InputLengthErr, @Maint.PLC_ORDER_FORMAT_PATH)");
+        }
+
+        if (encodeURIComponent(plc_payment_notice_format_path).replace(/%../g, "x").length > 255) {
+            invalidMess.push("@string.Format(@Messages.InputLengthErr, @Maint.PLC_PAYMENT_NOTICE_FORMAT_PATH)");
+        }
+
+        if (encodeURIComponent(doc_cover_letter_format_path).replace(/%../g, "x").length > 255) {
+            invalidMess.push("@string.Format(@Messages.InputLengthErr, @Maint.DOC_COVER_LETTER_FORMAT_PATH)");
+        }
+
+        if (encodeURIComponent(fax_cover_letter_format_path).replace(/%../g, "x").length > 255) {
+            invalidMess.push("@string.Format(@Messages.InputLengthErr, @Maint.FAX_COVER_LETTER_FORMAT_PATH)");
+        }
+
+        if (encodeURIComponent(envelope_destination_format_path).replace(/%../g, "x").length > 255) {
+            invalidMess.push("@string.Format(@Messages.InputLengthErr, @Maint.ENVELOPE_DESTINATION_FORMAT_PATH)");
+        }
+
+        if (encodeURIComponent(logoPath).replace(/%../g, "x").length > 255) {
+            invalidMess.push("@string.Format(@Messages.InputLengthErr, @Maint.COMPANY_LOGO_IMAGE_PATH)");
+        }
+
+        if (!iseiQ.utility.validAccount(filePassword) && isChangePassword) {
+            invalidMess.push("@string.Format(Messages.PasswordInvalidCharacter)");
+        }
+
+        return invalidMess;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Clear
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnClear');
+    $(document).on('click', '#btnClear', function () {
+        iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmClear)', function (action) {
+            $('.validation-summary-errors').remove();
+            if (action) {
+                if ("@Model.COMPANY_CD" == "") {
+                    var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+                    if (!result) return;
+
+                    $('#COMPANY_CD').val("");
+                    $('#COMPANY_NAME').val("");
+                    $('#COMPANY_ZIP_CD').val("");
+                    $('#COMPANY_ADDR_1').val("");
+                    $('#COMPANY_ADDR_2').val("");
+                    $('#COMPANY_GROUP_NAME').val("");
+                    $('#COMPANY_STAFF_NAME').val("");
+                    $('#COMPANY_STAFF_NAME_KANA').val("");
+                    $('#COMPANY_STAFF_TEL').val("");
+                    $('#COMPANY_STAFF_TEL_EXT').val("");
+                    $('#COMPANY_STAFF_EMAIL_ADDR').val("");
+                    $('#ROUNDING_TYPE').val("0");
+                    $('#CONTRACT_LEVEL_TYPE').val("0");
+                    $('#EST_NO_USE_PREFIX').val("0");
+                    $('#EST_NO_USE_YM').val("0");
+
+
+                    $('#EST_COLLECTION_NO_USE_PREFIX').val("0");
+                    $('#EST_COLLECTION_NO_PREFIX').val("");
+                    $('#EST_COLLECTION_NO_USE_YM').val("0");
+
+                    $('#EST_COLLECTION_FORMAT_PATH').val("");
+                    $('#EST_COLLECTION_FORMAT_SES_PATH').val("");
+                    $('#ORD_COLLECTION_FORMAT_PATH').val("");
+                    $('#ORD_COLLECTION_FORMAT_SES_PATH').val("");
+
+                    $('#EST_COLLECTION_FORMAT_DETAIL_LINE').val("0");
+                    $('#EST_COLLECTION_FORMAT_NOMEN_LINE').val("0");
+                    $('#EST_COLLECTION_FORMAT_SES_DETAIL_LINE').val("0");
+                    $('#EST_COLLECTION_FORMAT_SES_NOMEN_LINE').val("0");
+                    $('#ORD_COLLECTION_FORMAT_DETAIL_LINE').val("0");
+                    $('#ORD_COLLECTION_FORMAT_NOMEN_LINE').val("0");
+                    $('#ORD_COLLECTION_FORMAT_SES_DETAIL_LINE').val("0");
+                    $('#ORD_COLLECTION_FORMAT_SES_NOMEN_LINE').val("0");
+
+                    $('#BILL_NO_USE_PREFIX').val("0");
+                    $('#BILL_NO_PREFIX').val("");
+                    $('#BILL_NO_USE_YM').val("0");
+                    $('#BILL_FORMAT_PATH').val("");
+                    $('#BILL_FORMAT_DETAIL_LINE').val("0");
+                    $('#BILL_FORMAT_SES_PATH').val("");
+                    $('#BILL_FORMAT_SES_DETAIL_LINE').val("0");
+                    $('#BILL_FORMAT_TEMP_PATH').val("");
+                    $('#BILL_FORMAT_TEMP_DETAIL_LINE').val("0");
+                    $('#BILL_PAYEE_TITLE').val("");
+                    $('#BILL_PAYEE_NOTE').val("");
+                    $('#BILL_DIRECT_TITLE').val("");
+                    $('#BILL_DIRECT_NOTE').val("");
+                    $('#DELIVERY_NO_USE_PREFIX').val("0");
+                    $('#DELIVERY_NO_USE_YM').val("0");
+                    $('#PLC_ORDER_NO_USE_PREFIX').val("0");
+                    $('#PLC_ORDER_NO_USE_YM').val("0");
+                    $('#PLC_ORDER_FORMAT_PATH').val("");
+                    $('#PLC_ORDER_FORMAT_DETAIL_LINE').val("0");
+                    $('#PLC_PAYMENT_NOTICE_FORMAT_PATH').val("");
+                    $('#DOC_COVER_LETTER_FORMAT_PATH').val("");
+                    $('#FAX_COVER_LETTER_FORMAT_PATH').val("");
+                    $('#ENVELOPE_DESTINATION_FORMAT_PATH').val("");
+                    $(".date.datepicker-days.date-from").datepicker("setDate", "@tempDateTime");
+                    $(".date.datepicker-days.date-to").datepicker("setDate", "@tempDateTime");
+                    $('#AVAILABLE_PERIOD_FROM').val("");
+                    $('#AVAILABLE_PERIOD_TO').val("");
+                    $('#COMPANY_CONTRACT_STATUS').val("0");
+                    $('#COMPANY_LOGO_IMAGE_PATH').val("");
+                    $('#UPLOAD_FILE_PASSWORD').val("");
+                    $('#UPLOAD_FILE_SIZE_LIMIT').val("0");
+                    $('#ACCOUNT_CLOSING_MONTH').val("0");
+                } else {
+                    isChangePassword = 0;
+                    $('#COMPANY_NAME').val($("#CLEAR_COMPANY_NAME").val());
+                    $('#COMPANY_ZIP_CD').val($("#CLEAR_COMPANY_ZIP_CD").val());
+                    $('#COMPANY_ADDR_1').val($("#CLEAR_COMPANY_ADDR_1").val());
+                    $('#COMPANY_ADDR_2').val($("#CLEAR_COMPANY_ADDR_2").val());
+                    $('#COMPANY_GROUP_NAME').val($("#CLEAR_COMPANY_GROUP_NAME").val());
+                    $('#COMPANY_STAFF_NAME').val($("#CLEAR_COMPANY_STAFF_NAME").val());
+                    $('#COMPANY_STAFF_NAME_KANA').val($("#CLEAR_COMPANY_STAFF_NAME_KANA").val());
+                    $('#COMPANY_STAFF_TEL').val($("#CLEAR_COMPANY_STAFF_TEL").val());
+                    $('#COMPANY_STAFF_TEL_EXT').val($("#CLEAR_COMPANY_STAFF_TEL_EXT").val());
+                    $('#COMPANY_STAFF_EMAIL_ADDR').val($("#CLEAR_COMPANY_STAFF_EMAIL_ADDR").val());
+                    $('#ROUNDING_TYPE').val($("#CLEAR_ROUNDING_TYPE").val());
+                    $('#CONTRACT_LEVEL_TYPE').val($("#CLEAR_CONTRACT_LEVEL_TYPE").val());
+                    $('#EST_NO_USE_PREFIX').val($("#CLEAR_EST_NO_USE_PREFIX").val());
+                    $('#EST_NO_USE_YM').val($("#CLEAR_EST_NO_USE_YM").val());
+
+                    $('#EST_COLLECTION_NO_USE_PREFIX').val($("#CLEAR_EST_COLLECTION_NO_USE_PREFIX").val());
+                    $('#EST_COLLECTION_NO_PREFIX').val($("#CLEAR_EST_COLLECTION_NO_PREFIX").val());
+                    $('#EST_COLLECTION_NO_USE_YM').val($("#CLEAR_EST_COLLECTION_NO_USE_YM").val());
+
+                    $('#EST_COLLECTION_FORMAT_PATH').val($("#CLEAR_EST_COLLECTION_FORMAT_PATH").val());
+                    $('#EST_COLLECTION_FORMAT_SES_PATH').val($("#CLEAR_EST_COLLECTION_FORMAT_SES_PATH").val());
+                    $('#ORD_COLLECTION_FORMAT_PATH').val($("#CLEAR_ORD_COLLECTION_FORMAT_PATH").val());
+                    $('#ORD_COLLECTION_FORMAT_SES_PATH').val($("#CLEAR_ORD_COLLECTION_FORMAT_SES_PATH").val());
+
+                    $('#EST_COLLECTION_FORMAT_DETAIL_LINE').val($("#CLEAR_EST_COLLECTION_FORMAT_DETAIL_LINE").val());
+                    $('#EST_COLLECTION_FORMAT_NOMEN_LINE').val($("#CLEAR_EST_COLLECTION_FORMAT_NOMEN_LINE").val());
+                    $('#EST_COLLECTION_FORMAT_SES_DETAIL_LINE').val($("#CLEAR_EST_COLLECTION_FORMAT_SES_DETAIL_LINE").val());
+                    $('#EST_COLLECTION_FORMAT_SES_NOMEN_LINE').val($("#CLEAR_EST_COLLECTION_FORMAT_SES_NOMEN_LINE").val());
+                    $('#ORD_COLLECTION_FORMAT_DETAIL_LINE').val($("#CLEAR_ORD_COLLECTION_FORMAT_DETAIL_LINE").val());
+                    $('#ORD_COLLECTION_FORMAT_NOMEN_LINE').val($("#CLEAR_ORD_COLLECTION_FORMAT_NOMEN_LINE").val());
+                    $('#ORD_COLLECTION_FORMAT_SES_DETAIL_LINE').val($("#CLEAR_ORD_COLLECTION_FORMAT_SES_DETAIL_LINE").val());
+                    $('#ORD_COLLECTION_FORMAT_SES_NOMEN_LINE').val($("#CLEAR_ORD_COLLECTION_FORMAT_SES_NOMEN_LINE").val());
+
+                    $('#BILL_NO_USE_PREFIX').val($("#CLEAR_BILL_NO_USE_PREFIX").val());
+                    $('#BILL_NO_PREFIX').val($("#CLEAR_BILL_NO_PREFIX").val());
+                    $('#BILL_NO_USE_YM').val($("#CLEAR_BILL_NO_USE_YM").val());
+                    $('#BILL_FORMAT_PATH').val($("#CLEAR_BILL_FORMAT_PATH").val());
+                    $('#BILL_FORMAT_DETAIL_LINE').val($("#CLEAR_BILL_FORMAT_DETAIL_LINE").val());
+                    $('#BILL_FORMAT_SES_PATH').val($("#CLEAR_BILL_FORMAT_SES_PATH").val());
+                    $('#BILL_FORMAT_SES_DETAIL_LINE').val($("#CLEAR_BILL_FORMAT_SES_DETAIL_LINE").val());
+                    $('#BILL_FORMAT_TEMP_PATH').val($("#CLEAR_BILL_FORMAT_TEMP_PATH").val());
+                    $('#BILL_FORMAT_TEMP_DETAIL_LINE').val($("#CLEAR_BILL_FORMAT_TEMP_DETAIL_LINE").val());
+                    $('#BILL_PAYEE_TITLE').val($("#CLEAR_BILL_PAYEE_TITLE").val());
+                    $('#BILL_PAYEE_NOTE').val($("#CLEAR_BILL_PAYEE_NOTE").val());
+                    $('#BILL_DIRECT_TITLE').val($("#CLEAR_BILL_DIRECT_TITLE").val());
+                    $('#BILL_DIRECT_NOTE').val($("#CLEAR_BILL_DIRECT_NOTE").val());
+                    $('#DELIVERY_NO_USE_PREFIX').val($("#CLEAR_DELIVERY_NO_USE_PREFIX").val());
+                    $('#DELIVERY_NO_USE_YM').val($("#CLEAR_DELIVERY_NO_USE_YM").val());
+                    $('#PLC_ORDER_NO_USE_PREFIX').val($("#CLEAR_PLC_ORDER_NO_USE_PREFIX").val());
+                    $('#PLC_ORDER_NO_USE_YM').val($("#CLEAR_PLC_ORDER_NO_USE_YM").val());
+                    $('#PLC_ORDER_FORMAT_PATH').val($("#CLEAR_PLC_ORDER_FORMAT_PATH").val());
+                    $('#PLC_ORDER_FORMAT_DETAIL_LINE').val($("#CLEAR_PLC_ORDER_FORMAT_DETAIL_LINE").val());
+                    $('#PLC_PAYMENT_NOTICE_FORMAT_PATH').val($("#CLEAR_PLC_PAYMENT_NOTICE_FORMAT_PATH").val());
+                    $('#DOC_COVER_LETTER_FORMAT_PATH').val($("#CLEAR_DOC_COVER_LETTER_FORMAT_PATH").val());
+                    $('#FAX_COVER_LETTER_FORMAT_PATH').val($("#CLEAR_FAX_COVER_LETTER_FORMAT_PATH").val());
+                    $('#ENVELOPE_DESTINATION_FORMAT_PATH').val($("#CLEAR_ENVELOPE_DESTINATION_FORMAT_PATH").val());
+                    $(".date.datepicker-days.date-from").datepicker("setDate", "@Model.AVAILABLE_PERIOD_FROM.ToString("yyyy/MM/dd")");
+                    $(".date.datepicker-days.date-to").datepicker("setDate", "@Model.AVAILABLE_PERIOD_TO.ToString("yyyy/MM/dd")");
+                    $('#COMPANY_CONTRACT_STATUS').val($("#CLEAR_COMPANY_CONTRACT_STATUS").val());
+                    $('#COMPANY_LOGO_IMAGE_PATH').val($("#CLEAR_COMPANY_LOGO_IMAGE_PATH").val());
+                    $('#UPLOAD_FILE_PASSWORD').val("@Constant.DISPLAY_PASSWORD");
+                    $('#UPLOAD_FILE_SIZE_LIMIT').val($("#CLEAR_UPLOAD_FILE_SIZE_LIMIT").val());
+                    $('#ACCOUNT_CLOSING_MONTH').val($("#CLEAR_ACCOUNT_CLOSING_MONTH").val());
+                }
+            }
+        })
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Submit
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnSubmit');
+    $(document).on('click', '#btnSubmit', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        $('.validation-summary-errors').remove();
+        var invalidMess = validateData();
+        if (invalidMess.length > 0) {
+            iseiQ.utility.showClientError(invalidMess);
+            return false;
+        }
+
+        var dateTimeNow = iseiQ.utility.GetDateTimeNow();
+        var companyCd = '@Model.COMPANY_CD';
+
+        if (companyCd == '') {
+            $('#INS_DATE').val('@tempDateTime');
+            $('#INS_DATE').hide();
+            $('#UPD_DATE').val(dateTimeNow);
+            $('#UPD_DATE').hide();
+        } else {
+            $('#INS_DATE').val(dateTimeNow);
+            $('#INS_DATE').hide();
+            $('#UPD_DATE').val(dateTimeNow);
+            $('#UPD_DATE').hide();
+        }
+
+        var EstColFormatPath = $('#EST_COLLECTION_FORMAT_PATH').val();
+        var EstColFormatSESPath = $('#EST_COLLECTION_FORMAT_SES_PATH').val();
+        var OrdColFormatPath = $('#ORD_COLLECTION_FORMAT_PATH').val();
+        var OrdColFormatSESPath = $('#ORD_COLLECTION_FORMAT_SES_PATH').val();
+
+        var bill_format_path = $('#BILL_FORMAT_PATH').val();
+        var bill_format_ses_path = $('#BILL_FORMAT_SES_PATH').val();
+        var bill_format_temp_path = $('#BILL_FORMAT_TEMP_PATH').val();
+
+        var plc_order_format_path = $('#PLC_ORDER_FORMAT_PATH').val();
+        var plc_payment_notice_format_path = $('#PLC_PAYMENT_NOTICE_FORMAT_PATH').val();
+        var doc_cover_letter_format_path = $('#DOC_COVER_LETTER_FORMAT_PATH').val();
+        var fax_cover_letter_format_path = $('#FAX_COVER_LETTER_FORMAT_PATH').val();
+        var envelope_destination_format_path = $('#ENVELOPE_DESTINATION_FORMAT_PATH').val();
+
+
+        if (EstColFormatPath != null && EstColFormatPath != "") {
+            $('#EST_COLLECTION_FORMAT_PATH').val(EstColFormatPath.trim());
+        }
+        if (EstColFormatSESPath != null && EstColFormatSESPath != "") {
+            $('#EST_COLLECTION_FORMAT_SES_PATH').val(EstColFormatSESPath.trim());
+        }
+        if (OrdColFormatPath != null && OrdColFormatPath != "") {
+            $('#ORD_COLLECTION_FORMAT_PATH').val(OrdColFormatPath.trim());
+        }
+        if (OrdColFormatSESPath != null && OrdColFormatSESPath != "") {
+            $('#ORD_COLLECTION_FORMAT_SES_PATH').val(OrdColFormatSESPath.trim());
+        }
+
+        if (bill_format_path != null && bill_format_path != "") {
+            $('#BILL_FORMAT_PATH').val(bill_format_path.trim());
+        }
+        if (bill_format_ses_path != null && bill_format_ses_path != "") {
+            $('#BILL_FORMAT_SES_PATH').val(bill_format_ses_path.trim());
+        }
+        if (bill_format_temp_path != null && bill_format_temp_path != "") {
+            $('#BILL_FORMAT_TEMP_PATH').val(bill_format_temp_path.trim());
+        }
+
+        if (plc_order_format_path != null && plc_order_format_path != "") {
+            $('#PLC_ORDER_FORMAT_PATH').val(plc_order_format_path.trim());
+        }
+
+        if (plc_payment_notice_format_path != null && plc_payment_notice_format_path != "") {
+            $('#PLC_PAYMENT_NOTICE_FORMAT_PATH').val(plc_payment_notice_format_path.trim());
+        }
+
+        if (doc_cover_letter_format_path != null && doc_cover_letter_format_path != "") {
+            $('#DOC_COVER_LETTER_FORMAT_PATH').val(doc_cover_letter_format_path.trim());
+        }
+
+        if (fax_cover_letter_format_path != null && fax_cover_letter_format_path != "") {
+            $('#FAX_COVER_LETTER_FORMAT_PATH').val(fax_cover_letter_format_path.trim());
+        }
+
+        if (envelope_destination_format_path != null && envelope_destination_format_path != "") {
+            $('#ENVELOPE_DESTINATION_FORMAT_PATH').val(envelope_destination_format_path.trim());
+        }
+
+        iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmSubmitData, (!String.IsNullOrEmpty(Model.COMPANY_CD) ? Messages.Update : Messages.Register))', function (action) {
+            if (action) {
+                $("#formContractCompanyMaintRegis").submit();
+            }
+        });
+    });
+
+
+    $("#formContractCompanyMaintRegis").submit(function (event) {
+        var timeout = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!timeout) return;
+        iseiQ.utility.replaceAllMoney();
+        var formData = new FormData($(this)[0]);
+        $.ajax(
+        {
+            url: '@Url.Action("Edit", "ContractCompanyMaint")',
+            data: formData,
+            mimeType: "multipart/form-data",
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                var data = JSON.parse(res);
+                // Validate server is false
+                if (data.ErrorMessages) {
+                    var message = "";
+                    for (var i = 0; i < data.ErrorMessages.length; i++) {
+                        message += data.ErrorMessages[i] + "\n";
+                    }
+                    iseiQ.utility.showMessageModal(message, true, function () {
+                        return false;
+                    });
+                }
+                // Before Regist data
+                if (data.statusCode == HTTPCode.CREATED) {
+                    if (res.length == 0) {
+                        window.parent.$('.ui-dialog-content:visible').dialog('close');
+                        window.location.href = '/Common/Common/CloseIframe/';
+                    } else {
+                        var result = jQuery.parseJSON(res);
+                        window.parent.$('.ui-dialog-content:visible').dialog('close');
+                        var message = result.isNew == true ? "@Maint.ContractCompanyMaintRegisterSuccess" : "@Maint.ContractCompanyMaintUpdateSuccess";
+                        iseiQ.utility.showMessageModal(message, false, function () {
+                            $('#formContractCompanyMaint').submit();
+                            return false;
+                        });
+                    }
+                }
+                else {
+                    var invalidMess = [];
+                    if ($.inArray(-1, data.errNo) != -1) {
+                        invalidMess.push('@Maint.ContractCompanyMaintDuplicateCode');
+                    }
+
+                    if ($.inArray(0, data.errNo) != -1) {
+                        invalidMess.push('@string.Format(@Maint.EnvironmentDependentCharErr, @Maint.BILL_FORMAT_PATH)');
+                    }
+                    if ($.inArray(1, data.errNo) != -1) {
+                        invalidMess.push('@string.Format(@Maint.EnvironmentDependentCharErr, @Maint.BILL_FORMAT_SES_PATH)');
+                    }
+                    if ($.inArray(2, data.errNo) != -1) {
+                        invalidMess.push('@string.Format(@Maint.EnvironmentDependentCharErr, @Maint.BILL_FORMAT_TEMP_PATH)');
+                    }
+                    if ($.inArray(3, data.errNo) != -1) {
+                        invalidMess.push('@string.Format(@Maint.EnvironmentDependentCharErr, @Maint.PLC_ORDER_FORMAT_PATH)');
+                    }
+                    if ($.inArray(4, data.errNo) != -1) {
+                        invalidMess.push('@string.Format(@Maint.EnvironmentDependentCharErr, @Maint.PLC_PAYMENT_NOTICE_FORMAT_PATH)');
+                    }
+                    if ($.inArray(5, data.errNo) != -1) {
+                        invalidMess.push('@string.Format(@Maint.EnvironmentDependentCharErr, @Maint.DOC_COVER_LETTER_FORMAT_PATH)');
+                    }
+                    if ($.inArray(6, data.errNo) != -1) {
+                        invalidMess.push('@string.Format(@Maint.EnvironmentDependentCharErr, @Maint.FAX_COVER_LETTER_FORMAT_PATH)');
+                    }
+                    if ($.inArray(7, data.errNo) != -1) {
+                        invalidMess.push('@string.Format(@Maint.EnvironmentDependentCharErr, @Maint.ENVELOPE_DESTINATION_FORMAT_PATH)');
+                    }
+
+                    if ($.inArray(8, data.errNo) != -1) {
+                        invalidMess.push('@string.Format(@Maint.EnvironmentDependentCharErr, @Maint.EST_COLLECTION_FORMAT_PATH)');
+                    } if ($.inArray(9, data.errNo) != -1) {
+                        invalidMess.push('@string.Format(@Maint.EnvironmentDependentCharErr, @Maint.EST_COLLECTION_FORMAT_SES_PATH)');
+                    } if ($.inArray(10, data.errNo) != -1) {
+                        invalidMess.push('@string.Format(@Maint.EnvironmentDependentCharErr, @Maint.ORD_COLLECTION_FORMAT_PATH)');
+                    } if ($.inArray(11, data.errNo) != -1) {
+                        invalidMess.push('@string.Format(@Maint.EnvironmentDependentCharErr, @Maint.ORD_COLLECTION_FORMAT_SES_PATH)');
+                    }
+
+                    iseiQ.utility.showClientError(invalidMess);
+                    return false
+                }
+            },
+            error: function (xhr) {
+                window.parent.$('.ui-dialog-content:visible').dialog('close');
+                window.location.href = '/Common/Common/CloseIframe/';
+            }
+        });
+        event.preventDefault();
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Back
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnBack');
+    $(document).on('click', '#btnBack', function () {
+        iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmBack)', function (action) {
+            if (action) {
+                var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+                if (!result) return;
+
+                $(window).off('beforeunload');
+
+                $('#formContractCompanyMaint').submit();
+            }
+        })
+    });
+
+    $("#UPLOAD_FILE_PASSWORD").on("change", function (e) {
+        if ($("#UPLOAD_FILE_PASSWORD").val() != "@Constant.DISPLAY_PASSWORD"){
+            isChangePassword = 1;
+        }
+    });
+</script>

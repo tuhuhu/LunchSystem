@@ -1,0 +1,344 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+<!-- CSS -->
+@Styles.Render("~/Content/themes/iseiQ/maint.css")
+@model AccountingSubjectGroupMaintModel
+@{
+    ViewBag.Title = Maint.AccountingSubjectGroupMaintList;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+}
+
+<div id="accountingGroupList">
+    <div id="topContent">
+        <div id="title">@Maint.AccountingSubjectGroupMaintList</div>
+
+        <div id="searchArea">
+            <div class="form-group">
+                @Html.Label(@Maint.ACCOUNT_GROUP_CD, new { @class = "title-row" })
+                @Html.TextBoxFor(m => m.ACCOUNT_GROUP_CD, new { @class = "width-100", style = "ime-mode: active;", maxlength = 4 })
+
+                @Html.Label(@Maint.ACCOUNT_GROUP_NAME, new { @class = "title-row margin-left-25" })
+                @Html.TextBoxFor(m => m.ACCOUNT_GROUP_NAME, new { @class = "width-130", style = "ime-mode: active;", maxlength = 30 })
+          
+                <span>
+                    <input id="INCLUDE_DISABLE" type="checkbox" value="false">
+                    <input id="INCLUDE_DISABLE_HIDDEN" type="hidden" value="false">
+                    @Html.Label(@Maint.lblIncludeInvalid, new { @for = "INCLUDE_DISABLE" })
+                </span>
+            </div>
+
+        </div>
+        <hr />
+
+        <div id="searchAction">
+            <button type="button" id="btnClearConditions" class="btn btn-default">
+                <i class="btn-icon btn-clear">@Maint.btnClearConditions</i>
+            </button>
+            <button type="button" id="btnSearch" class="btn btn-green">
+                <i class="btn-icon btn-search-white">@Maint.btnSearch</i>
+            </button>
+        </div>
+    </div>
+
+    @RenderPage("~/Views/Shared/ShowHideHeaderContent.cshtml")
+
+    <div id="registButton">
+        <button type="button" id="btnCreateNew" name="btnCreateNew" class="btn btn-orange"><i class="btn-icon btn-regist">@Maint.btnCreateNew</i></button>
+    </div>
+
+    <div id="mainContent" class="auto-overflow">
+        <table id="InfoTable" class="dataTable auto-scroll-x" cellspacing="0">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>@Maint.lblNo</th>
+                    <th class="width-200">@Maint.ACCOUNT_GROUP_CD</th>
+                    <th class="width-200">@Maint.ACCOUNT_GROUP_NAME</th>
+                    <th>@Maint.lblUpdateTime</th>
+                    <th>@Maint.lblUpdateUser</th>
+                    <th>@Maint.EDIT</th>
+                    <th>@Maint.DELETE</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    @using (Html.BeginForm("AccountingSubjectGroupMaintEdit", "AccountingSubjectGroupMaint", FormMethod.Post, new
+        {
+            area = "Maint",
+            id = "AccountingSubjectGroupMaintRegist",
+            enctype = "multipart/form-data"
+        }))
+    {
+        @Html.HiddenFor(m => m.ACCOUNT_GROUP_SEQ_NO)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.ACCOUNT_GROUP_SEQ_NO)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.ACCOUNT_GROUP_CD)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.ACCOUNT_GROUP_NAME)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.DISABLE_FLG)
+        @Html.HiddenFor(m => m.DISABLE_FLG)
+        @Html.HiddenFor(m => m.SEARCH_START)
+        @Html.HiddenFor(m => m.SEARCH_LENGTH)
+    }
+</div>
+
+<script type="text/javascript">
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Variables Declaration
+    ////////////////////////////////////////////////////////////////////////////////////
+    iseiQ.utility.checkInputAlphanumeric($("#ACCOUNT_GROUP_CD"));
+
+    var dataTable;
+    var AccountingSubjectGroupMaintSearchUrl = '@Url.Action("AccountingSubjectGroupMaintSearch", "AccountingSubjectGroupMaint", new { area = "Maint" })';
+    var AccountingSubjectGroupMaintRegisterUrl = '@Url.Action("AccountingSubjectGroupMaintEdit", "AccountingSubjectGroupMaint", new { area = "Maint" })';
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+    var editlink = "編集";
+    var deletelink = "削除";
+
+    var ACCOUNT_GROUP_SEQ_NO = 0;
+    var ORDER = 1;
+    var ACCOUNT_GROUP_CD = 2;
+    var ACCOUNT_GROUP_NAME = 3;
+    var UPD_DATE = 4;
+    var UPD_USERNAME = 5;
+    var EDIT = 6;
+    var DELETE = 7;
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Initialization functions
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(function () {
+        var oSorting = {
+            "bSort": false
+        };
+
+        var oPaginate = {
+            "bPaginate": true,
+            "iDisplayStart": parseInt(@Model.SEARCH_START),
+            "iDisplayLength": parseInt(@Model.SEARCH_LENGTH),
+            "bStateSave": false
+        };
+
+        var oServerSide = {
+            "bServerSide": true,
+            "sAjaxSource": AccountingSubjectGroupMaintSearchUrl,
+            "fnServerParams": serverParams,
+            "fnInitComplete": bindData,
+            "fnDrawCallback": drawCallback
+        };
+
+        var aoColumnDefs = [
+            { "bVisible": false, "bSortable": false, "aTargets": [ACCOUNT_GROUP_SEQ_NO] },
+            { "bVisible": false, "bSortable": false, "aTargets": [ORDER], "sWidth": "10%", "sClass": "cell_center" },
+            { "bVisible": false, "bSortable": false, "aTargets": [ACCOUNT_GROUP_CD], "sWidth": "10%", "sClass": "cell_center" },
+            { "bVisible": false, "bSortable": false, "aTargets": [ACCOUNT_GROUP_NAME], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [UPD_DATE], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [UPD_USERNAME], "sWidth": "10%", "sClass": "cell_left" },
+            { "bSortable": false, "aTargets": [EDIT], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return buildActionLink(full[ACCOUNT_GROUP_SEQ_NO], 'post-AccountingSubjectGroupMaint-register', editlink); } },
+            { "bSortable": false, "aTargets": [DELETE], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return data == 0 ? '' : buildActionLink(full[ACCOUNT_GROUP_SEQ_NO], 'delete-AccountingSubjectGroupMaint-link btn btn-red', deletelink); } }
+        ];
+
+        function serverParams(aoData) {
+            //検索条件を保持
+            $("#ACCOUNT_GROUP_CD").val($("#SEARCH_PARAM_ACCOUNT_GROUP_CD").val());
+            $("#ACCOUNT_GROUP_NAME").val($("#SEARCH_PARAM_ACCOUNT_GROUP_NAME").val());
+            if ($("#SEARCH_PARAM_DISABLE_FLG").val() == 'true') {
+                $("#INCLUDE_DISABLE").prop('checked', true).change();
+                $("#INCLUDE_DISABLE_HIDDEN").val('true');
+            }
+            aoData.push(
+                { "name": "ACCOUNT_GROUP_CD", "value": $("#ACCOUNT_GROUP_CD").val() },
+                { "name": "ACCOUNT_GROUP_NAME", "value": $("#ACCOUNT_GROUP_NAME").val() },
+                { "name": "INCLUDE_DISABLE", "value": $("#INCLUDE_DISABLE_HIDDEN").val() }
+            );
+        }
+
+        function bindData(data) {
+            dataList = data.aaData;
+        }
+
+        function drawCallback() {
+            if ($('#tbLeft').length > 0) {
+                $('#InfoTable').unwrap();
+                $('.col-left, .rBarOn, .bBarOn').remove();
+            }
+
+            var htmlTbLeft = '<table id="tbLeft" class="dataTable" cellspacing="0">'
+                + ' <thead>'
+                + ' <tr>'
+                + ' <th>@Maint.lblNo</th>'
+                + ' <th>@Maint.ACCOUNT_GROUP_CD</th>'
+                + ' <th>@Maint.ACCOUNT_GROUP_NAME</th>'
+                + ' </tr>'
+                + ' </thead>'
+                + ' <tbody>';
+
+            if (dataList !== null && dataList.length > 0) {
+                for (var i = 0; i < dataList.length; i++) {
+                    var classRow = i % 2 == 0 ? 'odd' : 'even';
+                    var height = $($('#InfoTable tbody tr')[i]).outerHeight();
+
+                    htmlTbLeft += ' <tr class="' + classRow + '" style="height: ' + height + 'px">'
+                        + ' <td class="cell_center">' + iseiQ.utility.buildColumShortText(dataList[i][ORDER]) + '</td>'
+                        + ' <td class="cell_center">' + iseiQ.utility.buildColumShortText(dataList[i][ACCOUNT_GROUP_CD]) + '</td>';
+                    htmlTbLeft += ' <td class="cell_center"> <div>' + iseiQ.utility.buildColumShortText(dataList[i][ACCOUNT_GROUP_NAME], 'special-wrap') + '</div></td></tr>';
+                }
+            }
+
+            htmlTbLeft += '</tbody></table>';
+
+            $("#InfoTable").wrap('<div class="col-right dragOn"></div>').removeClass('no-footer');
+            $('div.col-right').before('<div class="col-left"> ' + htmlTbLeft + '</div>');
+            $('#tbLeft thead tr').height($('#InfoTable thead').height());
+
+            $("#tbLeft tbody tr").each(function (i) {
+                if ($(this).height() != 40) {
+                    $("#InfoTable tbody tr").eq(i).height($(this).height() + 1);
+                    $(this).height($(this).height() + 1);     //jQueryでは高さの少数を取得できないため
+                }
+            });
+
+            $('.dragOn').dragOn();
+            $('.dragOn').barOn();
+        }
+        dataTable = CreateDataTable('#InfoTable', oSorting, oPaginate, oServerSide, aoColumnDefs);
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Event Listeners
+    ////////////////////////////////////////////////////////////////////////////////////
+
+
+    $(document).off('#btnCreateNew');
+    $(document).on('click', '#btnCreateNew', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        RegistSubmit(0);
+    });
+
+    $(document).off('#btnSearch');
+    $(document).on('click', '#btnSearch', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        searchAccountingSubjectGroupMaint();
+    });
+
+    $(document).off('#btnClearConditions');
+    $(document).on('click', '#btnClearConditions', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        $("#INCLUDE_DISABLE_HIDDEN").val("");
+        $("#INCLUDE_DISABLE").prop('checked', false).change();
+        $('#INCLUDE_DISABLE_HIDDEN').val('false');
+
+        $('#ACCOUNT_GROUP_CD, #ACCOUNT_GROUP_NAME').val('');
+
+
+        searchAccountingSubjectGroupMaint();
+    });
+
+
+    $(document).off('#INCLUDE_DISABLE');
+    $(document).on('change', '#INCLUDE_DISABLE', function () {
+        if ($('#INCLUDE_DISABLE').is(":checked")) {
+            $('#INCLUDE_DISABLE_HIDDEN').val('true');
+        } else {
+            $('#INCLUDE_DISABLE_HIDDEN').val('false');
+        }
+    });
+
+    $(document).off('.post-AccountingSubjectGroupMaint-register');
+    $(document).on('click', '.post-AccountingSubjectGroupMaint-register', function () {
+        RegistSubmit($(this).data('info-seq-no'));
+    });
+
+    function RegistSubmit(seqNo) {
+        var oSettings = dataTable.fnSettings();
+
+        $('#ACCOUNT_GROUP_SEQ_NO').val(seqNo);
+        $('#SEARCH_START').val(oSettings._iDisplayStart);
+        $('#SEARCH_LENGTH').val(oSettings._iDisplayLength);
+        $('#AccountingSubjectGroupMaintRegist').submit();
+    }
+
+    $(document).off('.delete-AccountingSubjectGroupMaint-link');
+    $(document).on('click', '.delete-AccountingSubjectGroupMaint-link', function () {
+
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+         var accountSeqNo = $(this).data('info-seq-no');
+       
+         $.ajax({
+             cache: false,
+             type: "POST",
+             url: '@Url.Action("DeleteBeforeCheck")',
+             data: { "ACCOUNT_GROUP_SEQ_NO": accountSeqNo },
+             success: function (data) {
+                 if (data.statusCode == true) {
+                     iseiQ.utility.showMessageModal('@string.Format(Maint.AccountingSubjectGroupMaintDeleteError)', true)
+                 } else {
+                     Delete(accountSeqNo);
+                 }
+             },
+             error: function (xhr) {
+                 console.log(xhr);
+             }
+         });
+    });
+    
+    function Delete(accountSeqNo) {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        // Get Project Dsp Name
+        iseiQ.utility.showConfirmModal('@string.Format(@Maint.AccountingSubjectGroupMaintDelete)', function (action) {
+            if (action) {
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: '@Url.Action("DELETE")',
+                    data: { "ACCOUNT_GROUP_SEQ_NO": accountSeqNo },
+                    success: function (data) {
+                        dataTable.fnStandingRedraw();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        iseiQ.utility.showMessageModal("@string.Format(Maint.MaintDeleteError)", true);
+                    }
+                });
+            }
+        });
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Misc Functions
+    ////////////////////////////////////////////////////////////////////////////////////
+    function validateData() {
+        var invalidMess = [];
+        return invalidMess;
+    }
+
+    function searchAccountingSubjectGroupMaint() {
+        $('.validation-summary-errors').remove();
+        var invalidMess = validateData();
+
+        if (invalidMess.length > 0) {
+            iseiQ.utility.showClientError(invalidMess);
+            return false;
+        }
+
+        $("#SEARCH_PARAM_ACCOUNT_GROUP_CD").val($("#ACCOUNT_GROUP_CD").val());
+        $("#SEARCH_PARAM_ACCOUNT_GROUP_NAME").val($("#ACCOUNT_GROUP_NAME").val());
+        $("#SEARCH_PARAM_DISABLE_FLG").val($("#INCLUDE_DISABLE").prop('checked'));
+        $("#DISABLE_FLG").val($("#INCLUDE_DISABLE").prop('checked'));
+
+        dataTable.fnPageChange('first');
+
+    }
+
+    function buildActionLink(infoSEQNo, className, label) {
+        return '<a class="' + className + '" data-info-seq-no="' + infoSEQNo + '" >' + label + '</a>';
+    }
+
+</script>

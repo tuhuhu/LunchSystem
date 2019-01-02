@@ -1,0 +1,17 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants.Security;
+@{
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+}
+<ul class="dropdown-menu">
+    <b class="caret"></b>
+    @if (authorityList.Contains(PermisionType.PAYMENT_LIST))
+    {
+        <li>
+            <a href='@Url.Action("PaymentList", "Payment", new { area = "Payment" })'>
+                <i class="fa fa-angle-right pull-left"></i>支払一覧
+            </a>
+        </li>
+    }
+</ul>

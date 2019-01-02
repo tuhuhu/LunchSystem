@@ -1,0 +1,419 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+
+@model SystemSetup.Models.DispatchContractOverheadModel
+
+@{
+    ViewBag.Title = Maint.VIEW_DispatchContractOverhead;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .div-scroll-y {
+        margin-top: 20px;
+        max-height: 300px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        display: block;
+    }
+</style>
+
+<div id="dispatchContractOverheadList" class="dispatchContractOverheadList">
+    <div id="topContent">
+        <div id="title">@Maint.VIEW_DispatchContractOverhead</div>
+
+        <div id="searchArea">
+            <div class="form-group">
+                <label class="title-row min-width-60">@Maint.COMPANY_CD <span class="RequiredField">*</span></label>
+                @Html.DropDownListFor(m => m.COMPANY_CD, Model.CONTRACT_FIRM_LIST, "", new { @class = "ddlContractFirmMaster" })
+            </div>
+        </div>
+        <hr />
+
+        <div id="searchAction">
+            <button type="button" id="btnClearConditions" class="btn btn-default">
+                <i class="btn-icon btn-clear">@Maint.btnClearConditions</i>
+            </button>
+            <button type="button" id="btnSearch" class="btn btn-green">
+                <i class="btn-icon btn-search-white">@Maint.btnSearch</i>
+            </button>
+        </div>
+    </div>
+
+    @RenderPage("~/Views/Shared/ShowHideHeaderContent.cshtml")
+
+    <div id="registButton">
+        <button type="button" id="btnCreateNew" name="btnCreateNew" disabled="disabled" class="btn btn-green"><i class="btn-icon btn-add-item">@Maint.btnCreateNewline</i></button>
+    </div>
+    @using (Html.BeginForm("DispatchContractOverheadEdit", "DispatchContractOverhead", FormMethod.Post, new { id = "frmDispatchContractOverheadEdit", enctype = "multipart/form-data" }))
+{
+    <div id="mainContent" class="dataTable">
+        <table id="InfoTable" cellspacing="0" class="div-scroll-y">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>@Maint.lblNo</th>
+                    <th>@Maint.DeleteLine</th>
+                    <th>@Maint.NewLine</th>
+                    <th>@Maint.FormatDisplayName <span class="RequiredField">*</span></th>
+                    <th>@Maint.FormatPath <span class="RequiredField">*</span></th>
+                    <th>@Maint.CheckInValid</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+        @Html.HiddenFor(m => m.SEARCH_COMPANY_CD)
+    }
+    <div class="form-group action-button-bottom">
+        <div class="pull-right">
+            <button type="button" id="btnSubmit" name="btnSubmit" disabled="disabled" class="btn btn-orange" style="margin-right:30px; margin-bottom:30px"><i class="btn-icon btn-edit">@EstimationRegister.btnRegister</i></button>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+    iseiQ.utility.focusTextbox();
+
+    var dataTable;
+    var SearchOverheadUrl = '@Url.Action("DispatchContractOverheadList", "DispatchContractOverhead", new { area = "Maint" })';
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+    var sort_colum = 0;
+    var sort_type = 'asc';
+    var dataList;
+    var dataCallback = {};
+    var doServerSide = false;
+
+    var max_format_name = 15;
+    var max_format_path = 255;
+    var regX = /[^a-zA-Z0-9\!\""\#\$\%\&\'\(\)\=\~\|\-\^\@@\[\;\:\]\,\.\/\`\{\+\*\}\>\?\<\'\?\/\\\_\ ]/g;
+
+    var FORMAT_SEQ_NO = 0,
+        ORDER = 1,
+        DELETE = 2,
+        NEWLINE = 3,
+        FORMAT_DISP_NAME = 4,
+        FORMAT_PATH = 5,
+        DISABLE_FLG = 6;
+
+    $(function () {
+        var oSorting = {
+            "bSort": true
+        };
+
+        var oScorllX = {
+            "bScorllX": false
+        };
+
+        var oPaginate = {
+            "bPaginate": false,
+            "iDisplayLength": parseInt(@App[ConfigurationKeys.LIST_ITEMS_PER_PAGE]),
+            "bStateSave": false
+        };
+
+        var oServerSide = {
+            "bServerSide": true,
+            "sAjaxSource": '@Url.Action("DispatchContractOverheadSearch", "DispatchContractOverhead")',
+            "fnServerParams": serverParams,
+            "fnDrawCallback": displayComplete,
+            "fnBeforeSend": fnBeforeSend, //Can hide table when go to screen
+            "fnInitComplete": bindData,
+        };
+
+        function fnBeforeSend() {
+            // Controller へ送信前にチェック
+            return doServerSide;
+
+        }
+
+        function serverParams(aoData) {
+            if ($("#COMPANY_CD").val() != "") {
+                doServerSide = true;
+            }
+            aoData.push(
+                 { "name": "COMPANY_CD", "value": $("#COMPANY_CD").val() }
+            );
+        }
+
+        function bindData(data) {
+            dataList = data.aaData;
+            if (dataList.length > 0) {
+                $('#btnSubmit').prop('disabled', false);
+            }
+            else {
+                $('#btnSubmit').attr('disabled', 'disabled');
+            }
+        }
+
+        var aoColumnDefs = [
+           { "sName": "FORMAT_SEQ_NO ", "bVisible": false, "aTargets": [FORMAT_SEQ_NO], "sClass": "cell_center seq-no" },
+           { "bSortable": false, "aTargets": [ORDER], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return buildColumRowNum(data); } },
+           { "bSortable": false, "aTargets": [DELETE], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return bindCheckboxElement(data, full[0]); } },
+           { "bSortable": false, "aTargets": [NEWLINE], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return iseiQ.utility.buildColumShortText(data); } },
+           { "bSortable": false, "aTargets": [FORMAT_DISP_NAME], "sWidth": "20%", "sClass": "cell_center", "mRender": function (data, type, full) { return bindFormatName(data, 'format-name'); } },
+           { "bSortable": false, "aTargets": [FORMAT_PATH], "sWidth": "30%", "sClass": "cell_center", "mRender": function (data, type, full) { return bindFormatPath(data, 'format-path'); } },
+           { "bSortable": false, "aTargets": [DISABLE_FLG], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return bindCheckboxDisable(data, 'disable-line'); } }
+        ];
+
+        dataTable = CreateDataTable('#InfoTable', oSorting, oPaginate, oServerSide, aoColumnDefs);
+    });
+
+    function buildColumRowNum(data, className) {
+        data = data != null ? data : '';
+        className = className != null ? className : '';
+
+        var html = '<input class="txt-no-border row-num" style="width:42px;" type="text" title="' + data + '" value="' + data + '" disabled="disabled">';
+        return html;
+    }
+
+    function bindCheckboxElement(data, id) {
+        var html = '';
+        html += '<input class="seq-no" name="" type="hidden" value="' + id + '">'
+        if (data == 0) {
+            html += '<input type="checkbox" name="action" class="delete-line">';
+        }
+        else {
+            html += '<input type="checkbox" name="action" class="delete-line" checked>';
+        }
+
+        return html;
+    }
+
+    function bindCheckboxDisable(data, css) {
+        var html = '';
+        if (data == 0) {
+            html += '<input type="checkbox" name="action" class="' + css + ' ">';
+        }
+        else {
+            html += '<input type="checkbox" name="action" class="' + css + '" checked>';
+        }
+
+        return html;
+    }
+
+    function bindFormatName(data, css) {
+        var html = '<input class="' + css + '" maxlength="15" type="text" value="' + nvl(data, '') + '">';
+
+        return html;
+    }
+
+    function bindFormatPath(data, css) {
+        var html = '<input class="' + css + '" maxlength="255" type="text" value="' + nvl(data, '') + '">';
+
+        return html;
+    }
+
+    function displayComplete(data) {
+        resetElementName();
+    }
+
+    $(document).off('#btnSearch');
+    $(document).on('click', '#btnSearch', function () {
+        // check time out
+        var sUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+        var result = iseiQ.utility.getDataByAjax(sUrl, null);
+
+        if (!result)
+            return;
+
+        searchDispatchContractOverhead();
+
+    });
+
+    function searchDispatchContractOverhead() {
+        $('.validation-summary-errors').remove();
+
+        if ($("#COMPANY_CD").val() == "") {
+            iseiQ.utility.showMessageModal('@string.Format(@Messages.Required, "企業コード")', true)
+            return false;
+        }
+        doServerSide = true;
+        var companyCode = $("#COMPANY_CD").val();
+        $("#SEARCH_COMPANY_CD").val($("#COMPANY_CD").val());
+        $('#btnSubmit').attr('disabled', 'disabled');
+        $('#btnCreateNew').attr('disabled', false);
+
+        dataTable.fnPageChange('first');
+        $('#InfoTable_info').hide()
+    }
+
+    $(document).off('#btnClearConditions');
+    $(document).on('click', '#btnClearConditions', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+        $('.validation-summary-errors').remove();
+
+        $('#COMPANY_CD').val('');
+        $('#SEARCH_COMPANY_CD').val('');
+        $('#btnSubmit').attr('disabled', 'disabled');
+        $('#btnCreateNew').attr('disabled', 'disabled');
+
+        $('#InfoTable_info').empty();
+        $('#InfoTable_paginate').empty();
+        $('tbody').empty();
+    });
+
+
+    $(document).off('#btnCreateNew');
+    $(document).on('click', '#btnCreateNew', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+        if ($("#SEARCH_COMPANY_CD").val() == "" || $("#SEARCH_COMPANY_CD").val() == null) {
+            iseiQ.utility.showMessageModal('@string.Format(@Messages.Required, "企業コード")', true)
+            return false;
+        }
+
+        $('#btnSubmit').prop('disabled', false);
+        AddNewRowIntoDataTable();
+    });
+
+    function AddNewRowIntoDataTable() {
+        var html = '';
+        $('.dataTables_empty').empty();
+        var totalCurrentRow;
+        if ($('.dataTables_empty').val() == 0) {
+            totalCurrentRow = $('#InfoTable > tbody >tr').length - 1;
+        }
+        else {
+            totalCurrentRow = $('#InfoTable > tbody >tr').length;
+        }
+
+        var No = totalCurrentRow + 1;
+        html = (totalCurrentRow % 2 == 0) ? '<tr role="row" class="odd">' : '<tr role="row" class="even">';
+        html += '<td class="cell_center">' + '<input class="txt-no-border row-num" style=width:42px;" type ="text" title ="' + No + '" value="' + No + '" disabled = "disabled">' + '</td>'
+                + '<td class="cell_center">'
+                + '<input class="seq-no" name="DISPATCH_CONTRACT_OVERHEAD_LIST[' + totalCurrentRow + '].FORMAT_SEQ_NO " type="hidden" value="0">'
+                + '<input type="checkbox" name="DISPATCH_CONTRACT_OVERHEAD_LIST[' + totalCurrentRow + '].DEL_FLG" class="delete-line" >'
+                + '</td>'
+                + '<td class="cell_center">' + '<div class="short-text text-overflow is-new-record" title="' + '○' + '">' + '○' + '</div>' + '</td>'
+
+                + '<td class="cell_center">'
+                + '<input type="text" name="DISPATCH_CONTRACT_OVERHEAD_LIST[' + totalCurrentRow + '].FORMAT_DISP_NAME" class="format-name" maxlength = "15">'
+                + '</td>'
+
+                + '<td class="cell_center">'
+                + '<input type="text" name="DISPATCH_CONTRACT_OVERHEAD_LIST[' + totalCurrentRow + '].FORMAT_PATH" class="format-path" maxlength = "255">'
+                + '</td>'
+
+                + '<td class="cell_center">'
+                + '<input type="checkbox" name="DISPATCH_CONTRACT_OVERHEAD_LIST[' + totalCurrentRow + '].DISABLE_FLG" class="disable-line" >'
+                + '</td>'
+
+        $('#InfoTable tbody').append(html);
+    }
+
+    function resetElementName() {
+        $('#InfoTable tbody tr').each(function (index, element) {
+            var prefix = 'DISPATCH_CONTRACT_OVERHEAD_LIST[' + index + '].';
+            $(element).find('.row-num').attr('value', index + 1);
+            $(element).find('.seq-no').attr('name', prefix + 'FORMAT_SEQ_NO');
+            $(element).find('.delete-line').attr('name', prefix + 'DEL_FLG');
+            $(element).find('.format-name').attr('name', prefix + 'FORMAT_DISP_NAME');
+            $(element).find('.format-path').attr('name', prefix + 'FORMAT_PATH');
+            $(element).find('.disable-line').attr('name', prefix + 'DISABLE_FLG');
+        });
+    }
+
+    $(document).off('#btnSubmit');
+    $(document).on('click', '#btnSubmit', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) {
+            return;
+        }
+
+        if ($("#SEARCH_COMPANY_CD").val() == "" || $("#SEARCH_COMPANY_CD").val() == null) {
+            iseiQ.utility.showMessageModal('@string.Format(Messages.Required, "企業コード")', true)
+            return false;
+        }
+
+        $('.validation-summary-errors').remove();
+
+        if ($('.seq-no').length == 0) {
+            $('#btnSubmit').attr('disabled', 'disabled');
+            return;
+        }
+
+        var invalidMess = validateData();
+
+        if (invalidMess.length > 0) {
+            iseiQ.utility.showClientError(invalidMess);
+            return;
+        }
+
+        iseiQ.utility.showConfirmModal('@string.Format(Messages.ConfirmRegistDispatchContractOverhead)', function (action) {
+            if (action) {
+                $('#frmDispatchContractOverheadEdit').submit();
+            }
+        });
+    });
+
+    $('#frmDispatchContractOverheadEdit').submit(function (event) {
+        $.ajax({
+            url: '@Url.Action("DispatchContractOverheadEdit", "DispatchContractOverhead")',
+            dataType: 'json',
+            data: $(this).serialize(),
+            type: 'POST',
+            success: function (res) {
+                window.parent.$('.ui-dialog-content:visible').dialog('close');
+                if (res.ErrorMessages) {
+                    var message = "";
+                    for (var i = 0; i < res.ErrorMessages.length; i++) {
+                        message += res.ErrorMessages[i] + "\n";
+                    }
+                    iseiQ.utility.showMessageModal(message, true);
+                }
+                else {
+                    iseiQ.utility.showMessageModal("@string.Format(Messages.UpdateSuccessDispatchContractOverhead)", false);
+                    $("#COMPANY_CD").val($("#SEARCH_COMPANY_CD").val());
+                    dataTable.fnStandingRedraw();
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                iseiQ.utility.showMessageModal("@string.Format(Messages.UpdateFailDisptachContractOverhead)", true);
+                $("#COMPANY_CD").val($("#SEARCH_COMPANY_CD").val());
+                dataTable.fnStandingRedraw();
+            }
+        });
+        event.preventDefault();
+    });
+
+    function validateData() {
+        var invalidMess = [];
+        var errContent = [];
+        $('.format-name').each(function () {
+            var invalid = false;
+            if ($(this).val().trim().length == 0) {
+                errContent = '@Maint.FormatDisplayName' + Constant.ERR_REQUIRED;
+                invalidMess.push(errContent);
+                invalid = true;
+            }
+            else if ($(this).val().length > max_format_name) {
+                invalidMess.push(Constant.ERR_STRING_LENGTH.replace('{0}', '@Maint.FormatDisplayName').replace('{1}', max_format_name));
+                invalid = true;
+            }
+            
+            if (invalid) {
+                return false;
+            }
+        });
+
+        $('.format-path').each(function () {
+            var invalid = false;
+            var path = $(this).val();
+            if (path.trim().length == 0) {
+                errContent = '@Maint.FormatPath' + Constant.ERR_REQUIRED;
+                invalidMess.push(errContent);
+                invalid = true;
+            }
+            else if (iseiQ.utility.byteCount(path) > max_format_path) {
+                errContent = Constant.ERR_STRING_BYTE.replace('{0}', '@Maint.FormatPath');
+                invalidMess.push(errContent);
+                invalid = true;
+            }
+
+            if (invalid) {
+                return false;
+            }
+        });
+
+        return invalidMess;
+    }
+</script>

@@ -1,0 +1,9 @@
+diff a/iEnterAsia.iseiQ/iEnterAsia.iseiQ.csproj b/iEnterAsia.iseiQ/iEnterAsia.iseiQ.csproj	(rejected hunks)
+@@ -471,7 +471,6 @@
+     <Content Include="Areas\Information\Views\Information\PostInformationList.cshtml" />
+     <Content Include="Areas\Information\Views\Information\PostInformationRegister.cshtml" />
+     <Content Include="Areas\PartnerStaff\Views\PartnerStaff\CoverLetter.cshtml" />
+-    <Content Include="Areas\Maint\Views\TransMaint\Index.cshtml" />
+     <Content Include="Areas\Maint\Views\TransMaint\TransMaintList.cshtml" />
+     <Content Include="Areas\Maint\Views\Web.config" />
+     <Content Include="Areas\Maint\Views\TransMaint\TransMaintRegister.cshtml" />

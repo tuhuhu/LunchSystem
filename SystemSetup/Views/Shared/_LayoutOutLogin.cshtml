@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@ViewBag.Title</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    @Styles.Render("~/Content/themes/iseiQ/css")
+    @RenderPage("~/Views/Shared/_CommonScript.cshtml")
+    @Styles.Render("~/Content/fontawesome/css/icon")
+    @Styles.Render("~/Content/common")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/common")
+    @Scripts.Render("~/bundles/jquery/bootstrapPlugins")
+    @Scripts.Render("~/bundles/input")
+</head>
+
+<body id="home" class="mozilla">
+    <div class="wrapper">
+        <header id="header" class="main-header">
+            <div id="fixed-top" class="sb-slide">
+                @RenderPage("~/Views/Shared/_HeaderOutLogin.cshtml")
+            </div>
+        </header>
+        <div id="body" style="min-width: 1335px">
+            @RenderBody()
+        </div>
+    </div>
+</body>
+</html>

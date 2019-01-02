@@ -1,0 +1,19 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    Layout = null;
+    ViewBag.Title = "エラー";    
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+<script>    
+    $(document).ready(function () {
+        if (typeof (parent) != 'undefined' && typeof (parent.tb_remove) != 'undefined') {
+            parent.tb_remove();
+            parent.window.location.href = "/Common/Common/Error/";
+        }
+
+        window.location.href = "/Common/Common/Error/";
+    });
+</script>

@@ -1,0 +1,386 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+@model InformationEntityPlus
+@{
+    ViewBag.Title = Information.REGISTER_INFO;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+    var tempDateTime = new DateTime();
+}
+<div id="InformationRegister" class="edit-screen">
+    @using (Html.BeginForm("Edit", "Information", FormMethod.Post, new { id = "formPostInfoRegis", enctype = "multipart/form-data", @class = "form-horizontal" }))
+    {
+        <div id="title">@Information.REGISTER_INFO</div>
+        @Html.HiddenFor(m => m.INFO_SEQ_NO, new { @class = "sp-id" })
+        <div class="form-group">
+            <label class="title-row">@Information.PUBLISH_DATE_START <span class="RequiredField">*</span></label>
+            <span class="date datepicker-days">
+                @Html.TextBoxFor(m => m.PUBLISH_DATE_START, "{0:yyyy/MM/dd}", new { @class = "ime-mode", maxlength = 10 })
+                <button type="button" class="btn btn-default btn-add-on"><i class="btn-icon btn-calendar"></i></button>
+            </span>
+        </div>
+
+        <div class="form-group">
+            <label class="title-row">@Information.PUBLISH_DATE_END <span class="RequiredField">*</span></label>
+            <span class="date datepicker-days">
+                @Html.TextBoxFor(m => m.PUBLISH_DATE_END, "{0:yyyy/MM/dd}", new { @class = "ime-mode", maxlength = 10 })
+                <button type="button" class="btn btn-default btn-add-on"><i class="btn-icon btn-calendar"></i></button>
+            </span>
+        </div>
+
+        <div class="form-group">
+            @Html.Label(@Information.DSP_PRIORITY, new { @class = "title-row" })
+            @Html.TextBoxFor(m => m.DSP_PRIORITY, new { @class = "txt-w-30 decimal_7_2 ", maxlength = 2 })
+        </div>
+
+        <div class="form-group">
+            <label class="title-row vertical-align-top">@Information.CONTENT <span class="RequiredField">*</span></label>
+            @Html.TextAreaFor(m => m.CONTENT, new { @class = "note-textarea no-margin-left", maxlength = 255 })
+            <input id="CONTENT_HIDDEN" type="hidden" value="@Model.CONTENT">
+        </div>
+
+        <div class="form-group">
+            <label class="title-row">&nbsp;&nbsp;&nbsp;</label>
+            @if (Model.DEL_FLG == DeleteFlag.NON_DELETE)
+            {
+                <input id="DEL_FLG" type="checkbox">
+                <input id="DEL_FLG_HIDDEN" name="DEL_FLG" type="hidden" value="@DeleteFlag.NON_DELETE">
+            }
+            else
+            {
+                <input id="DEL_FLG" type="checkbox" checked="checked">
+                <input id="DEL_FLG_HIDDEN" name="DEL_FLG" type="hidden" value="@DeleteFlag.DELETE">
+            }
+            @Html.Label(@Information.DELETE, new { @for = "DEL_FLG" })
+        </div>
+
+        <div class="form-group">
+            @Html.Label(@Information.REGISTER_DATE, new { @class = "title-row" })
+            @Html.TextBoxFor(m => m.INS_DATE, "{0:yyyy/MM/dd HH:mm}", new { @class = "ime-mode border-none", maxlength = 10, @readonly = "readonly" })
+        </div>
+
+        <div class="form-group">
+            @Html.Label(@Information.REGISTER_PERSON, new { @class = "title-row" })
+            @Html.HiddenFor(m => m.INS_USER_ID)
+            @Html.TextBoxFor(m => m.INS_USERNAME, new { @class = "ime-mode border-none", maxlength = 100, @readonly = "readonly" })
+        </div>
+
+        <div class="form-group">
+            @Html.Label(@Information.DATE_MODIFY, new { @class = "title-row" })
+            @Html.TextBoxFor(m => m.UPD_DATE, "{0:yyyy/MM/dd HH:mm}", new { @class = "ime-mode border-none", maxlength = 10, @readonly = "readonly" })
+        </div>
+
+        <div class="form-group">
+            @Html.Label(@Information.PERSON_UPDATE, new { @class = "title-row" })
+            @Html.HiddenFor(m => m.UPD_USER_ID)
+            @Html.TextBoxFor(m => m.UPD_USERNAME, new { @class = "ime-mode border-none", maxlength = 100, @readonly = "readonly" })
+        </div>
+
+        <div class="form-group action-button-bottom">
+            <button type="button" id="btnBack" name="btnBack" class="btn btn-default"><i class="btn-icon btn-back">@EstimationRegister.btnBack</i></button>
+            @if (authorityList.Contains(PermisionType.POST_INFORMATION_UPDATE_DB))
+            {
+                <button type="button" id="btnSubmit" name="btnSubmit" class="btn btn-orange pull-right"><i class="btn-icon btn-edit">@EstimationRegister.btnRegister</i></button>
+            }
+            
+            <button type="button" id="btnClear" name="btnClear" class="btn btn-default pull-right"><i class="btn-icon btn-clear">@EstimationRegister.btnClear</i></button>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+    var postInformationListUrl = '@Url.Action("PostInformationList", "Information", new { area = "Information" })';
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Check validate
+    ////////////////////////////////////////////////////////////////////////////////////
+    function validateData() {
+        var invalidMess = [];
+        var startDate = $('#PUBLISH_DATE_START').val();
+        var endDate = $('#PUBLISH_DATE_END').val().trim();
+        var content = $('#CONTENT').val();
+        var display = $('#DSP_PRIORITY').val();
+        var errContent = [];
+        var errDisplay = [];
+        var invalidMess = [];
+        var errStartDate = null;
+        var errEndDate = null;
+
+        if (content.trim() == "") {
+            errContent = '@Information.CONTENT' + Constant.ERR_REQUIRED;
+            invalidMess.push(errContent);
+        }
+
+        // required DSP_Priority
+        if (display.length === 0) {
+            errDisplay = '@Information.DSP_PRIORITY' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        // Validate start date
+        if (errStartDate != null) {
+            invalidMess.push(errStartDate);
+        }
+        else if (startDate.length === 0) {
+            errStartDate = '@Information.PUBLISH_DATE_START' + Constant.ERR_REQUIRED;
+            invalidMess.push(errStartDate);
+        }
+        else if (startDate.length > 0) {
+            errStartDate = iseiQ.utility.validDate(startDate, Constant.DATE_FORMAT, '@Information.PUBLISH_DATE_START');
+            if (errStartDate != null) {
+                invalidMess.push(errStartDate);
+            }
+        }
+        else if (errStartDate == null && startDate.length > Constant.MAX_DATE) {
+            invalidMess.push('@Information.PUBLISH_DATE_START' + Constant.ERR_INCORRECT_DATE);
+        }
+
+        // Validate end date
+        if (errEndDate != null) {
+            invalidMess.push(errEndDate);
+        }
+        else if (endDate.length === 0) {
+            errEndDate = '@Information.PUBLISH_DATE_END' + Constant.ERR_REQUIRED;
+            invalidMess.push(errEndDate);
+        }
+        else if (endDate.length > 0) {
+            errEndDate = iseiQ.utility.validDate(endDate, Constant.DATE_FORMAT, '@Information.PUBLISH_DATE_END');
+            if (errEndDate != null) {
+                invalidMess.push(errEndDate);
+            }
+        }
+        else if (errEndDate == null && endDate.length > Constant.MAX_DATE) {
+            invalidMess.push('@Information.PUBLISH_DATE_END' + Constant.ERR_INCORRECT_DATE);
+        }
+
+        // Validate if end date smaller than start date.
+        if (errStartDate == null && errEndDate == null && startDate.length > 0 && endDate.length > 0) {
+            if (!iseiQ.utility.compareDate(startDate, endDate, Constant.DATE_FORMAT)) {
+                errEndDate = '@Information.PUBLISH_DATE_END' + '@Information.ERR_END_DATE';
+                invalidMess.push(errEndDate);
+            }
+        }
+        return invalidMess;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Clear
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnClear');
+    $(document).on('click', '#btnClear', function () {
+        iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmClear)', function (action) {
+            $('.validation-summary-errors').remove();
+            if (action) {
+                if ($('#INFO_SEQ_NO').val() == "0") {
+                    var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+                    if (!result) return;
+                    $("#PUBLISH_DATE_START").val("");
+                    $("#PUBLISH_DATE_END").val("");
+                    $("#DSP_PRIORITY").val("0");
+                    $("#CONTENT").val("");
+                    $("#DEL_FLG").prop('checked', false).change();
+                    $('#DEL_FLG_HIDDEN').val('@DeleteFlag.NON_DELETE');
+                }
+                else {
+                    @if(Model.PUBLISH_DATE_START.HasValue)
+                    {
+                        <text>
+                    $("#PUBLISH_DATE_START").val('@Model.PUBLISH_DATE_START.Value.ToString("yyyy/MM/dd")');
+                    </text>
+                    }
+                    @if(Model.PUBLISH_DATE_START.HasValue)
+                    {
+                        <text>
+                    $("#PUBLISH_DATE_END").val('@Model.PUBLISH_DATE_END.Value.ToString("yyyy/MM/dd")');
+                    </text>
+                    }
+                    $("#DSP_PRIORITY").val('@Model.DSP_PRIORITY');
+                    $("#CONTENT").val($("#CONTENT_HIDDEN").val());
+                    $("#DEL_FLG_HIDDEN").val('@Model.DEL_FLG').change();
+                    if ($("#DEL_FLG_HIDDEN").val() == '@DeleteFlag.NON_DELETE') {
+                        $("#DEL_FLG").prop("checked", false);
+                    }
+                    else {
+                        $("#DEL_FLG").prop("checked", true);
+                    }
+                }
+            }
+        })
+    });
+    $(document).off('#DEL_FLG');
+    $(document).on('change', '#DEL_FLG', function () {
+        if ($('#DEL_FLG').is(":checked")) {
+            $('#DEL_FLG_HIDDEN').val('@DeleteFlag.DELETE');
+        }
+        else {
+            $('#DEL_FLG_HIDDEN').val('@DeleteFlag.NON_DELETE');
+        }
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Submit
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnSubmit');
+    $(document).on('click', '#btnSubmit', function () {
+        var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!result) return;
+        $('.validation-summary-errors').remove();
+        var invalidMess = validateData();
+        var infoSeqNo = '@Model.INFO_SEQ_NO';
+
+        if (invalidMess.length > 0) {
+            iseiQ.utility.showClientError(invalidMess);
+            return false;
+        }
+
+        if (infoSeqNo == '0') {
+            $('#INS_DATE').val('@tempDateTime.ToString()');
+            $('#INS_DATE').hide();
+            $('#UPD_DATE').val('@tempDateTime.ToString()');
+            $('#UPD_DATE').hide();
+        }
+        iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmSubmitData, (Model.INFO_SEQ_NO > 0 ? Messages.Update : Messages.Register))', function (action) {
+            if (action) {
+                $("#formPostInfoRegis").submit();
+            }
+        })
+    });
+
+    $("#formPostInfoRegis").submit(function (event) {
+        var timeout = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!timeout) return;
+        var formData = new FormData($(this)[0]);
+        $.ajax(
+        {
+            url: '@Url.Action("Edit", "Information")',
+            data: formData,
+            mimeType: "multipart/form-data",
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                console.log(res);
+                if (res.length == 0) {
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    window.location.href = '/Common/Common/CloseIframe/';
+                }
+                else {
+                    var result = jQuery.parseJSON(res);
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    var message = result.isNew == true ? "@Information.RegisterSuccess" : "@Information.UpdateSuccess";
+                    iseiQ.utility.showMessageModal(message, false, function () {
+                        window.location.href = postInformationListUrl;
+                        return false;
+                    });
+                }
+            },
+            error: function (xhr) {
+                window.parent.$('.ui-dialog-content:visible').dialog('close');
+                window.location.href = '/Common/Common/CloseIframe/';
+            }
+        });
+        event.preventDefault();
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Back
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnBack');
+    $(document).on('click', '#btnBack', function () {
+        iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmBack)', function (action) {
+            if (action) {
+                var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+                if (!result) return;
+                $(window).off('beforeunload');
+                window.location.href = postInformationListUrl;
+            }
+        })
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Change Publish start date
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#PUBLISH_DATE_START');
+    $(document).on('change', '#PUBLISH_DATE_START', function () {
+        $(this).val(iseiQ.utility.autoCompleteYearMonthDay($(this).val()));
+        validateStartDate();
+    });
+
+    $(document).off('#PUBLISH_DATE_START');
+    $(document).on('change', '#PUBLISH_DATE_START', function () {
+        if ("" !== $(this).val()) {
+            $(this).parents(".datepicker-days").datepicker('update');
+        }
+        validateStartDate();
+    });
+
+    function validateStartDate() {
+        var startDate = $('#PUBLISH_DATE_START').val();
+        var errInvalid;
+        errInvalid = iseiQ.utility.validDate(startDate, Constant.DATE_FORMAT, '@Information.PUBLISH_DATE_START');
+        var endDate = $('#PUBLISH_DATE_END').val();
+        var errInvalidEndDate = iseiQ.utility.validDate(endDate, Constant.DATE_FORMAT, '@Information.PUBLISH_DATE_END');
+
+        if (errInvalid != null) {
+            iseiQ.utility.showMessageModal(errInvalid, true);
+            return;
+        }
+        // valid startDate length
+        if (startDate.length > Constant.MAX_DATE) {
+            errInvalid = '@Information.PUBLISH_DATE_START' + Constant.ERR_INCORRECT_DATE;
+            iseiQ.utility.showMessageModal(errInvalid, true);
+            return;
+        }
+
+        if (errInvalidEndDate == null && errInvalid == null && startDate.length > 0) {
+            if (endDate.length > 0 && !iseiQ.utility.compareDate(startDate, endDate, Constant.DATE_FORMAT)) {
+                iseiQ.utility.showMessageModal('@Information.PUBLISH_DATE_END' + '@Information.ERR_END_DATE', true);
+                return;
+            }
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Change Publish end date
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#PUBLISH_DATE_END');
+    $(document).on('change', '#PUBLISH_DATE_END', function () {
+        $(this).val(iseiQ.utility.autoCompleteYearMonthDay($(this).val()));
+        validateEndDate();
+    });
+
+    $(document).off('#PUBLISH_DATE_END');
+    $(document).on('change', '#PUBLISH_DATE_END', function () {
+        if ("" !== $(this).val()) {
+            $(this).parents(".datepicker-days").datepicker('update');
+        }
+        validateEndDate();
+    });
+
+    function validateEndDate() {
+        var endDate = $('#PUBLISH_DATE_END').val();
+        var errInvalid;
+        errInvalid = iseiQ.utility.validDate(endDate, Constant.DATE_FORMAT, '@Information.PUBLISH_DATE_END');
+        var startDate = $('#PUBLISH_DATE_START').val();
+        var errInvalidStartDate = iseiQ.utility.validDate(endDate, Constant.DATE_FORMAT, '@Information.PUBLISH_DATE_START');
+
+        if (errInvalid != null) {
+            iseiQ.utility.showMessageModal(errInvalid, true);
+            return;
+        }
+        if (endDate.length > Constant.MAX_DATE) { // valid string length
+            errInvalid = '@Information.PUBLISH_DATE_END' + Constant.ERR_INCORRECT_DATE;
+            iseiQ.utility.showMessageModal(errInvalid, true);
+            return;
+        }
+
+        if (errInvalidStartDate == null && errInvalid == null && startDate.length > 0) {
+            if (endDate.length > 0 && !iseiQ.utility.compareDate(startDate, endDate, Constant.DATE_FORMAT)) {
+                iseiQ.utility.showMessageModal('@Information.PUBLISH_DATE_END' + '@Information.ERR_END_DATE', true);
+                return;
+            }
+        }
+    }
+</script>

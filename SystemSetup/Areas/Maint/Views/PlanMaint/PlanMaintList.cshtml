@@ -1,0 +1,330 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+@*CSS*@
+@Styles.Render("~/Content/themes/iseiQ/maint.css")
+@model PlanMaintModel
+
+@{
+    ViewBag.Title = Maint.PlanMaintList;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+}
+
+<div id="maintInputDateList" class="planMaintList">
+    <div id="topContent">
+        <div id="title">@Maint.PlanMaintList</div>
+        <div id="searchArea">
+            <div class="form-group">
+                @Html.Label(@Maint.PLAN_CD, new { @class = "title-row" })
+                @Html.TextBoxFor(m => m.PLAN_CD, new { @class = "width-100", style = "ime-mode: active;", maxlength = 5 })
+                @Html.Label(@Maint.PLAN_NAME, new { @class = "title-row margin-left-25" })
+                @Html.TextBoxFor(m => m.PLAN_NAME, new { @class = "width-300", style = "ime-mode: active;", maxlength = 30 })
+            </div>
+        </div>
+        <hr />
+        <div id="searchAction">
+            <button type="button" id="btnClearConditions" class="btn btn-default">
+                <i class="btn-icon btn-clear">@Maint.btnClearConditions</i>
+            </button>
+            <button type="button" id="btnSearch" class="btn btn-green">
+                <i class="btn-icon btn-search-white">@Maint.btnSearch</i>
+            </button>
+        </div>
+    </div>
+    @RenderPage("~/Views/Shared/ShowHideHeaderContent.cshtml")
+    <div id="registButton">
+        <button type="button" id="btnCreateNew" name="btnCreateNew" class="btn btn-orange"><i class="btn-icon btn-regist">@Maint.btnCreateNew</i></button>
+    </div>
+    <div id="mainContent">
+        <table id="InfoTable" class="dataTable" cellspacing="0">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>@Maint.lblNo</th>
+                    <th>@Maint.PLAN_CD</th>
+                    <th>@Maint.PLAN_NAME</th>
+                    <th>@Maint.PLAN_BASE_PRICE</th>
+                    <th>@Maint.LOGIN_ACCOUNT_UPPER</th>
+                    <th>@Maint.MONTHLY_BILL_DATA_UPPER</th>
+                    <th>@Maint.DISABLE_FLG</th>
+                    <th>@Maint.EDIT</th>
+                    <th>@Maint.DELETE</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    @using (Html.BeginForm("PlanMaintEdit", "PlanMaint", FormMethod.Post, new
+        {
+            area = "Maint",
+            id = "PlanMaintRegist",
+            enctype = "multipart/form-data"
+        }))
+    {
+        @Html.HiddenFor(m => m.PLAN_SEQ_NO)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.PLAN_SEQ_NO)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.PLAN_CD)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.PLAN_NAME)
+        @Html.HiddenFor(m => m.SEARCH_PARAM.DISABLE_FLG)
+        @Html.HiddenFor(m => m.DISABLE_FLG)
+        @Html.HiddenFor(m => m.SEARCH_START)
+        @Html.HiddenFor(m => m.SEARCH_LENGTH)
+        <input type="hidden" id="DISPLAY_START" name="DISPLAY_START" value="">
+        <input type="hidden" id="DISPLAY_LENGTH" name="DISPLAY_LENGTH" value="">
+    }
+</div>
+
+<script type="text/javascript">
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Variables Declaration
+    ////////////////////////////////////////////////////////////////////////////////////
+    iseiQ.utility.checkInputAlphanumeric($("#PLAN_CD"));
+
+    var dataTable;
+    var PlanMaintSearchUrl = '@Url.Action("PlanMaintSearch", "PlanMaint", new { area = "Maint" })';
+    var PlanMaintRegisterUrl = '@Url.Action("PlanMaintReister", "PlanMaint", new { area = "Maint" })';
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+    var editlink = "編集";
+    var deletelink = "削除";
+
+    var PLAN_SEQ_NO = 0;
+    var ORDER = 1;
+    var PLAN_CD = 2;
+    var PLAN_NAME = 3;
+    var PLAN_BASE_PRICE = 4;
+    var LOGIN_ACCOUNT_UPPER = 5;
+    var MONTHLY_BILL_DATA_UPPER = 6;
+    var DISABLE_FLG = 7;
+    var EDIT = 8;
+    var DELETE = 9;
+
+    var doServerSide = false;
+
+    var dataTable = null;
+    var dataList = null;
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Initialization functions
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(function () {
+        var oSorting = {
+            "bSort": false
+        };
+
+        var oPaginate = {
+            "bPaginate": true,
+            "iDisplayStart": parseInt(@Model.SEARCH_START),
+            "iDisplayLength": parseInt(@Model.SEARCH_LENGTH),
+            "bStateSave": false
+        };
+
+        var oServerSide = {
+            "bServerSide": true,
+            "sAjaxSource": PlanMaintSearchUrl,
+            "fnServerParams": serverParams,
+            "fnInitComplete": bindData,
+            "fnDrawCallback": drawCallback
+        };
+
+        var aoColumnDefs = [
+              { "bVisible": false, "bSortable": false, "aTargets": [PLAN_SEQ_NO] },
+              { "bSortable": false, "aTargets": [ORDER], "sWidth": "10%", "sClass": "cell_center" },
+              { "bSortable": false, "aTargets": [PLAN_CD], "sWidth": "5%", "sClass": "cell_left" },
+              { "bSortable": false, "aTargets": [PLAN_NAME], "sWidth": "5%", "sClass": "cell_left" },
+              { "bSortable": false, "aTargets": [PLAN_BASE_PRICE], "sWidth": "5%", "sClass": "cell_right" },
+              { "bSortable": false, "aTargets": [LOGIN_ACCOUNT_UPPER], "sWidth": "5%", "sClass": "cell_right" },
+              { "bSortable": false, "aTargets": [MONTHLY_BILL_DATA_UPPER], "sWidth": "5%", "sClass": "cell_right" },
+              { "bSortable": false, "aTargets": [DISABLE_FLG], "sWidth": "5%", "sClass": "cell_center" },
+              { "bSortable": false, "aTargets": [EDIT], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return buildActionLink(full[PLAN_SEQ_NO], 'post-PlanMaint-register',editlink); } },
+              { "bSortable": false, "aTargets": [DELETE], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return data == 0 ? '' : buildActionLink(full[PLAN_SEQ_NO], 'delete-PlanMaint-link btn btn-red', deletelink); }}
+        ];
+
+        function serverParams(aoData) {
+            //検索条件を保持
+            $("#PLAN_CD").val($("#SEARCH_PARAM_PLAN_CD").val());
+            $("#PLAN_NAME").val($("#SEARCH_PARAM_PLAN_NAME").val());
+
+            aoData.push(
+                { "name": "PLAN_CD", "value": $("#PLAN_CD").val() },
+                { "name": "PLAN_NAME", "value": $("#PLAN_NAME").val() }
+            );
+        }
+
+        function bindData(data) {
+            dataList = data.aaData;
+        }
+
+        function drawCallback() {
+            if ($('#tbLeft').length > 0) {
+                $('#InfoTable').unwrap();
+                $('.col-left, .rBarOn, .bBarOn').remove();
+            }
+
+            var htmlTbLeft = '<table id="tbLeft" class="dataTable" cellspacing="0">'
+                + ' <thead>'
+                + ' <tr>'
+                + ' <th>@Maint.lblNo</th>'
+                + ' <th>@Maint.PLAN_CD</th>'
+                + ' <th>@Maint.PLAN_NAME</th>'
+                + ' </tr>'
+                + ' </thead>'
+                + ' <tbody>';
+
+            if (dataList !== null && dataList.length > 0) {
+                for (var i = 0; i < dataList.length; i++) {
+                    var classRow = i % 2 == 0 ? 'odd' : 'even';
+                    var height = $($('#InfoTable tbody tr')[i]).outerHeight();
+
+                    htmlTbLeft += ' <tr class="' + classRow + '" style="height: ' + height + 'px">'
+                        + ' <td class="cell_center">' + iseiQ.utility.buildColumShortText(dataList[i][ORDER]) + '</td>'
+                    htmlTbLeft += ' <td class="cell_left">' + iseiQ.utility.buildColumShortText(dataList[i][PLAN_CD]) + '</td>';
+                    htmlTbLeft += ' <td class="cell_left"><div>' + iseiQ.utility.buildColumShortText(dataList[i][PLAN_NAME], 'special-wrap') + '</div></td></tr>';
+                }
+            }
+
+            htmlTbLeft += '</tbody></table>';
+
+            $("#InfoTable").wrap('<div class="col-right dragOn" style="width:65%"></div>').removeClass('no-footer');
+            $('div.col-right').before('<div class="col-left" style="width:35%"> ' + htmlTbLeft + '</div>');
+            $('#tbLeft thead tr').height($('#InfoTable thead').height());
+
+            $("#tbLeft tbody tr").each(function (i) {
+                if ($(this).height() != 40) {
+                    $("#InfoTable tbody tr").eq(i).height($(this).height() + 1);
+                    $(this).height($(this).height() + 1);     //jQueryでは高さの少数を取得できないため
+                }
+            });
+
+            $('.dragOn').dragOn();
+            $('.dragOn').barOn();
+
+            var visibleCount = 1;
+            $('#InfoTable thead tr th').eq(ORDER - visibleCount).hide();
+            $('#InfoTable thead tr th').eq(PLAN_CD - visibleCount).hide();
+            $('#InfoTable thead tr th').eq(PLAN_NAME - visibleCount).hide();
+            $('#InfoTable tbody tr').each(function (i) {
+                if (dataList.length != 0) {
+                    $('td', this).eq(ORDER - visibleCount).hide();
+                    $('td', this).eq(PLAN_CD - visibleCount).hide();
+                    $('td', this).eq(PLAN_NAME - visibleCount).hide();
+                }
+            });
+        }
+
+        dataTable = CreateDataTable('#InfoTable', oSorting, oPaginate, oServerSide, aoColumnDefs);
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Event Listeners
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#btnCreateNew');
+    $(document).on('click', '#btnCreateNew', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+        RegistSubmit(0);
+    });
+
+    $(document).off('#btnSearch');
+    $(document).on('click', '#btnSearch', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+        searchPlanMaint();
+    });
+
+    $(document).off('#btnClearConditions');
+    $(document).on('click', '#btnClearConditions', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        $('#PLAN_CD, #PLAN_NAME').val('');
+
+        searchPlanMaint();
+    });
+
+    $(document).off('.post-PlanMaint-register');
+    $(document).on('click', '.post-PlanMaint-register', function () {
+        RegistSubmit($(this).data('info-seq-no'));
+    });
+
+    function RegistSubmit(seqNo) {
+        var oSettings = dataTable.fnSettings();
+        $('#PLAN_SEQ_NO').val(seqNo);
+        $('#SEARCH_START').val(oSettings._iDisplayStart);
+        $('#SEARCH_LENGTH').val(oSettings._iDisplayLength);
+        $('#PlanMaintRegist').submit();
+    }
+
+    $(document).off('.delete-PlanMaint-link');
+    $(document).on('click', '.delete-PlanMaint-link', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        var planSeqNo = $(this).data('info-seq-no');
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: '@Url.Action("DeleteBeforeCheck")',
+            data: { "PLAN_SEQ_NO": planSeqNo },
+            success: function (data) {
+                if (data.statusCode == true) {
+                    iseiQ.utility.showMessageModal('@string.Format(Maint.PlanMaintDeleteError)', true)
+                } else {
+                    Delete(planSeqNo);
+                }
+            },
+            error: function (xhr) {
+                console.log(xhr);
+            }
+        });
+    });
+
+    function Delete(planSeqNo) {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        // Get Project Dsp Name
+        iseiQ.utility.showConfirmModal('@string.Format(@Maint.PlanMaintDelete)', function (action) {
+            if (action) {
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: '@Url.Action("DELETE")',
+                    data: { "PLAN_SEQ_NO": planSeqNo },
+                    success: function (data) {
+                        dataTable.fnStandingRedraw();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        iseiQ.utility.showMessageModal("@string.Format(Maint.MaintDeleteError)", true);
+                    }
+                });
+            }
+        });
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Misc Functions
+    ////////////////////////////////////////////////////////////////////////////////////
+    function validateData() {
+        var invalidMess = [];
+        return invalidMess;
+    }
+
+    function searchPlanMaint() {
+        $('.validation-summary-errors').remove();
+        var invalidMess = validateData();
+
+        if (invalidMess.length > 0) {
+            iseiQ.utility.showClientError(invalidMess);
+            return false;
+        }
+
+        $("#SEARCH_PARAM_PLAN_CD").val($("#PLAN_CD").val());
+        $("#SEARCH_PARAM_PLAN_NAME").val($("#PLAN_NAME").val());
+
+        dataTable.fnPageChange('first');
+    }
+
+    function buildActionLink(infoSEQNo, className, label) {
+        return '<a class="' + className + '" data-info-seq-no="' + infoSEQNo + '" >' + label + '</a>';
+    }
+
+</script>

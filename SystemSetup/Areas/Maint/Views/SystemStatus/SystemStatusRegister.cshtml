@@ -1,0 +1,155 @@
+﻿   ﻿@using SystemSetup.Models;    
+   @using SystemSetup.Constants;
+   @using SystemSetup.Constants.Security;
+   @using SystemSetup.Constants.Resources;
+   @*CSS*@
+   @Styles.Render("~/Content/themes/iseiQ/maint.css")
+   @model SystemStatusModel
+   @{
+       ViewBag.Title = Maint.SystemStatusRegister;
+       Layout = "~/Views/Shared/_Layout.cshtml";
+       var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+       var authorityList = currentUser.AuthorityList as List<string>;
+   }
+   <div id="MaintRegister" class="edit-screen">
+       @using (Html.BeginForm("Edit", "SystemStatus", FormMethod.Post, new { id = "formSystemStatusRegis", enctype = "multipart/form-data", @class = "form-horizontal" }))
+       {
+           <div id="title">@Maint.SystemStatusRegister</div>
+           @Html.HiddenFor(m => m.DEL_FLG, new { @class = "sp-id" })
+           
+           <div class="form-group">
+               <label class="title-row">@Maint.SYSTEM_OPERATION_MODE <span class="RequiredField">*</span></label>
+                   @Html.DropDownListFor(model => model.SYSTEM_OPERATION_MODE, Model.SYSTEM_OPERATION_MODE_LIST, new { @class = "title_list", style = "margin-left:-5px" })
+           </div>
+
+           <div class="form-group">
+               <label class="title-row pull-left" >@Maint.SYSTEM_STOPPED_MESSAGE</label>
+                   @Html.TextAreaFor(m => m.SYSTEM_STOPPED_MESSAGE, new { @class = "ime-mode pull-left", maxlength = 50, style = "height:150px;width:300px;" })
+           </div>
+
+           <div class="form-group">
+               <label class="title-row">@Maint.NOTICE_FLG <span class="RequiredField">*</span></label>
+               @Html.RadioButtonFor(model => model.NOTICE_FLG, NoticeFlg.OFF, new { @checked = "checked", @id = "noticeNone" }) 無し
+               @Html.RadioButtonFor(model => model.NOTICE_FLG, NoticeFlg.ON, new { @id = "noticeYes" }) 有り
+           </div>
+
+           <div class="form-group">
+               <label class="title-row vertical-align-top">@Maint.NOTICE_TITLE</label>
+               @Html.TextBoxFor(m => m.NOTICE_TITLE, new { @class = "ime-mode", maxlength = 20, style = "width:400px; margin-left:-4px" })
+               <input id="NOTICE_TITLE_HIDDEN" type="hidden" value="@Model.NOTICE_TITLE">
+           </div>
+
+           <div class="form-group">
+               <label class="title-row pull-left">@Maint.NOTICE_MESSAGE</label>
+                   @Html.TextAreaFor(m => m.NOTICE_MESSAGE, new { @class = "ime-mode pull-left", maxlength = 250, style = "height:150px;width:300px;" })
+           </div>
+   
+           <div class="form-group action-button-bottom">
+                   <button type="button" id="btnSubmit" name="btnSubmit" class="btn btn-orange pull-right"><i class="btn-icon btn-edit">@EstimationRegister.btnRegister</i></button>
+           </div>
+       }
+   </div>
+   
+   <script type="text/javascript">
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+    var systemStatusListUrl = '@Url.Action("SystemStatusList", "SystemStatus", new { area = "Maint" })';
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Check validate
+    ////////////////////////////////////////////////////////////////////////////////////
+    function validateData() {
+        var invalidMess = [];
+        var operationMode = $('#SYSTEM_OPERATION_MODE').val();
+        var operationModeList = $('#SYSTEM_OPERATION_MODE_LIST').val();
+        var stopMessage = $('#SYSTEM_STOPPED_MESSAGE').val();
+        var noticeYes = $("#noticeYes").prop('checked');
+        var noticeTitle = $('#NOTICE_TITLE').val();
+        var noticeMessage = $('#NOTICE_MESSAGE').val();
+
+        if (operationMode == "") {
+            errDisplay = '@Maint.SYSTEM_OPERATION_MODE' + Constant.ERR_REQUIRED;
+            invalidMess.push(errDisplay);
+        }
+
+        if (operationMode == 0) {
+            if (stopMessage.trim() == "" || stopMessage == null) {
+                errDisplay = '@Maint.SYSTEM_STOPPED_MESSAGE' + Constant.ERR_REQUIRED;
+                invalidMess.push(errDisplay);
+            }
+        }
+
+        if (operationMode == 1) {
+            if (noticeYes == true) {
+                if (noticeTitle.trim() == "" || noticeTitle == null) {
+                    errDisplay = '@Maint.NOTICE_TITLE' + Constant.ERR_REQUIRED;
+                    invalidMess.push(errDisplay);
+                }
+
+                if (noticeMessage.trim() == "" || noticeMessage == null) {
+                    errDisplay = '@Maint.NOTICE_MESSAGE' + Constant.ERR_REQUIRED;
+                    invalidMess.push(errDisplay);
+                }
+            }
+        }
+
+           return invalidMess;
+       }
+           ////////////////////////////////////////////////////////////////////////////////////
+           ////Submit
+           ////////////////////////////////////////////////////////////////////////////////////
+           $(document).off('#btnSubmit');
+           $(document).on('click', '#btnSubmit', function () {
+               var notice = $('#NOTICE_FLG').val();
+
+               var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+               if (!result) return;
+               $('.validation-summary-errors').remove();
+               var invalidMess = validateData();
+
+               if (invalidMess.length > 0) {
+                   iseiQ.utility.showClientError(invalidMess);
+                   return false;
+               }
+
+               iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmSubmitData, (Model.INFO_SEQ_NO > 0 ? Messages.Update : Messages.Register))', function (action) {
+            if (action) {
+                $("#formSystemStatusRegis").submit();
+            }
+        })
+    });
+
+    $("#formSystemStatusRegis").submit(function (event) {
+        var timeout = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!timeout) return;
+        var formData = new FormData($(this)[0]);
+        $.ajax(
+        {
+            url: '@Url.Action("Edit", "SystemStatus")',
+            data: formData,
+            mimeType: "multipart/form-data",
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res.length == 0) {
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    //window.location.href = '/Common/Common/CloseIframe/';
+                }
+                else {
+                    var result = jQuery.parseJSON(res);
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    var message = "@Maint.SystemStatusRegisterSuccess";
+                    iseiQ.utility.showMessageModal(message, false, function () {
+                        //window.location.href = systemStatusListUrl;
+                        return false;
+                    });
+                }
+            },
+            error: function (xhr) {
+                window.parent.$('.ui-dialog-content:visible').dialog('close');
+                //window.location.href = '/Common/Common/CloseIframe/';
+            }
+        });
+        event.preventDefault();
+    });
+
+</script>

@@ -1,0 +1,45 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+@{
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+}
+
+<ul class="dropdown-menu">
+    <b class="caret"></b>
+    @if (authorityList.Contains(PermisionType.BILLING_LIST))
+    {
+        <li><a href='@Url.Action("BillingListIndex", "Billing", new { area = "Billing" })'><i class="fa fa-angle-right pull-left"></i>請求一覧</a></li>
+    }
+
+    @if (authorityList.Contains(PermisionType.BILLING_INPUT_OPERATE_TIME))
+    {
+        <li><a href='@Url.Action("BillingInputOperateTime", "Billing", new { area = "Billing" })'><i class="fa fa-angle-right pull-left"></i>稼働時間入力</a></li>
+    }
+
+    @if (authorityList.Contains(PermisionType.BILLING_ISSUE_DEBIT_NOTE))
+    {
+        <li><a href='@Url.Action("BillingIssueDebitNoteList", "Billing", new { area = "Billing" })'><i class="fa fa-angle-right pull-left"></i>@Maint.VIEW_Billing_IssueDebitNoteList</a></li>
+    }
+    
+    @if (authorityList.Contains(PermisionType.BILLING_EDIT_DEBIT_NOTE))
+    {
+        <li><a href='@Url.Action("EditDebitNote", "Billing", new { area = "Billing" })'><i class="fa fa-angle-right pull-left"></i>請求書編集</a></li>
+    }
+
+    @if (authorityList.Contains(PermisionType.BILLING_INPUT_DATE))
+    {
+        <li><a href='@Url.Action("BillingInputDate", "Billing", new { area = "Billing" })'><i class="fa fa-angle-right pull-left"></i>送付確認</a></li>
+    }
+
+    @if (authorityList.Contains(PermisionType.BILLING_SETTING))
+    {
+        <li><a href='@Url.Action("BillingSetting", "Billing", new { area = "Billing" })'><i class="fa fa-angle-right pull-left"></i>請求書設定</a></li>
+    }
+
+    @if (authorityList.Contains(PermisionType.BILLING_INPUT_PREPARE))
+    {
+        <li><a href='@Url.Action("InputBillingPrepare", "Billing", new { area = "Billing" })'><i class="fa fa-angle-right pull-left"></i>請求準備情報入力</a></li>
+    }
+</ul>

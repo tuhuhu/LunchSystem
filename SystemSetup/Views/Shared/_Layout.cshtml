@@ -1,0 +1,148 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants.Security;
+
+@{
+	var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+}
+
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<title>@SystemSetup.UtilityServices.StringUtil.GetHtmlTitle(ViewBag.Title)</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        @*<link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>*@
+		<!-- CSS -->
+		@Styles.Render("~/Content/themes/iseiQ/css")
+		@Styles.Render("~/Content/fontawesome/css/icon")
+		@Styles.Render("~/Content/common")
+		@RenderPage("~/Views/Shared/_CommonScript.cshtml")
+        <!-- CSS For Internet Explorer <= 9-->
+        <!--[if IE]>
+            <style>
+            textarea {
+                white-space:pre !important;
+            }
+            </style>
+        <![endif]-->
+        
+		<!-- JavaScript -->
+		@Scripts.Render("~/bundles/jquery")
+		@Scripts.Render("~/bundles/common")
+		@Scripts.Render("~/bundles/jquery/bootstrapPlugins")
+		@Scripts.Render("~/bundles/input")
+		@Scripts.Render("~/bundles/dataTables")
+        @Scripts.Render("~/bundles/jquery/plugins/dragOn")
+
+		@if (ViewContext.RouteData.Values["controller"].ToString() != "Login")
+		{
+			@Scripts.Render("~/bundles/loadingPlugin")
+		}
+		@RenderSection("scripts", required: false)
+
+		<script type="text/javascript" charset="utf-8">
+			$(function () {
+				//iseiQ.utility.checkTimeout();
+			});
+
+			$(document).off('a.sidebar-toggle i');
+			$(document).on('click', 'a.sidebar-toggle i', function () {
+				var param = '';
+				if ($(this).attr('id') === 'active-sidebar-menu') {
+				    param = { dataType: 'sidebar-collapse' };
+
+				    // Check Billing List exist
+				    if ($('#billingList').length > 0) {				        
+				        var billingDisplay = iseiQ.utility.convertIntToMoney($("#Hidden-Bill-Amount").val());
+				        var billingTaxDisplay = iseiQ.utility.convertIntToMoney($("#Hidden-Bill-Amount-On-Tax").val());
+
+				        $("#SUM_BILLING_AMOUNT").parent().attr("title", billingDisplay + "円");				        
+				        $("#SUM_BILLING_AMOUNT").text(billingDisplay);
+
+				        $("#SUM_BILLING_AMOUNT_ON_TAX").parent().attr("title", billingTaxDisplay + "円");
+				        $("#SUM_BILLING_AMOUNT_ON_TAX").text(billingTaxDisplay);
+				    }
+				} else {
+				    param = { dataType: '' };
+
+                    // Check Billing List exist
+				    if ($('#billingList').length > 0) {				        
+				        var billingDisplay = iseiQ.utility.convertIntToMoney($("#Hidden-Bill-Amount").val());
+				        var billingTaxDisplay = iseiQ.utility.convertIntToMoney($("#Hidden-Bill-Amount-On-Tax").val());
+
+				        if (billingDisplay.length > Constant.MAX_BILLING_AMOUNT_DISPLAY) {
+				            $("#SUM_BILLING_AMOUNT").parent().attr("title", billingDisplay + "円");
+				            billingDisplay = billingDisplay.substr(0, Constant.BILLING_AMOUNT_DISPLAY) + "...";
+				        }
+				        $("#SUM_BILLING_AMOUNT").text(billingDisplay);
+
+				        if (billingTaxDisplay.length > Constant.MAX_BILLING_AMOUNT_DISPLAY) {
+				            $("#SUM_BILLING_AMOUNT_ON_TAX").parent().attr("title", billingTaxDisplay + "円");
+				            billingTaxDisplay = billingTaxDisplay.substr(0, Constant.BILLING_AMOUNT_DISPLAY) + "...";
+				        }
+				        $("#SUM_BILLING_AMOUNT_ON_TAX").text(billingTaxDisplay);
+				    }
+				}				
+
+				$.ajax({
+					type: 'GET',
+					url: '@Url.Action("SetMenu", "Common", new { area = "Common" })',
+					data: param,
+					dataType: 'json',
+					async: false,
+					cache: false,
+					success: function (data) {
+					    $('body').removeClass('sidebar-collapse').addClass(data);
+					},
+					error: function (err) {
+					    if (err.status == HTTPCode.TIME_OUT) { //419: Authentication Timeout
+							iseiQ.utility.setStatusTimeOut();
+						}
+						return;
+					}
+				});
+			});
+
+			$(document).ready(function () {
+				//Display body
+				$('#home').removeAttr('style');
+				$('#body').removeAttr('style');
+				//Display side bar menu
+				if ($('#sideBarSectionSmall').length) {
+					$('#sideBarSectionSmall').removeAttr('style');
+				}
+				if ($('#sideBarSectionLarge').length) {
+					$('#sideBarSectionLarge').removeAttr('style');
+				}
+				//If there is a saved menu state cookie, read and apply it saved value to menu.
+				var menuStateCookie = $.cookie(Constant.MENU_STATE_COOKIE);
+				if (menuStateCookie != null) {
+				    $('body').removeClass('sidebar-collapse').addClass(menuStateCookie);
+				}
+			});
+		</script>
+	</head>
+	<body id="home" class="mozilla @currentUser.MenuStatus" style="display: none;">
+		<div class="wrapper">
+			<header id="header" class="main-header">
+				<div id="fixed-top" class="sb-slide">
+					@RenderPage("~/Views/Shared/_Header.cshtml")
+				</div>
+			</header>
+			<aside class="main-sidebar-small">
+				@RenderPage("~/Views/Shared/_SideMenuSmall.cshtml")
+			</aside>
+			<aside class="main-sidebar">
+				@RenderPage("~/Views/Shared/_SideMenu.cshtml")
+			</aside>
+			<div id="sb-site" class="top-padding content-wrapper">
+                <div id="body" style="min-width: 1335px">
+                    @RenderBody()
+                </div>
+			</div>
+		</div>
+	</body>
+</html>

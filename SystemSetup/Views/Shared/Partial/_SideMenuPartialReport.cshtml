@@ -1,0 +1,26 @@
+﻿@using SystemSetup.Constants.Resources;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Models;
+@{
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+}
+<ul class="dropdown-menu">
+    <b class="caret"></b>
+    @if (authorityList.Contains(PermisionType.CONTRACT_ISSUE_ESTIMATE))
+    {
+        <li><a href='@Url.Action("IssuedEstimate", "Contract", new { area = "Contract" })'><i class="fa fa-angle-right pull-left"></i>@SideMenu.IssuedEstimate</a></li>
+    }
+    @if (authorityList.Contains(PermisionType.COVER_LETTER))
+    {
+        <li><a href='@Url.Action("CoverLetter", "PartnerStaff", new { area = "PartnerStaff" })'><i class="fa fa-angle-right pull-left"></i>@SideMenu.OutputSendingSlip</a></li>
+    }
+    @if (authorityList.Contains(PermisionType.ISSUE_ORDER_FOR_PAYMENT))
+    {
+        <li><a href='@Url.Action("IssueOrderForPayment", "Payment", new { area = "Payment" })'><i class="fa fa-angle-right pull-left"></i>@SideMenu.PLCOrder</a></li>
+    }
+    @if (authorityList.Contains(PermisionType.PAYMENT_NOTICE_ISSUE))
+    {
+        <li><a href='@Url.Action("IssueOrderForPayment", "Payment", new { area = "Payment" })'><i class="fa fa-angle-right pull-left"></i>@SideMenu.PaymentNoticeIssue</a></li>
+    }   
+</ul>

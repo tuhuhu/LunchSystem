@@ -1,0 +1,348 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+<!-- CSS -->
+@Styles.Render("~/Content/themes/iseiQ/maint.css")
+@model AllInformationListModel
+
+@{
+    ViewBag.Title = AllInformation.AllInformationList;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+}
+
+<div id="allInformationList">
+    <div id="topContent">
+        <div id="title">@Information.AllInformationList</div>
+
+        <div id="searchArea">
+            <div class="form-group">
+                @Html.Label(@Information.CONTENT, new { @class = "margin-right-5" })
+                @Html.TextBoxFor(m => m.CONTENT_DATE, new { @class = "width-200", style = "ime-mode: auto;", maxlength = 4096 })
+
+                    @Html.Label(@Information.lblDuration, new { @class = "margin-left-40 margin-right-5" })
+                    <span class="date datepicker-days">
+                        @Html.TextBoxFor(m => m.START_DATE, "{0:yyyy/MM/dd}", new { @class = "ime-mode", maxlength = 10 })
+                        <button type="button" class="btn btn-default btn-add-on"><i class="btn-icon btn-calendar"></i></button>
+                    </span>
+                    <span class="date-range-space">～</span>
+                    <span class="date datepicker-days">
+                        @Html.TextBoxFor(m => m.END_DATE, "{0:yyyy/MM/dd}", new { @class = "ime-mode", maxlength = 10 })
+                        <button type="button" class="btn btn-default btn-add-on"><i class="btn-icon btn-calendar"></i></button>
+                    </span>
+
+                    <span class="margin-left-40">
+                        @{string includeDeleted = Model.INCLUDE_DELETED ? "checked" : "";}
+
+                        <input id="INCLUDE_DELETED" type="checkbox" value="false" class="margin-right-5" @includeDeleted>
+                        <input id="INCLUDE_DELETED_HIDDEN" type="hidden" value="false">
+                        @Html.Label(@Information.lblIncludeDeleted, new { @for = "INCLUDE_DELETED" })
+                    </span>
+</div>
+        </div>
+
+        <hr />
+
+        <div id="searchAction">
+            <button type="button" id="btnClearConditions" class="btn btn-default">
+                <i class="btn-icon btn-clear">@Information.btnClearConditions</i>
+            </button>
+            <button type="button" id="btnSearch" class="btn btn-green">
+                <i class="btn-icon btn-search-white">@Information.btnSearch</i>
+            </button>
+        </div>
+    </div>
+
+    @RenderPage("~/Views/Shared/ShowHideHeaderContent.cshtml")
+
+    <div id="registButton">
+        <button type="button" id="btnCreateNew" name="btnCreateNew" class="btn btn-orange"><i class="btn-icon btn-regist"></i>@Information.btnCreateNew</button>
+    </div>
+
+    <div id="mainContent">
+        <table id="InfoTable" class="dataTable" style="width:100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>@AllInformation.lblNo</th>
+                    <th>@AllInformation.lblContentType</th>
+                    <th>@AllInformation.lblTitle</th>
+                    <th class="width-200">@AllInformation.CONTENT</th>
+                    <th>@AllInformation.PUBLISH_DATE_START</th>
+                    <th>@AllInformation.PUBLISH_DATE_END</th>
+                    <th>@AllInformation.DSP_PRIORITY</th>
+                    <th>@AllInformation.DELETE</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    @using (Html.BeginForm("AllInformationEdit", "AllInformation", FormMethod.Post, new
+    {
+        area = "Infomation",
+        id = "formAllInfoRegist",
+        enctype = "multipart/form-data"
+    }))
+    {
+        @Html.HiddenFor(m => m.INFO_SEQ_NO)
+        @Html.HiddenFor(m => m.REGIST_PARAM.INFO_SEQ_NO)
+        @Html.HiddenFor(m => m.REGIST_PARAM.CONTENT)
+        @Html.HiddenFor(m => m.REGIST_PARAM.DSP_PRIORITY)
+        @Html.HiddenFor(m => m.REGIST_PARAM.PUBLISH_DATE_START)
+        @Html.HiddenFor(m => m.REGIST_PARAM.PUBLISH_DATE_END)
+        @Html.HiddenFor(m => m.REGIST_PARAM.DEL_FLG)
+        @Html.HiddenFor(m => m.DEL_FLG)
+        @Html.HiddenFor(m => m.SEARCH_START)
+        @Html.HiddenFor(m => m.SEARCH_LENGTH)
+        <input type="hidden" id="hdnInfoSEQNo" name="INFO_SEQ_NO" value="" />
+    }
+</div>
+
+<script type="text/javascript">
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Variables Declaration
+    ////////////////////////////////////////////////////////////////////////////////////
+    iseiQ.utility.checkInputAlphanumeric($("#INFO_SEQ_NO"));
+
+    var AllInformationSearchUrl = '@Url.Action("AllInformationSearch", "AllInformation", new { area = "Information" })';
+    var AllInformationRegisterUrl = '@Url.Action("AllInformationRegister", "AllInformation", new { area = "Inforrmation" })';
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+
+    var INFO_SEQ_NO = 0;
+    var ORDER = 1;
+    var CONTENT_TYPE = 2;
+    var TITLE = 3;
+    var CONTENT = 4;
+    var PUBLISH_DATE_START = 5;
+    var PUBLISH_DATE_END = 6;
+    var DSP_PRIORITY = 7;
+    var UPD_DATE = 8;
+    var UPD_USERNAME = 9;
+
+
+    var dataTable = null;
+    var dataList = null;
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Initialization functions
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(function () {
+        var oSorting = {
+            "bSort": false
+        };
+
+        var oPaginate = {
+            "bPaginate": true,
+            "iDisplayStart": parseInt(@Model.SEARCH_START),
+            "iDisplayLength": parseInt(@Model.SEARCH_LENGTH),
+            "bStateSave": false
+        };
+
+        var oServerSide = {
+            "bServerSide": true,
+            "sAjaxSource": AllInformationSearchUrl,
+            "fnServerParams": serverParams,
+            "fnInitComplete": bindData,
+            "fnDrawCallback": function () { }
+        };
+
+        var aoColumnDefs = [
+              { "bVisible": false, "bSortable": false, "aTargets": [INFO_SEQ_NO] },
+              { "bSortable": false, "aTargets": [ORDER], "sWidth": "5%", "sClass": "cell_center" },
+              { "bSortable": false, "aTargets": [CONTENT_TYPE], "sWidth": "10%", "sClass": "cell_center" },
+              { "bSortable": false, "aTargets": [TITLE], "sWidth": "10%", "sClass": "cell_left max-width-150 text-overflow", "mRender": function (data, type, full) { return iseiQ.utility.buildColumShortText(data, 'text-overflow'); } },
+              {
+                  "bSortable": false, "aTargets": [CONTENT], "sClass": "cell_left max-width-200 text-overflow", "mRender": function (data, type, full)
+                  { return buildActionLink(full[INFO_SEQ_NO], 'post-AllInformation-register', full[CONTENT]); }
+              },
+              { "bSortable": false, "aTargets": [PUBLISH_DATE_START], "sWidth": "5%", "sClass": "cell_center" },
+              { "bSortable": false, "aTargets": [PUBLISH_DATE_END], "sWidth": "5%", "sClass": "cell_center" },
+              { "bSortable": false, "aTargets": [DSP_PRIORITY], "sWidth": "5%", "sClass": "cell_center" },
+              { "bSortable": false, "aTargets": [INCLUDE_DELETED], "sWidth": "5%", "sClass": "cell_center" }
+        ];
+
+        function serverParams(aoData) {
+            //検索条件を保持
+            $("#SEARCH_CONTENT_DATE").val($("#REGIST_PARAM_CONTENT_DATE").val());
+            $(".date.datepicker-days.date-from").datepicker("setDate", $("#REGIST_PARAM_START_DATE").val());
+            $(".date.datepicker-days.date-to").datepicker("setDate", $("#REGIST_PARAM_END_DATE").val());
+
+            if ($("#REGIST_PARAM_DEL_FLG").val() == 'true') {
+                $("#INCLUDE_DELETED").prop('checked', true).change();
+                $("#INCLUDE_DELETED_HIDDEN").val('true');
+            }0
+
+            aoData.push(
+                { "name": "CONTENT_DATE", "value": $("#CONTENT_DATE").val() },
+                { "name": "START_DATE", "value": $("#START_DATE").val() },
+                { "name": "END_DATE", "value": $("#END_DATE").val() },
+                { "name": "INCLUDE_DELETED", "value": $("#INCLUDE_DELETED_HIDDEN").val() }
+            );
+        }
+
+        function bindData(data) {
+            dataList = data.aaData;
+        }
+
+        dataTable = CreateDataTable('#InfoTable', oSorting, oPaginate, oServerSide, aoColumnDefs);
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Event Listeners
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(document).off('#START_DATE, #END_DATE');
+    $(document).on('change', '#START_DATE, #END_DATE', function () {
+        $(this).val(iseiQ.utility.autoCompleteYearMonthDay($(this).val()));
+        if ("" !== $(this).val()) {
+            $(this).parents(".datepicker-days").datepicker('update');
+        }
+    });
+
+    $(document).off('#btnCreateNew');
+    $(document).on('click', '#btnCreateNew', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+        RegistSubmit(0);
+    });
+
+    $(document).off('#btnSearch');
+    $(document).on('click', '#btnSearch', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+        searchAllInformation();
+    });
+
+    $(document).off('#btnClearConditions');
+    $(document).on('click', '#btnClearConditions', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        $("#CONTENT_DATE").val("");
+        $("#START_DATE").val("");
+        $("#END_DATE").val("");
+        $("#INCLUDE_DELETED").prop('checked', false).change();
+
+        $('#CONTENT_DATE, #START_DATE, #END_DATE').val('');
+
+        searchAllInformation();
+    });
+
+    $(document).off('#INCLUDE_DELETED');
+    $(document).on('change', '#INCLUDE_DELETED', function () {
+        if ($('#INCLUDE_DELETED').is(":checked")) {
+            $('#INCLUDE_DELETED_HIDDEN').val('true');
+        } else {
+            $('#INCLUDE_DELETED_HIDDEN').val('false');
+        }
+    });
+
+    $(document).off('.post-AllInformation-register');
+    $(document).on('click', '.post-AllInformation-register', function () {
+        RegistSubmit($(this).data('info-seq-no'));
+    });
+
+    function RegistSubmit(seqNo) {
+        var oSettings = dataTable.fnSettings();
+        $('#INFO_SEQ_NO').val(seqNo);
+        $('#SEARCH_START').val(oSettings._iDisplayStart);
+        $('#SEARCH_LENGTH').val(oSettings._iDisplayLength);
+
+        $('#formAllInfoRegist').submit();
+    }
+
+    $(document).off('.delete-AllInformation--link');
+    $(document).on('click', '.delete-AllInformation--link', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        var infoSeqNo = $(this).data('info-seq-no');
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: '@Url.Action("DeleteBeforeCheck")',
+            data: { "INFO_SEQ_NO": infoSeqNo },
+            success: function (data) {
+                if (data.statusCode == true) {
+                    iseiQ.utility.showMessageModal('@string.Format(Information.InformationDeleteError)', true)
+                } else {
+                    Delete(infoSeqNo);
+                }
+            },
+            error: function (xhr) {
+                console.log(xhr);
+            }
+        });
+    });
+
+    function Delete(infoSeqNo) {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        // Get Project Dsp Name
+        iseiQ.utility.showConfirmModal('@string.Format(Information.InformationDelete)', function (action) {
+            if (action) {
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: '@Url.Action("DELETE")',
+                    data: { "INFO_SEQ_NO": infoSeqNo },
+                    success: function (data) {
+                        dataTable.fnStandingRedraw();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        iseiQ.utility.showMessageModal("@string.Format(Information.InformationDeleteError)", true);
+                    }
+                });
+            }
+        });
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Misc Functions
+    ////////////////////////////////////////////////////////////////////////////////////
+    function validateData() {
+        var invalidMess = [];
+        var startDate = $('#START_DATE').val();
+        var endDate = $('#END_DATE').val();
+        var errStartDate = iseiQ.utility.validDate(startDate, 'yyyy/mm/dd', '@Information.PUBLISH_DATE_START');
+        var errEndDate = iseiQ.utility.validDate(endDate, 'yyyy/mm/dd', '@Information.PUBLISH_DATE_END');
+        var invalidMess = [];
+
+        if (errStartDate != null) {
+            invalidMess.push(errStartDate);
+        }
+
+        if (errEndDate != null) {
+            invalidMess.push(errEndDate);
+        }
+
+        if (errStartDate == null && errEndDate == null && startDate.length > 0 && endDate.length > 0) {
+            if (!iseiQ.utility.compareDate(startDate, endDate, 'yyyy/mm/dd')) {
+                invalidMess.push(['@string.Format(Messages.EndDateLessStartDateWarning)']);
+            }
+        }
+        return invalidMess;
+    }
+
+    function searchAllInformation() {
+        $('.validation-summary-errors').remove();
+        var invalidMess = validateData();
+
+        if (invalidMess.length > 0) {
+            iseiQ.utility.showClientError(invalidMess);
+            return false;
+        }
+
+        $("#REGIST_PARAM_CONTENT_DATE").val($("#SEARCH_CONTENT_DATE").val());
+        $("#REGIST_PARAM_START_DATE").val($("#SEARCH_START_DATE").val());
+        $("#REGIST_PARAM_END_DATE").val($("#SEARCH_END_DATE").val());
+        $("#REGIST_PARAM_DEL_FLG").val($("#SEARCH_INCLUDE_DELETE").prop('checked'));
+        $("#DEL_FLG").val($("#INCLUDE_DELETE").prop('checked'));
+
+        dataTable.fnPageChange('first');
+    }
+
+    function buildActionLink(infoSEQNo, className, label) {
+        return '<a class="' + className + '" title = "' + label + '" data-info-seq-no="' + infoSEQNo + '" >' + label + '</a>';
+    }
+
+</script>

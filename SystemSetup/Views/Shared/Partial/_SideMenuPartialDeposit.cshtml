@@ -1,0 +1,27 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+@{
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+}
+<ul class="dropdown-menu">
+    <b class="caret"></b>
+    @if (authorityList.Contains(PermisionType.PAYMENT_OR_NOT_PAYMENT))
+    {
+        <li><a href='@Url.Action("PaymentNotPayment", "Payment", new { area = "Payment" })'><i class="fa fa-angle-right pull-left"></i>入金消込</a></li>
+    }
+    @if (authorityList.Contains(PermisionType.PACKAGE_CLEAR_DEPOSIT))
+    {
+        <li><a href='@Url.Action("PackageClearDeposit", "Payment", new { area = "Payment" })'><i class="fa fa-angle-right pull-left"></i>@Maint.VIEW_Payment_PackageClearDeposit</a></li>
+    }
+    @if (authorityList.Contains(PermisionType.PAYMENT_HISTORY))
+    {
+        <li><a href='@Url.Action("PaymentHistory", "Payment", new { area = "Payment" })'><i class="fa fa-angle-right pull-left"></i>入金履歴</a></li>
+    }
+    
+    @if (authorityList.Contains(PermisionType.PAYMENT_HISTORY_EXPORTCSV))
+    {
+        <li><a href='@Url.Action("PaymentHistoryExportCSV", "Payment", new { area = "Payment" })'><i class="fa fa-angle-right pull-left"></i>入金履歴</a></li>
+    }
+</ul>

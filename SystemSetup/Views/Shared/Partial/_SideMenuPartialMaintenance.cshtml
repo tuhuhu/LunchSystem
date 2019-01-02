@@ -1,0 +1,75 @@
+﻿@using SystemSetup.Constants.Resources;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Models;
+@{
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+}
+
+<ul class="dropdown-menu-wid dropdown-menu">
+    <b class="caret"></b>
+    <li>
+        <div class="sub-menu-wid">
+            <a href='@Url.Action("CustMaintList", "CustMaint", new { area = "Maint" })'>
+            <i class="fa fa-angle-right pull-left"></i>@Information.CUST_MAINT</a>
+        </div>
+        <div class="sub-menu-wid">
+            <a href='@Url.Action("ContactPersMaintList", "ContactPersMaint", new { area = "Maint" })'>
+            <i class="fa fa-angle-right pull-left"></i>@Information.CONTACT_PERS_MAINT</a>
+        </div>
+    </li>
+    <li>
+        <div class="sub-menu-wid">
+            <a href='@Url.Action("OrgMaintList", "OrgMaint", new { area = "Maint" })'>
+            <i class="fa fa-angle-right pull-left"></i>@Information.ORG_MAINT</a>
+        </div>
+        <div class="sub-menu-wid">
+            <a href='@Url.Action("PersInCharMaintList", "PersInCharMaint", new { area = "Maint" })'>
+            <i class="fa fa-angle-right pull-left"></i>@Information.PERS_IN_CHAR_MAINT</a>
+        </div>
+    </li>
+    <li>
+@if (authorityList.Contains(PermisionType.TRANS_MAINT_LIST))
+        {
+
+            <div class="sub-menu-wid">
+                <a href='@Url.Action("TransMaintList", "TransMaint", new { area = "Maint" })'>
+                    <i class="fa fa-angle-right pull-left"></i>@Information.TRANS_MAINT
+                </a>
+            </div>
+}
+        <div class="sub-menu-wid">
+            <a href='@Url.Action("SubjectMaintList", "SubjectMaint", new { area = "Maint" })'>
+            <i class="fa fa-angle-right pull-left"></i>@Information.SUBJECT_MAINT</a>
+        </div>
+    </li>
+    <li>
+        <div class="sub-menu-wid">
+            <a href='@Url.Action("CategoryMaintList", "CategoryMaint", new { area = "Maint" })'>
+            <i class="fa fa-angle-right pull-left"></i>@Information.CATEGORY_MAINT</a>
+        </div>
+        <div class="sub-menu-wid">
+            <a href='@Url.Action("UserMaintList", "UserMaint", new { area = "Maint" })'>
+                <i class="fa fa-angle-right pull-left"></i>@Information.USER_MAINT
+            </a>
+        </div>
+    </li>
+    <li>
+        @if (authorityList.Contains(PermisionType.POST_INFORMATION_LIST))
+        {
+            <div class="sub-menu-wid">
+                <a href='@Url.Action("PostInformationList", "Information", new { area = "Information" })'>
+                    <i class="fa fa-angle-right pull-left"></i>@Information.txtPostInformationMaintenance
+                </a>
+            </div>
+        }
+        @if (authorityList.Contains(PermisionType.SHOW_LOG))
+        {
+            <div class="sub-menu-wid">
+                <a href='@Url.Action("ShowLog", "ShowLog", new { area = "Log" })'>
+                    <i class="fa fa-angle-right pull-left"></i>@Information.LOG_CONFIRM
+                </a>
+            </div>
+        }        
+    </li>
+</ul>

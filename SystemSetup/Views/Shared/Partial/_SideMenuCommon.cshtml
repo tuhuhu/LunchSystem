@@ -1,0 +1,84 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants.Resources;
+@using SystemSetup.Constants.Security;
+
+@{
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+    bool IsSmallMenu = Page.IsSmallMenu;
+    var adminType = HttpContext.Current.Session["AdminType"] as int?;
+    <li class="parent-node">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="500" aria-expanded="false">
+            <i class="btn-icon btn-estimates"></i>
+            @{ if (!IsSmallMenu)
+             { <span>Lunch Information</span> } }
+        </a>
+        @RenderPage("_SideMenuPartialEstimate.cshtml")
+    </li>
+    if (adminType == 0)
+    {
+        <li class="parent-node">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="500" aria-expanded="false">
+                <i class="btn-icon btn-agreement"></i>
+                @{ if (!IsSmallMenu)
+                   { <span>Payment </span> } }
+            </a>
+            @RenderPage("_SideMenuPartialContract.cshtml")
+        </li>
+    }
+    
+    
+    @*<li class="parent-node">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="500" aria-expanded="false">
+            <i class="btn-icon btn-maintenance"></i>
+            @{ if (!IsSmallMenu)
+             { <span>@SideMenu.ContractInfo</span> } }
+        </a>
+        @RenderPage("_SideMenuPartialContractInfo.cshtml")
+    </li>*@
+    @*<li class="parent-node">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="500" aria-expanded="false">
+            <i class="btn-icon btn-claim"></i>
+            @{ if (!IsSmallMenu)
+             { <span>@SideMenu.BillingProcessing</span> } }
+        </a>
+        @RenderPage("_SideMenuPartialBilling.cshtml")
+    </li>*@
+
+    @*<li class="parent-node">
+        <a href='#' class=" dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="500" aria-expanded="false">
+            <i class="btn-icon btn-deposit"></i>
+            @{ if (!IsSmallMenu)
+             { <span>@SideMenu.DepositProcessing</span> } }
+        </a>
+        @RenderPage("_SideMenuPartialDeposit.cshtml")
+    </li>
+
+    <li class="parent-node">
+        <a href='#' class=" dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="500" aria-expanded="false">
+            <i class="btn-icon btn-payment"></i>
+            @{ if (!IsSmallMenu)
+             { <span>@SideMenu.PaymentProcessing</span> } }
+        </a>
+        @RenderPage("_SideMenuPartialPayment.cshtml")
+    </li>
+
+    <li class="parent-node">
+        <a href='#' class=" dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="500" aria-expanded="false">
+            <i class="btn-icon btn-form-output"></i>
+            @{ if (!IsSmallMenu)
+             { <span>@SideMenu.FormOutput</span> } }
+        </a>
+        @RenderPage("_SideMenuPartialReport.cshtml")
+    </li>
+
+    <li class="parent-node">
+        <a href='#' class=" dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="500" aria-expanded="false">
+            <i class="btn-icon btn-maintenance"></i>
+            @{ if (!IsSmallMenu)
+             { <span>@SideMenu.MasterMaintenance</span> } }
+        </a>
+        @RenderPage("_SideMenuPartialMaintenance.cshtml")
+    </li>*@
+
+}

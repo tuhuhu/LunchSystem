@@ -1,0 +1,419 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+<!-- CSS -->
+@Styles.Render("~/Content/themes/iseiQ/maint.css")
+@model CategoryMaintModel
+
+@{
+    ViewBag.Title = Maint.CategoryMaintList;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+}
+
+<div id="maintInputDateList" class="CategoryMaintList">
+    <div id="topContent">
+        <div id="title">@Maint.CategoryMaintList</div>
+
+        <div id="searchArea">
+            <div class="form-group">
+                @Html.Label(@Maint.COMPANY_CD, new { @class = "title-row min-width-85" })
+                @Html.DropDownListFor(m => m.COMPANY_CD, Model.CONTRACT_FIRM_LIST, "", new { @class = "ddlContractFirmMaster" })
+
+                @Html.Label(@Maint.CONTRACT_TYPE, new { @class = "title-row min-width-60 margin-left-20" })
+                @Html.DropDownListFor(m => m.CONTRACT_TYPE_EDIT, Model.CONTRACT_TYPE_LIST, "", new { @class = "ddlContractTypeMaster" })
+            </div>
+            <div class="form-group">
+                @Html.Label(@Maint.EST_NO_PREFIX, new { @class = "title-row min-width-85" })
+                @Html.TextBoxFor(m => m.EST_NO_PREFIX, new { @class = "width-50", style = "ime-mode: active;", maxlength = 3 })
+
+                @Html.Label(@Maint.EST_EFFECTIVE_TYPE, new { @class = "title-row min-width-100 margin-left-40" })
+                @Html.DropDownListFor(m => m.EST_EFFECTIVE_TYPE, new SelectList(EffectiveType.Items, "Key", "Value"),"", new { @class = "ddl-w-120" })
+
+                @Html.Label(@Maint.EST_EFFECTIVE_INTERVAL, new { @class = "title-row min-width-85 margin-left-40" })
+                @Html.TextBoxFor(m => m.EST_EFFECTIVE_INTERVAL, new { @class = "width-50", style = "ime-mode: auto;", maxlength = 3 })
+            </div>
+        </div>
+        <hr />
+
+        <div id="searchAction">
+            <button type="button" id="btnClearConditions" class="btn btn-default">
+                <i class="btn-icon btn-clear">@Maint.btnClearConditions</i>
+            </button>
+            <button type="button" id="btnSearch" class="btn btn-green">
+                <i class="btn-icon btn-search-white">@Maint.btnSearch</i>
+            </button>
+        </div>
+    </div>
+
+    @RenderPage("~/Views/Shared/ShowHideHeaderContent.cshtml")
+
+    <div id="registButton">
+        <button type="button" id="btnCreateNew" name="btnCreateNew" class="btn btn-orange"><i class="btn-icon btn-regist">@Maint.btnCreateNew</i></button>
+    </div>
+
+    <div id="mainContent">
+        <table id="InfoTable" class="dataTable" cellspacing="0">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th>@Maint.lblNo</th>
+                    <th class="width-200">@Maint.COMPANY_CD</th>
+                    <th class="width-200">@Maint.CONTRACT_TYPE</th>
+                    <th class="width-200">@Maint.lblPriority</th>
+                    <th class="width-200">@Maint.EST_NO_PREFIX</th>
+                    <th>@Maint.DELIVERY_NO_PREFIX</th>
+                    <th>@Maint.PLC_ORDER_NO_PREFIX</th>
+                    <th class="width-200">@Maint.EST_EFFECTIVE_TYPE</th>
+                    <th class="width-200">@Maint.EST_EFFECTIVE_INTERVAL</th>
+                    <th>@Maint.lblUpdateTime</th>
+                    <th>@Maint.lblUpdateUser</th>
+                    <th>@Maint.EDIT</th>
+                    <th>@Maint.DELETE</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    @using (Html.BeginForm("CategoryMaintEdit", "CategoryMaint", FormMethod.Post, new
+        {
+            area = "Maint",
+            id = "CategoryMaintRegist",
+            enctype = "multipart/form-data"
+        }))
+    {
+        @Html.HiddenFor(m => m.REGIST_PARAM.COMPANY_CD)
+        @Html.HiddenFor(m => m.REGIST_PARAM.CONTRACT_TYPE)
+        @Html.HiddenFor(m => m.SEARCH_COMPANY_CD)
+        @Html.HiddenFor(m => m.SEARCH_CONTRACT_TYPE_EDIT)
+        @Html.HiddenFor(m => m.REGIST_PARAM.EST_NO_PREFIX)
+        @Html.HiddenFor(m => m.REGIST_PARAM.EST_EFFECTIVE_TYPE)
+        @Html.HiddenFor(m => m.REGIST_PARAM.EST_EFFECTIVE_INTERVAL)
+
+        @Html.HiddenFor(m => m.SEARCH_START)
+        @Html.HiddenFor(m => m.SEARCH_LENGTH)
+    }
+</div>
+
+<script type="text/javascript">
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Variables Declaration
+    ////////////////////////////////////////////////////////////////////////////////////
+
+    iseiQ.utility.validFullHalfSize($("#EST_NO_PREFIX"));
+    iseiQ.utility.checkInputNumber($("#EST_EFFECTIVE_INTERVAL"));
+
+    iseiQ.utility.imeControl($("#EST_NO_PREFIX"), 'disable');
+    iseiQ.utility.imeControl($("#EST_EFFECTIVE_INTERVAL"), 'disable');
+
+    var dataTable;
+    var categoryMaintSearchUrl = '@Url.Action("CategoryMaintSearch", "CategoryMaint", new { area = "Maint" })';
+    var custMaintRegisterUrl = '@Url.Action("CustMaintEdit", "CategoryMaint", new { area = "Maint" })';
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+    editlink = "編集";
+    var deletelink = "削除";
+    var CONTRACT_LEVEL_TYPE = 0;
+    var CONTRACT_TYPE = 1;
+    var ORDER = 2;
+    var COMPANY_CD = 3;
+    var CONTRACT_TYPE_DISP_NAME = 4;
+    var DSP_PRIORITY = 5;
+    var EST_NO_PREFIX = 6;
+    var DELIVERY_NO_PREFIX = 7;
+    var PLC_ORDER_NO_PREFIX = 8;
+    var EST_EFFECTIVE_TYPE = 9;
+    var EST_EFFECTIVE_INTERVAL = 10;
+    var UPD_DATE = 11;
+    var UPD_USERNAME = 12;
+    var EDIT = 13;
+    var DELETE = 14;
+
+    var doServerSide = false;
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Initialization functions
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(function () {
+        iseiQ.utility.bindContractTypeExtend();
+
+        var oSorting = {
+            "bSort": false
+        };
+
+        var oPaginate = {
+            "bPaginate": true,
+            "iDisplayStart": parseInt(@Model.SEARCH_START),
+            "iDisplayLength": parseInt(@Model.SEARCH_LENGTH),
+            "bStateSave": false
+        };
+
+        var oServerSide = {
+            "bServerSide": true,
+            "sAjaxSource": categoryMaintSearchUrl,
+            "fnServerParams": serverParams,
+            "fnInitComplete": bindData,
+            "fnDrawCallback": drawCallback,
+            "fnBeforeSend": fnBeforeSend
+        };
+
+        var aoColumnDefs = [
+            { "bVisible": false, "bSortable": false, "aTargets": [CONTRACT_LEVEL_TYPE] },
+            { "bVisible": false, "bSortable": false, "aTargets": [CONTRACT_TYPE] },
+            { "bSortable": false, "aTargets": [ORDER], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [COMPANY_CD], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [CONTRACT_TYPE_DISP_NAME], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [DSP_PRIORITY], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [EST_NO_PREFIX], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [DELIVERY_NO_PREFIX], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [PLC_ORDER_NO_PREFIX], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [EST_EFFECTIVE_TYPE], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [EST_EFFECTIVE_INTERVAL], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [UPD_DATE], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [UPD_USERNAME], "sWidth": "10%", "sClass": "cell_left" },
+            { "bSortable": false, "aTargets": [EDIT], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return buildActionLink(full[CONTRACT_TYPE], full[CONTRACT_LEVEL_TYPE], 'post-subcategorymaint-register', editlink); } },
+            { "bSortable": false, "aTargets": [DELETE], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return data == 0 ? '' : buildActionLink(full[CONTRACT_TYPE], full[CONTRACT_LEVEL_TYPE], 'delete-subcategorymaint-link btn btn-red', deletelink); } }
+        ];
+
+        function fnBeforeSend() {
+            // Controller へ送信前にチェック
+            return doServerSide;
+
+        }
+
+        function serverParams(aoData) {
+            //検索条件を保持
+            $("#COMPANY_CD").val($("#SEARCH_COMPANY_CD").val());
+            $('#CONTRACT_TYPE_EDIT').val('');
+            iseiQ.utility.bindContractTypeExtend();
+
+            $("#CONTRACT_TYPE_EDIT").val($("#SEARCH_CONTRACT_TYPE_EDIT").val());
+
+            $("#EST_NO_PREFIX").val($("#REGIST_PARAM_EST_NO_PREFIX").val());
+            $("#EST_EFFECTIVE_TYPE").val($("#REGIST_PARAM_EST_EFFECTIVE_TYPE").val());
+            $("#EST_EFFECTIVE_INTERVAL").val($("#REGIST_PARAM_EST_EFFECTIVE_INTERVAL").val());
+
+            if ($("#COMPANY_CD").val() != "") {
+                doServerSide = true;
+            }
+
+            aoData.push(
+                { "name": "COMPANY_CD", "value": $("#COMPANY_CD").val() },
+                { "name": "CONTRACT_TYPE_EDIT", "value": $("#CONTRACT_TYPE_EDIT").val() },
+                { "name": "EST_NO_PREFIX", "value": $("#EST_NO_PREFIX").val() },
+                { "name": "EST_EFFECTIVE_TYPE", "value": $("#EST_EFFECTIVE_TYPE").val() },
+                { "name": "EST_EFFECTIVE_INTERVAL", "value": $("#EST_EFFECTIVE_INTERVAL").val() }
+            );
+        }
+
+        function bindData(data) {
+            dataList = data.aaData;
+        }
+
+        function drawCallback() {
+            if ($('#tbLeft').length > 0) {
+                $('#InfoTable').unwrap();
+                $('.col-left, .rBarOn, .bBarOn').remove();
+            }
+
+            var htmlTbLeft = '<table id="tbLeft" class="dataTable" cellspacing="0">'
+                + ' <thead>'
+                + ' <tr>'
+                + ' <th>@Maint.lblNo</th>'
+                + ' <th>@Maint.COMPANY_CD</th>'
+                + ' <th>@Maint.CONTRACT_TYPE</th>'
+                + ' </tr>'
+                + ' </thead>'
+                + ' <tbody>';
+
+            if (dataList !== null && dataList.length > 0) {
+                for (var i = 0; i < dataList.length; i++) {
+                    var classRow = i % 2 == 0 ? 'odd' : 'even';
+                    var height = $($('#InfoTable tbody tr')[i]).outerHeight();
+
+                    htmlTbLeft += ' <tr class="' + classRow + '" style="height: ' + height + 'px">'
+                        + ' <td class="cell_center">' + iseiQ.utility.buildColumShortText(dataList[i][ORDER]) + '</td>'
+                        + ' <td class="cell_center">' + iseiQ.utility.buildColumShortText(dataList[i][COMPANY_CD]) + '</td>';
+                    htmlTbLeft += ' <td class="cell_center"> <div>' + iseiQ.utility.buildColumShortText(dataList[i][CONTRACT_TYPE_DISP_NAME], 'special-wrap') + '</div></td></tr>';
+                }
+            }
+
+            htmlTbLeft += '</tbody></table>';
+
+            $("#InfoTable").wrap('<div class="col-right dragOn"></div>').removeClass('no-footer');
+            $('div.col-right').before('<div class="col-left"> ' + htmlTbLeft + '</div>');
+            $('#tbLeft thead tr').height($('#InfoTable thead').height());
+
+            $("#tbLeft tbody tr").each(function (i) {
+                if ($(this).height() != 40) {
+                    $("#InfoTable tbody tr").eq(i).height($(this).height() + 1);
+                    $(this).height($(this).height() + 1);     //jQueryでは高さの少数を取得できないため
+                }
+            });
+
+            $('.dragOn').dragOn();
+            $('.dragOn').barOn();
+
+            var visibleCount = 2;
+            $('#InfoTable thead tr th').eq(ORDER - visibleCount).hide();
+            $('#InfoTable thead tr th').eq(COMPANY_CD - visibleCount).hide();
+            $('#InfoTable thead tr th').eq(CONTRACT_TYPE_DISP_NAME - visibleCount).hide();
+            $('#InfoTable tbody tr').each(function (i) {
+                if (dataList.length != 0) {
+                    $('td', this).eq(ORDER - visibleCount).hide();
+                    $('td', this).eq(COMPANY_CD - visibleCount).hide();
+                    $('td', this).eq(CONTRACT_TYPE_DISP_NAME - visibleCount).hide();
+                }
+            });
+        }
+
+
+        dataTable = CreateDataTable('#InfoTable', oSorting, oPaginate, oServerSide, aoColumnDefs);
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Event Listeners
+    ////////////////////////////////////////////////////////////////////////////////////
+    $("#COMPANY_CD").change(function () {
+        // check time out
+        var sUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+        var result = iseiQ.utility.getDataByAjax(sUrl, null);
+
+        if (!result)
+            return;
+
+        $('#CONTRACT_TYPE_EDIT').val('');
+        iseiQ.utility.bindContractTypeExtend();
+    });
+
+    $("#CONTRACT_TYPE_EDIT").change(function () {
+        // check time out
+        var sUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+        var result = iseiQ.utility.getDataByAjax(sUrl, null);
+
+        if (!result)
+            return;
+
+        iseiQ.utility.bindSubContractTypeByOutsideExtend();
+    });
+
+    $(document).off('#btnCreateNew');
+    $(document).on('click', '#btnCreateNew', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        if ($("#SEARCH_COMPANY_CD").val() == "") {
+            iseiQ.utility.showMessageModal('@string.Format(@Messages.Required, "企業コード")', false)
+            return false;
+        }
+
+        RegistSubmit(0);
+    });
+
+    $(document).off('#btnSearch');
+    $(document).on('click', '#btnSearch', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        searchCategoryMaint();
+    });
+
+    $(document).off('#btnClearConditions');
+    $(document).on('click', '#btnClearConditions', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        $('#COMPANY_CD').val('');
+        $('#CONTRACT_TYPE_EDIT').val('');
+        $("#SEARCH_COMPANY_CD").val('');
+        $("#EST_NO_PREFIX").val('');
+        $("#EST_EFFECTIVE_TYPE").val('');
+        $("#EST_EFFECTIVE_INTERVAL").val('');
+
+        iseiQ.utility.bindContractTypeExtend();
+
+        $('#InfoTable_info').empty();
+        $('#InfoTable_paginate').empty();
+        $('tbody').empty();
+    });
+
+    $(document).off('.post-subcategorymaint-register');
+    $(document).on('click', '.post-subcategorymaint-register', function () {
+        RegistSubmit($(this).data('contract-type'));
+    });
+
+    function RegistSubmit(contractType) {
+        var oSettings = dataTable.fnSettings();
+
+        $('#SEARCH_START').val(oSettings._iDisplayStart);
+        $('#SEARCH_LENGTH').val(oSettings._iDisplayLength);
+
+        $('#REGIST_PARAM_COMPANY_CD').val($("#SEARCH_COMPANY_CD").val());
+        $('#REGIST_PARAM_CONTRACT_TYPE').val(contractType);
+        $('#CategoryMaintRegist').submit();
+    }
+
+    $(document).off('.delete-subcategorymaint-link');
+    $(document).on('click', '.delete-subcategorymaint-link', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        var companyCd = $("#SEARCH_COMPANY_CD").val();
+        var contractType = $(this).data('contract-type');
+        var contractLevelType = $(this).data('contract-level-type');
+
+        // Get Project Dsp Name
+        iseiQ.utility.showConfirmModal('@string.Format(@Maint.CategoryMaintDelete)', function (action) {
+            if (action) {
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: '@Url.Action("DELETE")',
+                    data: { "COMPANY_CD": companyCd, "CONTRACT_TYPE": contractType, "CONTRACT_LEVEL_TYPE": contractLevelType },
+                    success: function (data) {
+                        dataTable.fnStandingRedraw();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        iseiQ.utility.showMessageModal("@string.Format(Maint.MaintDeleteError)", true);
+                    }
+                });
+            }
+        });
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Misc Functions
+    ////////////////////////////////////////////////////////////////////////////////////
+    function validateData() {
+        var invalidMess = [];
+        return invalidMess;
+    }
+
+    function searchCategoryMaint() {
+        $('.validation-summary-errors').remove();
+        var invalidMess = validateData();
+
+        if (invalidMess.length > 0) {
+            iseiQ.utility.showClientError(invalidMess);
+            return false;
+        }
+
+        if ($("#COMPANY_CD").val() == "") {
+            iseiQ.utility.showMessageModal('@string.Format(@Messages.Required, "企業コード")', false)
+            return false;
+        }
+
+        doServerSide = true;
+
+        $("#SEARCH_COMPANY_CD").val($("#COMPANY_CD").val());
+        $("#SEARCH_CONTRACT_TYPE_EDIT").val($("#CONTRACT_TYPE_EDIT").val());
+
+        $("#REGIST_PARAM_EST_NO_PREFIX").val($("#EST_NO_PREFIX").val());
+        $("#REGIST_PARAM_EST_EFFECTIVE_TYPE").val($("#EST_EFFECTIVE_TYPE").val());
+        $("#REGIST_PARAM_EST_EFFECTIVE_INTERVAL").val($("#EST_EFFECTIVE_INTERVAL").val());
+
+        dataTable.fnPageChange('first');
+    }
+
+    function buildActionLink(infoContractType, infoContractLevelType, className, label) {
+        return '<a class="' + className + '" data-contract-type="' + infoContractType + '" data-contract-level-type="' + infoContractLevelType + '">' + label + '</a>';
+    }
+</script>

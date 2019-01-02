@@ -1,0 +1,228 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Resources
+
+@model LoginAuthenticationModel
+
+@{
+    ViewBag.Title = "System Setup";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+    bool timeOut = false;
+    try
+    {
+        if (ViewBag.TimeOut != null)
+        {
+            timeOut = ViewBag.TimeOut;
+        }
+    }
+    catch (Exception)
+    {
+    }
+}
+
+@*check session timeout, redirect from Common/AuthentTimeout*@
+@if (timeOut)
+{
+    <script type="text/javascript">
+        $(function () {
+            // remove client status timeout
+            localStorage.removeItem('sessiontimeout');
+
+            // replace url, delete param timeout
+            history.replaceState("login", "login", window.location.href.toLowerCase().replace('?timeout=true', ''));
+
+            // show mess
+            iseiQ.utility.showMessageModal(Constant.ERR_CONNECT_TIMEOUT, true);
+        });
+    </script>
+}
+else
+{
+    <script type="text/javascript">
+        $(function () {
+            // check is session timeout on client
+            if (localStorage.getItem('sessiontimeout')) {
+
+                // remove client status timeout
+                localStorage.removeItem('sessiontimeout');
+
+                // show mess
+                iseiQ.utility.showMessageModal(Constant.ERR_CONNECT_TIMEOUT, true);
+            }
+        });
+    </script>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Handle disable history back on browser
+        window.location.hash = "view";
+        window.location.hash = "ChromeView"; //again because google chrome don't insert first hash into history
+        window.onhashchange = function () { window.location.hash = "view"; }
+    });
+</script>
+
+@if (@ViewBag.PASSWORD_EXPIRED != null)
+{
+    <script type="text/javascript">
+    $(function () {
+        iseiQ.utility.showMessageModal('@ViewBag.PASSWORD_EXPIRED', true, function () {
+            window.location.href = '@Url.Action("ChangePassword", "ChangePassword", new { area = "UserManagement" })';
+        });
+    });
+
+    </script>
+}
+else
+{
+    <script type="text/javascript">
+        $(function () {
+            $('#COMPANY_CD').focus();
+        });
+    </script>
+}
+
+<div class="top-background"></div>
+<div class="login-box" style="position: absolute; left: 512px; top: -15px;">
+    @using (Html.BeginForm("Login", "Login", FormMethod.Post, new { @id = "LoginForm", @class = "form-horizontal" }))
+    {
+        <div class="login-logo">
+            <img src="/Images/rogo_login_color.png">
+        </div><!-- /.login-logo -->
+        <div class="login-box-body">
+            <div class="form-group">
+                <div id="title"></div>
+                @Html.ValidationSummary(false)
+            </div>
+
+            @*<div class="form-group">
+                @Html.Label(@Login.CompanyCode, new { @class = "text-normal" })
+                @Html.TextBoxFor(m => m.COMPANY_CD, new { @id = "COMPANY_CD", @maxlength = "5", @class = "form-control ime-mode" })
+            </div>*@
+
+            <div class="form-group">
+                @Html.Label(@Login.UserAccount, new { @class = "text-normal" })
+                @Html.TextBoxFor(m => m.SETUP_USER_ACCOUNT, new { @id = "SETUP_USER_ACCOUNT", @class = "form-control ime-mode", @maxlength = "100" })
+            </div>
+            <div class="form-group">
+                @Html.Label(@Login.Password, new { @class = "text-normal" })
+                @Html.PasswordFor(m => m.SETUP_USER_PASSWORD, new { @id = "SETUP_USER_PASSWORD", @class = "form-control ime-mode", @maxlength = "32" })
+            </div>
+            <div class="form-group  margin-left-6" style="margin-bottom: 20px">
+                @Html.AntiForgeryToken()
+                <button type="submit" id="btnLogin" name="btnLogin" class="btn btn-green">Login</button>
+                <button type="submit" name="btnChangePass" id="btnChangePass" class="btn btn-green">Change Password</button>
+            </div><!-- /.col -->
+        </div><!-- /.login-box-body -->
+    }
+</div>
+
+<div class="footer center">
+    Copyright &copy; 2016 System Setup V0.0000000001 i-Enter corporation LTD. All rights reserved.
+</div>
+<script type="text/javascript">
+    $(function () {
+        //iseiQ.utility.imeControl($("#COMPANY_CD"), 'disable');
+        iseiQ.utility.imeControl($("#SETUP_USER_ACCOUNT"), 'disable');
+
+        resizeLogin();
+
+        $(window).resize(function () {
+            resizeLogin();
+        });
+
+        function resizeLogin() { //Adjust LoginForm to center
+            var minTop = ($(window).height() - $('.login-box').outerHeight()) / 2 - 50;
+
+            if (minTop < 0) {
+                minTop = -15;
+            }
+
+            $('.login-box').css({
+                position: 'absolute',
+                left: ($(window).width() - $('.login-box').outerWidth()) / 2,
+                top: minTop
+            });
+        }
+
+        var regX = Constant.REGEX_PASSWORD;
+        //$("#COMPANY_CD").on("change keyup", function (e) {
+        //    var text = $(this).val();
+        //    if (regX.test(text)) {
+        //        text = text.replace(regX, '');
+        //        $(this).val(text);
+        //    }
+        //});
+
+        $("#SETUP_USER_ACCOUNT").on("change keyup", function (e) {
+            var text = $(this).val();
+            if (regX.test(text)) {
+                text = text.replace(regX, '');
+                $(this).val(text);
+            }
+        });
+
+        $("#SETUP_USER_PASSWORD").on("change keyup", function (e) {
+            var text = $(this).val();
+            if (regX.test(text)) {
+                text = text.replace(regX, '');
+                $(this).val(text);
+            }
+        });
+
+        $(document).off('#btnLogin');
+        $(document).on('click', '#btnLogin', function () {
+            $('.validation-summary-errors').remove();
+            var invalidMess = validateData();
+            if (invalidMess.length > 0) {
+                iseiQ.utility.showClientError(invalidMess);
+                return false;
+            }
+            return true;
+        });
+
+        $(document).off('#btnChangePass');
+        $(document).on('click', '#btnChangePass', function () {
+            $('.validation-summary-errors').remove();
+            var invalidMess = validateData();
+            if (invalidMess.length > 0) {
+                iseiQ.utility.showClientError(invalidMess);
+                return false;
+            }
+            return true;
+        });
+    });
+
+    function validateData() {
+        var invalidMess = [];
+        //var companyCode = $('#COMPANY_CD').val();
+        var userAcount = $('#SETUP_USER_ACCOUNT').val();
+        var password = $('#SETUP_USER_PASSWORD').val();
+
+        @*if (companyCode.length === 0) {
+            invalidMess.push("@string.Format(Messages.Required, @Login.CompanyCode)");
+        }*@
+        if (userAcount.length === 0) {
+            invalidMess.push("@string.Format("{0} is a required item.", "User Account")");
+        }
+
+        if (password.length === 0) {
+            invalidMess.push("@string.Format("{0} is a required item.", "Password")");
+        }
+        else {
+            if (userAcount.length > 0) {
+                if (userAcount.length < Constant.MIN_INPUT_ACCOUNT || userAcount.length > Constant.MAX_INPUT_ACCOUNT || !iseiQ.utility.validAccount(userAcount)) {
+                    invalidMess.push("@string.Format(Messages.AccountFailed)");
+                } else {
+                    if (password.length > 0) {
+                        if (password.length < Constant.MIN_INPUT_PASS || password.length > Constant.MAX_INPUT_PASS || !iseiQ.utility.validAccount(password)) {
+                            invalidMess.push("@string.Format(Messages.AccountFailed)");
+                        }
+                    }
+                }
+            }
+        }
+
+        return invalidMess;
+    }
+</script>

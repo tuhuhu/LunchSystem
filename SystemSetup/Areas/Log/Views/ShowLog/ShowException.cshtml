@@ -1,0 +1,21 @@
+﻿@using SystemSetup.Models;
+
+@{
+    ViewBag.Title = "エラー確認";
+}
+
+<h2>エラー確認</h2>
+
+@{
+    string logString = string.Empty;
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var CompanyCd = currentUser.CompanyCd;
+    string path = string.Format(@"D:\home\LogFiles\{0}_logfile_iseiQ_Error.txt", CompanyCd);
+    using (var reader = new StreamReader(path, System.Text.Encoding.Default))
+    {
+        logString = reader.ReadToEnd();
+    }
+}
+<pre>
+    @logString
+</pre>

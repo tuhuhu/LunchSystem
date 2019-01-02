@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{498BE419-2F92-4441-BAD2-889C4EC0C99B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SystemSetup.Models</RootNamespace>
+    <AssemblyName>SystemSetup.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\BaseEntity.cs" />
+    <Compile Include="Entities\Information\InformationEntity.cs" />
+    <Compile Include="Entities\Information\AllInformationEntity.cs" />
+    <Compile Include="Entities\Lunch\PaymentEntity.cs" />
+    <Compile Include="Entities\Lunch\LunchInformationEntity.cs" />
+    <Compile Include="Entities\Lunch\LunchMenuEntity.cs" />
+    <Compile Include="Entities\Maint\AccountCodeJISEntity.cs" />
+    <Compile Include="Entities\Maint\AccountGroupEntity.cs" />
+    <Compile Include="Entities\Maint\AuthorityEntity.cs" />
+    <Compile Include="Entities\Maint\AuthorityGroupEntity.cs" />
+    <Compile Include="Entities\Maint\BusinessPartnerEntity.cs" />
+    <Compile Include="Entities\Maint\DispatchContractOverheadEntity.cs" />
+    <Compile Include="Entities\Maint\DebitNoteFormatEntity.cs" />
+    <Compile Include="Entities\Maint\FirmContractClassEntity.cs" />
+    <Compile Include="Entities\Maint\FirmContractConfigEntity.cs" />
+    <Compile Include="Entities\Maint\GroupEntity.cs" />
+    <Compile Include="Entities\Maint\PlanMaintEntity.cs" />
+    <Compile Include="Entities\Maint\OrgMaintEntity.cs" />
+    <Compile Include="Entities\Maint\SetUpUserMaintEntity.cs" />
+    <Compile Include="Entities\Maint\ContractFirmPlanMaintEntity.cs" />
+    <Compile Include="Entities\Maint\SystemStatusEntity.cs" />
+    <Compile Include="Entities\Maint\TaxRateEntity.cs" />
+    <Compile Include="Entities\Maint\BillingNumberMaintEntity.cs" />
+    <Compile Include="Entities\Maint\UserMaintEntity.cs" />
+    <Compile Include="Entities\Maint\AccountCodeEntity.cs" />
+    <Compile Include="Entities\Master\ContractFirmEntity.cs" />
+    <Compile Include="Entities\Master\DebitAccountEntity.cs" />
+    <Compile Include="Entities\Master\ContractFirmBankAccountEntity.cs" />
+    <Compile Include="Entities\Master\ItemEntity.cs" />
+    <Compile Include="Entities\Master\ProductEntity.cs" />
+    <Compile Include="Entities\Master\ContractFirmUserEntity.cs" />
+    <Compile Include="EntityHelper.cs" />
+    <Compile Include="Models\DataTablesModel.cs" />
+    <Compile Include="Models\EstimationModel\ContractTypeMasterModel.cs" />
+    <Compile Include="Models\InformationModel\InformationModel.cs" />
+    <Compile Include="Models\InformationModel\PostInformationListModel.cs" />
+    <Compile Include="Models\InformationModel\AllInformationListModel.cs" />
+    <Compile Include="Models\InformationModel\AllInformationModel.cs" />
+    <Compile Include="Models\LoginModel\InvalidLoginUser.cs" />
+    <Compile Include="Models\LoginModel\LoginAuthenticationModel.cs" />
+    <Compile Include="Models\LoginModel\ChangePasswordModel.cs" />
+    <Compile Include="Models\LunchModel\LunchListModel.cs" />
+    <Compile Include="Models\MaintModel\AccountingSubjectGroupMaintModel.cs" />
+    <Compile Include="Models\MaintModel\CategoryMaintModel.cs" />
+    <Compile Include="Models\MaintModel\AccountingSubjectMaintModel.cs" />
+    <Compile Include="Models\MaintModel\CategorySetDuplicateModel.cs" />
+    <Compile Include="Models\MaintModel\ContractCompanyMaintModel.cs" />
+    <Compile Include="Models\MaintModel\DispatchContractOverheadModel.cs" />
+    <Compile Include="Models\MaintModel\DebitNoteFormatModel.cs" />
+    <Compile Include="Models\MaintModel\PlanMaintModel.cs" />
+    <Compile Include="Models\MaintModel\OrgMaintListModel.cs" />
+    <Compile Include="Models\MaintModel\OrgMaintModel.cs" />
+    <Compile Include="Models\MaintModel\OrgMaintRegistModel.cs" />
+    <Compile Include="Models\MaintModel\ProductMaintModel.cs" />
+    <Compile Include="Models\MaintModel\AuthorityGroupMaintModel.cs" />
+    <Compile Include="Models\MaintModel\SetUpUserMaintListModel.cs" />
+    <Compile Include="Models\MaintModel\SetUpUserMaintModel.cs" />
+    <Compile Include="Models\MaintModel\SubCategoryMaintModel.cs" />
+    <Compile Include="Models\MaintModel\SystemStatusModel.cs" />
+    <Compile Include="Models\MaintModel\TaxRateMaintModel.cs" />
+    <Compile Include="Models\MaintModel\UserMaintListModel.cs" />
+    <Compile Include="Models\MaintModel\BillingNumberMaintModel.cs" />
+    <Compile Include="Models\MaintModel\UserMaintModel.cs" />
+    <Compile Include="Models\MasterModel\SearchDebitAccountModel.cs" />
+    <Compile Include="Models\MasterModel\SearchBankAccountModel.cs" />
+    <Compile Include="Models\MasterModel\SearchProductModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="System\CmnEntityModel.cs" />
+    <Compile Include="System\LoginUserAuthorityMenuModel.cs" />
+    <Compile Include="System\ReplacementModel.cs" />
+    <Compile Include="System\UserSessionInfo.cs" />
+    <Compile Include="Validation\CompareDateForm.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\SystemSetup.Constants\SystemSetup.Constants.csproj">
+      <Project>{16945a79-74d5-4017-853e-21c9386db5dc}</Project>
+      <Name>SystemSetup.Constants</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

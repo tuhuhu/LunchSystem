@@ -1,0 +1,56 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants.Resources;
+@using SystemSetup.Constants.Security;
+@{
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+}
+
+<ul class="dropdown-menu">
+    <b class="caret"></b>
+    @*<li>
+        <a href='@Url.Action("AccountingSubjectGroupMaintList", "AccountingSubjectGroupMaint", new { area = "Maint" })'>
+            <i class="fa fa-angle-right pull-left"></i>@SideMenu.AccountingSubjectGroupMaintaince
+        </a>
+    </li>
+    <li>
+        <a href='@Url.Action("TaxRateMaintList", "TaxRateMaint", new { area = "Maint" })'>
+            <i class="fa fa-angle-right pull-left"></i>@SideMenu.TaxRateMaintaince
+        </a>
+    </li>*@
+    <li>
+        <a href='@Url.Action("LunchList", "LunchRegister", new { area = "LunchRegister" })'>
+            <i class="fa fa-angle-right pull-left"></i>Lunch Information List
+        </a>
+    </li>
+    <li>
+        <a href='@Url.Action("LunchRegisterEdit", "LunchRegister", new { area = "LunchRegister" })'>
+            <i class="fa fa-angle-right pull-left"></i>Lunch Register
+        </a>
+    </li>
+    @*<li>
+        <a href='@Url.Action("SetUpUserMaintList", "SetUpUserMaint", new { area = "Maint"})'>
+            <i class=" fa fa-angle-right pull-left"></i>@SideMenu.SetUpUserMaint 
+        </a>
+    </li>*@
+    @*<li>
+        <a href='@Url.Action("SystemStatusRegister", "SystemStatus", new { area = "Maint" })'>
+            <i class=" fa fa-angle-right pull-left"></i>@SideMenu.SystemStatus
+        </a>
+    </li>
+    <li>
+        <a href='@Url.Action("allInformationList", "allInformation", new { area = "Information" })'>
+            <i class=" fa fa-angle-right pull-left"></i>@SideMenu.AllInformation
+        </a>
+    </li>*@
+    @*@if (authorityList.Contains(PermisionType.ESTIMATE_LIST))
+    {
+        <li><a href='@Url.Action("EstimateList", "Estimate", new { area = "Estimate" })'><i class="fa fa-angle-right pull-left"></i>見積一覧</a></li>
+    }
+    
+    @if (authorityList.Contains(PermisionType.ESTIMATE_NEW_OR_EDIT))
+    {
+        <li><a href='@Url.Action("Edit", "Estimate", new { area = "Estimate" })'><i class="fa fa-angle-right pull-left"></i>見積新規作成</a></li>
+    }*@
+    
+</ul>

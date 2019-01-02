@@ -1,0 +1,8 @@
+﻿@if (Model == null)
+{
+    <span class="multilinetext"></span>
+}
+else
+{    
+    <span class="multilinetext">@Html.Raw(@Html.Encode(Model).Replace("\r\n", "<br />"))</span>
+}

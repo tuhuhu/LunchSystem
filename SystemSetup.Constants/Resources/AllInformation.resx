@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ACCOUNT_CODE_MAINT" xml:space="preserve">
+    <value>勘定科目</value>
+  </data>
+  <data name="btnClearConditions" xml:space="preserve">
+    <value>条件クリア</value>
+  </data>
+  <data name="btnCreateNew" xml:space="preserve">
+    <value>新規作成</value>
+  </data>
+  <data name="btnSearch" xml:space="preserve">
+    <value>検索</value>
+  </data>
+  <data name="CATEGORY_MAINT" xml:space="preserve">
+    <value>小カテゴリ</value>
+  </data>
+  <data name="COMPANY_CD" xml:space="preserve">
+    <value>企業コード</value>
+  </data>
+  <data name="CONTACT_PERS_MAINT" xml:space="preserve">
+    <value>取引先担当者</value>
+  </data>
+  <data name="CONTENT" xml:space="preserve">
+    <value>掲載内容</value>
+  </data>
+  <data name="CONTRACT_PLAN_CONFIRMATION" xml:space="preserve">
+    <value>契約プラン確認</value>
+  </data>
+  <data name="CUST_MAINT" xml:space="preserve">
+    <value>取引先</value>
+  </data>
+  <data name="DATE_MODIFY" xml:space="preserve">
+    <value>更新日時</value>
+  </data>
+  <data name="DELETE" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="DEL_FLG" xml:space="preserve">
+    <value>削除フラグ</value>
+  </data>
+  <data name="DSP_PRIORITY" xml:space="preserve">
+    <value>表示優先度</value>
+  </data>
+  <data name="ErrorInformation" xml:space="preserve">
+    <value>エラー情報</value>
+  </data>
+  <data name="ERR_END_DATE" xml:space="preserve">
+    <value>は掲載開始日以降を指定してください。</value>
+  </data>
+  <data name="ExcelExtension" xml:space="preserve">
+    <value>.xlsx</value>
+  </data>
+  <data name="INFO_SEQ_NO" xml:space="preserve">
+    <value>掲載ID</value>
+  </data>
+  <data name="INS_DATE" xml:space="preserve">
+    <value>作成日</value>
+  </data>
+  <data name="INS_USER_ID" xml:space="preserve">
+    <value>作成者ID</value>
+  </data>
+  <data name="lblDuration" xml:space="preserve">
+    <value>期間</value>
+  </data>
+  <data name="lblIncludeDeleted" xml:space="preserve">
+    <value>削除済みを含む</value>
+  </data>
+  <data name="lblNo" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="lblPostInformationList" xml:space="preserve">
+    <value>掲載情報一覧</value>
+  </data>
+  <data name="lblAllInformationList" xml:space="preserve">
+    <value>全体掲載情報一覧</value>
+  </data>
+  <data name="lblPriority" xml:space="preserve">
+    <value>優先度</value>
+  </data>
+  <data name="lblUpdateTime" xml:space="preserve">
+    <value>更新日時</value>
+  </data>
+  <data name="lblUpdateUser" xml:space="preserve">
+    <value>更新者</value>
+  </data>
+  <data name="LOG_CONFIRM" xml:space="preserve">
+    <value>ログ確認</value>
+  </data>
+  <data name="NOMEN_MAINT" xml:space="preserve">
+    <value>品名情報</value>
+  </data>
+  <data name="ORG_MAINT" xml:space="preserve">
+    <value>組織</value>
+  </data>
+  <data name="PERSON_UPDATE" xml:space="preserve">
+    <value>更新者</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT" xml:space="preserve">
+    <value>担当者</value>
+  </data>
+  <data name="PUBLISH_DATE_END" xml:space="preserve">
+    <value>掲載終了日</value>
+  </data>
+  <data name="PUBLISH_DATE_START" xml:space="preserve">
+    <value>掲載開始日</value>
+  </data>
+  <data name="RegisterSuccess" xml:space="preserve">
+    <value>掲載情報を登録しました。</value>
+  </data>
+  <data name="REGISTER_DATE" xml:space="preserve">
+    <value>登録日時</value>
+  </data>
+  <data name="REGISTER_INFO" xml:space="preserve">
+    <value>掲載情報登録</value>
+  </data>
+  <data name="ALLREGISTER_INFO" xml:space="preserve">
+    <value>全体掲載情報登録</value>
+  </data>
+  <data name="REGISTER_PERSON" xml:space="preserve">
+    <value>登録者</value>
+  </data>
+  <data name="SUBJECT_MAINT" xml:space="preserve">
+    <value>補助科目</value>
+  </data>
+  <data name="TRANS_MAINT" xml:space="preserve">
+    <value>自社銀行口座登録</value>
+  </data>
+  <data name="txtPostInformationMaintenance" xml:space="preserve">
+    <value>掲載情報</value>
+  </data>
+  <data name="UpdateSuccess" xml:space="preserve">
+    <value>掲載情報を更新しました。</value>
+  </data>
+  <data name="AllUpdateSuccess" xml:space="preserve">
+    <value>全体掲載情報を更新しました。</value>
+  </data>
+  <data name="UPD_DATE" xml:space="preserve">
+    <value>更新日</value>
+  </data>
+  <data name="UPD_PROG_ID" xml:space="preserve">
+    <value>更新プログラムID</value>
+  </data>
+  <data name="UPD_USER_ID" xml:space="preserve">
+    <value>更新者ID</value>
+  </data>
+  <data name="USER_MAINT" xml:space="preserve">
+    <value>ユーザー</value>
+  </data>
+  <data name="AllInsertSuccess" xml:space="preserve">
+    <value>全体掲載情報を登録しました。</value>
+  </data>
+  <data name="AllInformationDuplicateCode" xml:space="preserve">
+    <value>入力された全体掲載情報は既に存在しています。</value>
+  </data>
+  <data name="AllInformationList" xml:space="preserve">
+    <value>全体掲載情報一覧</value>
+  </data>
+  <data name="AllInformationRegister" xml:space="preserve">
+    <value>全体掲載情報登録</value>
+  </data>
+  <data name="AllInformationStartDateMustBeEarlierThanEndDate" xml:space="preserve">
+    <value>掲載終了日は掲載開始日以降を指定してください。</value>
+  </data>
+  <data name="lblContentType" xml:space="preserve">
+    <value>掲載区分</value>
+  </data>
+  <data name="lblTitle" xml:space="preserve">
+    <value>タイトル</value>
+  </data>
+</root>

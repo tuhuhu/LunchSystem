@@ -1,0 +1,4967 @@
+﻿#onloadDiv {
+    position: fixed;
+    z-index: 998 !important;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    cursor: wait;
+}
+
+#build_info {
+    z-index: 10;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    right: 100px;
+    color: blue;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+
+a.icon-close {
+    width: 45px;
+    height: 45px;
+    margin-top: 10px;
+    margin-right: 10px;
+    padding-top: 11px;
+    position: fixed;
+    /*top: 25px;*/
+    left: 1120px;
+    z-index: 2;
+}
+
+/* Style for search screen */
+/* Style for check box */
+input.condition_chkbox {
+    margin: 7px 20px 0 -10px;
+}
+
+
+
+table.dataTable tr.delete-row td {
+    background-color: #ccc !important;
+}
+
+table.dataTable tr.row_selected td {
+    background-color: #9FAFD1;
+}
+
+table.dataTable {
+    clear: both;
+}
+
+.text-overflow {
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 21px;
+    min-height: 21px;
+}
+
+.short-text:not(button),
+.short-text:not(a) {
+    cursor: default;
+}
+
+table button.formSubmitLink {
+    color: #4D99E0;
+    background: transparent;
+    border: none;
+    padding: 0;
+    /*text-decoration: underline;*/
+    margin-top: 0px;
+    /*width: 100%;*/
+    padding-bottom: 3px;
+    padding-top: 2px;
+    cursor: pointer;
+}
+
+    table button.formSubmitLink:hover {
+        text-decoration: underline;
+    }
+
+#InfoTable tbody td {
+    padding-bottom: 5px;
+    vertical-align: top;
+    padding-top: 8px;
+}
+
+div.dataTables_info {
+    clear: both;
+    margin-top: 30px;
+    float: left;
+}
+
+div.dataTables_length {
+    float: right;
+}
+
+div.tableHead {
+    display: block;
+    margin-bottom: 15px;
+}
+
+/* Added rule for datatable info*/
+div.tableInfo {
+    margin-right: 0px;
+    text-align: right;
+}
+
+div.dataTables_paginate {
+    margin-top: 20px;
+    margin-left: -5px;
+}
+
+    div.dataTables_paginate a.paginate_button, div.dataTables_paginate a.paginate_active {
+        padding: 4px 5px;
+        cursor: pointer;
+    }
+
+        div.dataTables_paginate a.paginate_button:hover, div.dataTables_paginate a.paginate_button:focus, div.dataTables_paginate a.paginate_button:active {
+            text-decoration: underline;
+            outline: none;
+        }
+
+.paginate_button.next, .paginate_button.last, .paginate_button.first, .paginate_button.previous {
+    padding: 3px 7px !important;
+    margin: 0 5px;
+    color: #000;
+    border: 1px solid #c9c9c9;
+    background: -webkit-linear-gradient(#fff, #e6e6e6);
+    background: -o-linear-gradient(#fff, #e6e6e6);
+    background: -moz-linear-gradient(#fff, #e6e6e6);
+    background: linear-gradient(#fff, #e6e6e6);
+    border-radius: 3px;
+}
+
+    .paginate_button.next:hover, .paginate_button.next:focus, .paginate_button.next:active,
+    .paginate_button.last:hover, .paginate_button.last:focus, .paginate_button.last:active,
+    .paginate_button.first:hover, .paginate_button.first:focus, .paginate_button.first:active,
+    .paginate_button.previous:hover, .paginate_button.previous:focus, .paginate_button.previous:active {
+        text-decoration: none !important;
+        background: -webkit-linear-gradient(#e6e6e6, #fff);
+        background: -o-linear-gradient(#e6e6e6, #fff);
+        background: -moz-linear-gradient(#e6e6e6, #fff);
+        background: linear-gradient(#e6e6e6, #fff);
+        outline: none;
+    }
+
+.paginate_button.disabled, .paginate_button.disabled:hover, .paginate_button.disabled:active {
+    cursor: default;
+    text-decoration: none !important;
+    color: #777 !important;
+    background: #eee !important;
+    box-shadow: none;
+    opacity: .65;
+}
+
+    .paginate_button.disabled .btn {
+        cursor: default;
+    }
+
+        .paginate_button.disabled .btn:hover, .paginate_button.disabled .btn:active, .paginate_button.disabled .btn:focus {
+            background: none;
+        }
+
+/* Display calendar image button */
+div button.ui-datepicker-trigger {
+    background-image: url("../../../images/calendar.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-top: 5px;
+}
+
+.hasDatepicker {
+    text-align: center;
+}
+
+#dialog-confirm img {
+    display: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.input-file {
+    display: none;
+}
+
+/* Base Styles */
+#cssmenu,
+#cssmenu ul,
+#cssmenu li,
+#cssmenu a {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    list-style: none;
+    font-weight: normal;
+    text-decoration: none;
+    line-height: 1;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    position: relative;
+}
+
+#cssmenu {
+    width: 272px;
+    /*border-bottom: 4px solid #656659;*/
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+    #cssmenu a {
+        line-height: 1.3;
+    }
+
+    #cssmenu > ul > li:first-child {
+        background: #66665e;
+        background: -moz-linear-gradient(#66665e 0%, #45463d 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #66665e), color-stop(100%, #45463d));
+        background: -webkit-linear-gradient(#66665e 0%, #45463d 100%);
+        background: linear-gradient(#66665e 0%, #45463d 100%);
+        border: 1px solid #45463d;
+        -webkit-border-radius: 3px 3px 0 0;
+        -moz-border-radius: 3px 3px 0 0;
+        border-radius: 3px 3px 0 0;
+    }
+
+        #cssmenu > ul > li:first-child > a {
+            padding: 13.5px 10px;
+            background: url("../../../images/pattern.png") top left repeat;
+            border: none;
+            border-top: 1px solid #818176;
+            -webkit-border-radius: 3px 3px 0 0;
+            -moz-border-radius: 3px 3px 0 0;
+            border-radius: 3px 3px 0 0;
+            font-family: 'Ubuntu', sans-serif;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 300;
+            text-shadow: 0 -1px 1px #000000;
+        }
+
+            #cssmenu > ul > li:first-child > a > span {
+                padding: 0;
+            }
+
+        #cssmenu > ul > li:first-child:hover {
+            background: #66665e;
+            background: -moz-linear-gradient(#66665e 0%, #45463d 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #66665e), color-stop(100%, #45463d));
+            background: -webkit-linear-gradient(#66665e 0%, #45463d 100%);
+            background: linear-gradient(#66665e 0%, #45463d 100%);
+        }
+
+    #cssmenu > ul > li {
+        background: #00A7E4;
+        background: -moz-linear-gradient(#00A7E4 0%, #00B7E4 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #00A7E4), color-stop(100%, #00B7E4));
+        background: -webkit-linear-gradient(#00A7E4 0%, #00B7E4 100%);
+        background: linear-gradient(#00A7E4 0%, #00B7E4 100%);
+    }
+
+        #cssmenu > ul > li:hover {
+            background: #00E7E4;
+            background: -moz-linear-gradient(#00E7E4 0%, #00B7E4 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #00E7E4), color-stop(100%, #00B7E4));
+            background: -webkit-linear-gradient(#00E7E4 0%, #00B7E4 100%);
+            background: linear-gradient(#00E7E4 0%, #00B7E4 100%);
+        }
+
+        #cssmenu > ul > li > a {
+            font-size: 14px;
+            display: block;
+            background: url("../../../images/pattern.png") top left repeat;
+            color: #ffffff;
+            border: 1px solid #1467BA;
+            border-top: none;
+            text-shadow: 0 -1px 1px #751d0c;
+        }
+
+            #cssmenu > ul > li > a > span {
+                display: block;
+                padding: 12px 10px;
+                -webkit-border-radius: 4px;
+                -moz-border-radius: 4px;
+                border-radius: 4px;
+                font-size: 16px;
+            }
+
+            #cssmenu > ul > li > a:hover {
+                text-decoration: none;
+            }
+
+        #cssmenu > ul > li.active {
+            border-bottom: none;
+        }
+
+        #cssmenu > ul > li.has-sub > a span {
+            background: url("../../../images/icon_plus.png") 96% center no-repeat;
+        }
+
+        #cssmenu > ul > li.has-sub.active > a span {
+            background: url("../../../images/icon_minus.png") 96% center no-repeat;
+        }
+    /* Sub menu */
+    #cssmenu ul ul {
+        display: none;
+        background: #fff;
+        border-right: 1px solid #a2a194;
+        border-left: 1px solid #a2a194;
+    }
+
+        #cssmenu ul ul li {
+            padding: 0;
+            border-bottom: 1px solid #d4d4d4;
+            border-top: none;
+            background: #f7f7f7;
+            background: -moz-linear-gradient(#f7f7f7 0%, #ececec 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f7f7f7), color-stop(100%, #ececec));
+            background: -webkit-linear-gradient(#f7f7f7 0%, #ececec 100%);
+            background: linear-gradient(#f7f7f7 0%, #ececec 100%);
+        }
+
+            #cssmenu ul ul li:last-child {
+                border-bottom: none;
+            }
+
+        #cssmenu ul ul a {
+            padding: 10px 10px 10px 25px;
+            display: block;
+            color: #676767;
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+            #cssmenu ul ul a:before {
+                content: "»";
+                position: absolute;
+                left: 10px;
+                color: #e94f31;
+            }
+
+            #cssmenu ul ul a:hover {
+                color: #e94f31;
+            }
+
+.pace {
+    -webkit-pointer-events: none;
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.pace-inactive {
+    display: none;
+}
+
+.pace .pace-progress {
+    background: #29d;
+    position: fixed;
+    z-index: 2000;
+    top: 0;
+    left: 0;
+    height: 2px;
+    -webkit-transition: width 1s;
+    -moz-transition: width 1s;
+    -o-transition: width 1s;
+    transition: width 1s;
+}
+
+.pace .pace-progress-inner {
+    display: block;
+    position: absolute;
+    right: 0px;
+    width: 100px;
+    height: 100%;
+    box-shadow: 0 0 10px #29d, 0 0 5px #29d;
+    opacity: 1.0;
+    -webkit-transform: rotate(3deg) translate(0px, -4px);
+    -moz-transform: rotate(3deg) translate(0px, -4px);
+    -ms-transform: rotate(3deg) translate(0px, -4px);
+    -o-transform: rotate(3deg) translate(0px, -4px);
+    transform: rotate(3deg) translate(0px, -4px);
+}
+
+.pace .pace-activity {
+    display: block;
+    position: fixed;
+    z-index: 2000;
+    top: 50%;
+    right: 50%;
+    width: 35px;
+    height: 35px;
+    border: solid 4px transparent;
+    border-top-color: #6dc2e9;
+    border-left-color: #6dc2e9;
+    border-radius: 30px;
+    -webkit-animation: pace-spinner 400ms linear infinite;
+    -moz-animation: pace-spinner 400ms linear infinite;
+    -ms-animation: pace-spinner 400ms linear infinite;
+    -o-animation: pace-spinner 400ms linear infinite;
+    animation: pace-spinner 400ms linear infinite;
+}
+
+@-webkit-keyframes pace-spinner {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@-moz-keyframes pace-spinner {
+    0% {
+        -moz-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -moz-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@-o-keyframes pace-spinner {
+    0% {
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@-ms-keyframes pace-spinner {
+    0% {
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pace-spinner {
+    0% {
+        transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+.estimateheader1 {
+    margin-left: 0px;
+}
+
+.estimateheader2 {
+    margin-left: 8px;
+}
+
+.estimateheader3 {
+    margin-left: 134px;
+}
+
+.estimateheader4 {
+    margin-left: 108px;
+}
+
+.estimateheader5 {
+    margin-left: 42px;
+}
+
+.estimateheader6 {
+    margin-left: 10px;
+}
+
+.estimateheader7 {
+    margin-left: 103px;
+    width: 45px;
+}
+
+.estimateheader8 {
+    margin-left: 40px;
+    width: 50px;
+}
+
+.estimateheader9 {
+    margin-left: 6px;
+    width: 50px;
+}
+
+.estimateheader10 {
+    margin-left: 70px;
+}
+
+.estimateheader11 {
+    margin-left: 30px;
+}
+
+.estimateheader12 {
+    margin-left: 26px;
+    width: 40px;
+}
+
+.estimateheader13 {
+    margin-left: 30px;
+}
+
+.estimateheader14 {
+    margin-left: 5px;
+}
+
+.link-partner-address {
+    cursor: pointer;
+}
+
+/**[class*="col_"] {
+    margin-left: 0.83333333333333%;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    padding-right: 8px;
+    float: left;
+    display: block;
+}*/
+
+.col_11 {
+    min-width: 98.5%;
+}
+
+/*---------------------------------
+    Estimate detail***
+-----------------------------------*/
+
+.unit-price {
+    width: 90px;
+}
+
+.product-name {
+    width: 160px;
+}
+
+.unittime {
+    width: 36px;
+}
+
+.unittype, .unittype-package {
+    width: 36px;
+}
+
+.taxable {
+    width: 72px;
+}
+
+.col_label {
+    width: 14%;
+    min-width: 120px;
+}
+
+.payment_method {
+    width: 100px;
+}
+
+.col_1 {
+    width: 72px;
+}
+
+.col_2 {
+    width: 100px;
+}
+
+.col_3 {
+    width: 130px;
+}
+
+.col_4 {
+    width: 72px;
+}
+
+.col_5 {
+    width: 200px;
+}
+
+.col_6 {
+    width: 150px;
+}
+
+.width-50 {
+    width: 50px !important;
+}
+
+.width-80 {
+    width: 80px !important;
+}
+
+.width-100 {
+    width: 100px !important;
+}
+
+.width-130 {
+    width: 130px !important;
+}
+
+.width-180 {
+    width: 180px !important;
+}
+
+.width-200 {
+    width: 200px !important;
+}
+
+.width-350 {
+    width: 350px !important;
+}
+
+.width-450 {
+    width: 450px !important;
+}
+
+.max-width-200 {
+    max-width: 200px;
+}
+
+.base_time_type {
+    width: 85px;
+}
+
+.quantity {
+    width: 70px;
+}
+
+.money {
+    width: 120px;
+}
+
+.negative-money {
+    width: 133px;
+}
+
+.negative-money-max {
+    width: 140px;
+}
+
+.moneySum {
+    width: 200px;
+}
+
+.tax-rate {
+    width: 100px;
+}
+
+::-webkit-input-placeholder {
+    color: #ccc;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+    color: #ccc;
+}
+
+::-moz-placeholder { /* Firefox 19+ */
+    color: #ccc;
+}
+
+:-ms-input-placeholder {
+    color: #ccc;
+}
+
+*[readonly], *[disabled] {
+    /*background: none;*/
+    background: #eee;
+    box-shadow: none !important;
+    cursor: not-allowed;
+    /*-webkit-appearance:none;*/
+    /*border:none;*/
+}
+
+    *[readonly]:focus, *[disabled]:focus {
+        background-color: #eee !important;
+    }
+
+*[disabled] {
+    color: #777;
+    /*color: #000000 !important;*/
+}
+
+.font-weigth-normal {
+    font-weight: normal;
+    margin: 0;
+}
+
+/*---------------------------------
+    Estimate detail***
+-----------------------------------*/
+.Coaiheader1 {
+    margin-left: 100px;
+}
+
+.Coaiheader2 {
+    margin-left: 150px;
+}
+
+.Coaiheader3 {
+    margin-left: 90px;
+}
+
+.Coaiheader4 {
+    margin-left: 40px;
+}
+
+.Coaiheader5 {
+    margin-left: 5px;
+}
+
+.Coaiheader6 {
+    margin-left: 86px;
+}
+
+.fieldset_supplier {
+    background-color: #F8CECC;
+}
+
+.fieldset_claim {
+    background-color: #D4E1F5;
+}
+
+.note-textarea {
+    display: inline;
+    width: 350px;
+    height: 70px;
+    margin-left: 5px;
+    resize: none;
+}
+
+.note-textarea-condition {
+    display: inline;
+    width: 180px;
+    height: 44px;
+    margin-left: 5px;
+    resize: none;
+}
+
+.fieldset_duration_contract {
+    width: 550px;
+    margin-left: 90px;
+    margin-top: -22px;
+}
+
+.fieldset_duration_estimate {
+    width: 550px;
+    margin-left: 64px;
+    margin-top: -22px;
+}
+
+.symbol-required {
+    color: red;
+    /*margin-left: -10px;*/
+    margin-top: 0;
+}
+
+.center {
+    text-align: center;
+}
+
+.left {
+    text-align: left;
+}
+
+.right {
+    text-align: right;
+}
+
+/* form control */
+ul li {
+    list-style-type: none;
+}
+
+.top {
+    vertical-align: top;
+}
+
+.middle {
+    vertical-align: middle;
+}
+
+.bottom {
+    vertical-align: bottom;
+}
+label.title-row {
+    min-width: 120px;
+}
+input, textarea {
+    display: inline-block;
+    /*vertical-align: top;*/
+    zoom: 1;
+    border: 1px solid #c9c9c9;
+    /*margin-left: 5px;*/
+    margin-right: 5px;
+    padding: 3px;
+    color: #000;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 3px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+select {
+    display: inline-block;
+    vertical-align: middle;
+    zoom: 1;
+    width: auto;
+    margin-left: 5px;
+    margin-right: 5px;
+    border: 1px solid #c9c9c9;
+    line-height: 100%;
+    padding: 3px;
+    border-radius: 3px;
+}
+
+    select[disabled='disabled']::-ms-value {
+        color: #000;
+    }
+
+input[type="text"], select {
+    height: 27px;
+    background-color: #fff;
+    box-shadow: 0 4px 4px 0 #ECECEC inset;
+}
+
+textarea {
+    box-shadow: 0 4px 4px 0 #ECECEC inset;
+    resize: vertical;
+}
+
+    input[type="text"]:focus,
+    select:focus,
+    textarea:focus {
+        background-color: #fff;
+        box-shadow: none;
+    }
+
+input[type="radio"] {
+    width: 19px;
+    height: 19px;
+    margin-bottom: 1px;
+    vertical-align: bottom;
+}
+
+    input[type="radio"]:checked:before {
+        content: "";
+        display: block;
+        position: relative;
+        top: 4px;
+        left: 4px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #30b32d;
+    }
+
+input[type="checkbox"] {
+    width: 19px;
+    height: 19px;
+    margin-top: -2px;
+    vertical-align: middle;
+}
+
+    input[type="checkbox"]:checked:before {
+        content: "\2713";
+        display: block;
+        width: 18px;
+        height: 18px;
+        background: #30b32d;
+        border: 1px solid #B1B1B1;
+        border-radius: 3px;
+        color: #fff;
+        font-size: 17px;
+        font-weight: bold;
+        text-align: center;
+        line-height: 19px;
+    }
+
+
+button,
+button:focus,
+button.focus,
+button:active,
+button.active {
+    color: #000;
+    border: 1px solid #c9c9c9;
+    background: -webkit-linear-gradient(#fff, #e6e6e6);
+    background: -o-linear-gradient(#fff, #e6e6e6);
+    background: -moz-linear-gradient(#fff, #e6e6e6);
+    background: linear-gradient(#fff, #e6e6e6);
+    border-radius: 3px;
+}
+
+    button:hover, button:focus {
+        background: -webkit-linear-gradient(#e6e6e6, #fff);
+        background: -o-linear-gradient(#e6e6e6, #fff);
+        background: -moz-linear-gradient(#e6e6e6, #fff);
+        background: linear-gradient(#e6e6e6, #fff);
+        outline: -webkit-focus-ring-color auto 5px !important;
+    }
+
+.paginate_button.next:hover, .paginate_button.next:focus, .paginate_button.next:active,
+.paginate_button.last:hover, .paginate_button.last:focus, .paginate_button.last:active,
+.paginate_button.first:hover, .paginate_button.first:focus, .paginate_button.first:active,
+.paginate_button:hover, .paginate_button:focus, .paginate_button:active,
+.paginate_button.previous:hover, .paginate_button.previous:focus, .paginate_button.previous:active {
+    text-decoration: none !important;
+    background: -webkit-linear-gradient(#e6e6e6, #fff);
+    background: -o-linear-gradient(#e6e6e6, #fff);
+    background: -moz-linear-gradient(#e6e6e6, #fff);
+    background: linear-gradient(#e6e6e6, #fff);
+    outline: -webkit-focus-ring-color auto 5px !important;
+}
+
+.btn-orange,
+.btn-orange:focus,
+.btn-orange.focus,
+.btn-orange:active,
+.btn-orange.active {
+    color: #000 !important;
+    border-color: #f1a300 !important;
+    background: -webkit-linear-gradient(#f6ce78, #f2bd46) !important;
+    background: -o-linear-gradient(#f6ce78, #f2bd46) !important;
+    background: -moz-linear-gradient(#f6ce78, #f2bd46) !important;
+    background: linear-gradient(#f6ce78, #f2bd46) !important;
+}
+
+    .btn-orange:hover {
+        background: -webkit-linear-gradient(#f2bd46, #f6ce78) !important;
+        background: -o-linear-gradient(#f2bd46, #f6ce78) !important;
+        background: -moz-linear-gradient(#f2bd46, #f6ce78) !important;
+        background: linear-gradient(#f2bd46, #f6ce78) !important;
+    }
+
+.btn-green,
+.btn-green:focus,
+.btn-green.focus,
+.btn-green:active,
+.btn-green.active {
+    color: #fff !important;
+    border-color: #30b32d !important;
+    background: -webkit-linear-gradient(#37c35b, #30b32d) !important;
+    background: -o-linear-gradient(#37c35b, #30b32d) !important;
+    background: -moz-linear-gradient(#37c35b, #30b32d) !important;
+    background: linear-gradient(#37c35b, #30b32d) !important;
+}
+
+    .btn-green:hover {
+        color: #fff !important;
+        background: -webkit-linear-gradient(#30b32d, #37c35b) !important;
+        background: -o-linear-gradient(#30b32d, #37c35b) !important;
+        background: -moz-linear-gradient(#30b32d, #37c35b) !important;
+        background: linear-gradient(#30b32d, #37c35b) !important;
+    }
+
+.btn-red,
+.btn-red:focus,
+.btn-red.focus,
+.btn-red:active,
+.btn-red.active {
+    color: #fff !important;
+    border-color: #a4191f !important;
+    background: -webkit-linear-gradient(#e8333c, #d01b24) !important;
+    background: -o-linear-gradient(#e8333c, #d01b24) !important;
+    background: -moz-linear-gradient(#e8333c, #d01b24) !important;
+    background: linear-gradient(#e8333c, #d01b24) !important;
+}
+
+    .btn-red:hover {
+        color: #fff !important;
+        background: -webkit-linear-gradient(#d01b24, #e8333c) !important;
+        background: -o-linear-gradient(#d01b24, #e8333c) !important;
+        background: -moz-linear-gradient(#d01b24, #e8333c) !important;
+        background: linear-gradient(#d01b24, #e8333c) !important;
+    }
+
+.btn-up-down {
+    width: 53px;
+    height: 20px;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-left-radius: 5px !important;
+    border-bottom-right-radius: 5px !important;
+    border-top: none !important;
+}
+
+.btn-add-on {
+    margin-left: -5px;
+}
+
+/* common css */
+.btn-icon {
+    padding-top: 1px;
+    padding-left: 23px;
+}
+
+.btn-next {
+    background: url('/Images/icon_allowright.png') no-repeat center center;
+    padding: 0 10px;
+}
+
+.btn-previous {
+    background: url('/Images/icon_allowleft.png') no-repeat center center;
+    padding: 0 10px;
+}
+
+.btn-clear {
+    background: url('/Images/icon_clear_gray.png') no-repeat left center;
+}
+
+.btn-calendar {
+    background: url('/Images/icon_calendar.png') no-repeat center center;
+    padding-left: 17px;
+}
+
+.btn-search-gray {
+    background: url('/Images/icon_search_gray.png') no-repeat center center;
+}
+
+.btn-search-white {
+    background: url('/Images/icon_search.png') no-repeat left center;
+}
+
+.btn-download {
+    background: url('/Images/icon_download_gray.png') no-repeat left center;
+}
+
+.btn-add-item {
+    background: url('/Images/icon_plus.png') no-repeat left center;
+}
+
+.btn-delete-center {
+    background: url('/Images/icon_delete.png') no-repeat center center;
+}
+
+.btn-delete-left {
+    background: url('/Images/icon_delete.png') no-repeat left center;
+}
+
+.btn-close {
+    background: url('/Images/icon_close.png') no-repeat center center;
+}
+
+.btn-pull-up {
+    background: url('/Images/icon_pull_up.png') no-repeat center center;
+    padding-top: 8px;
+}
+
+.btn-pull-down {
+    background: url('/Images/icon_pull_down.png') no-repeat center center;
+    padding-top: 8px;
+}
+
+.btn-regist {
+    background: url('/Images/icon_regist.png') no-repeat left center;
+}
+
+.btn-add-line {
+    background: url('/Images/btn_icon_slice/ico_plus_gray.png') no-repeat left center;
+}
+
+.btn-sent-mail {
+    background: url('/Images/icon_mail.png') no-repeat left center;
+}
+
+.btn-edit {
+    background: url('/Images/icon_edit.png') no-repeat left center;
+}
+
+.btn-edit-icon {
+    padding-left: 16px;
+}
+
+.btn-calculate {
+    background: url('/Images/icon_cal.png') no-repeat left center;
+}
+
+.date input {
+    text-align: center;
+}
+
+.datepicker-months input {
+    width: 70px;
+}
+
+.datepicker-days input {
+    width: 100px;
+}
+
+.required {
+    color: #ff0000 !important;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.text-left {
+    text-align: left;
+}
+
+    .text-left span {
+        margin-left: 10px;
+    }
+
+.text-right, .numeric, .decimal {
+    text-align: right;
+}
+
+.no-scroll-y {
+    overflow-y: hidden;
+}
+
+.font-24 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.font-9-pt {
+    font-size: 9pt;
+}
+
+.font-12 {
+    font-size: 12px;
+}
+
+.font-16 {
+    font-size: 16px;
+}
+
+.highlight-zone {
+    background: #f7f7f3;
+}
+
+.contract-regist .billing-info {
+    background: #f5faff;
+}
+
+.decimal_4_2 {
+    text-align: right;
+}
+
+.decimal_5_2 {
+    width: 100px;
+    text-align: right;
+}
+
+.decimal_7_2 {
+    width: 100px;
+    text-align: right;
+}
+
+.highlight-zone hr {
+    margin-left: -20px;
+    margin-right: -20px;
+}
+
+.lbl-link {
+    color: #1e90ff;
+}
+
+.font-weight-normal {
+    font-weight: normal;
+    padding-left: 5px;
+}
+
+.padding-left-15 {
+    padding-left: 15px;
+}
+
+.action-button-bottom {
+    padding-top: 20px;
+}
+
+.txt-no-border, .txt-no-border:focus {
+    border: none;
+    background-color: transparent !important;
+    cursor: text !important;
+    box-shadow: none !important;
+    color: #000 !important;
+}
+
+    .txt-no-border:focus {
+        outline: none;
+    }
+
+.auto-overflow {
+    overflow: auto;
+}
+
+.validation-summary-errors {
+    color: red;
+}
+
+.text-normal {
+    font-weight: normal !important;
+}
+
+.value-selected {
+    padding: 0;
+    background: transparent !important;
+    border: 0px solid;
+    border-bottom: 1px solid #CCC;
+    border-radius: 0px;
+    color: #070707 !important;
+    cursor: not-allowed;
+}
+
+    .value-selected:focus {
+        background: transparent !important;
+        cursor: not-allowed;
+    }
+
+.no-display {
+    display: none !important;
+}
+
+.no-resize {
+    resize: none;
+}
+
+.no-margin-left {
+    margin-left: 0;
+}
+
+.no-margin-right {
+    margin-right: 0 !important;
+}
+
+.margin-top-5 {
+    margin-top: 5px;
+}
+
+.margin-right-25 {
+    margin-right: 25px;
+}
+
+.margin-left-5 {
+    margin-left: 5px;
+}
+
+.margin-left-10 {
+    margin-left: 10px;
+}
+
+.margin-left-25 {
+    margin-left: 25px;
+}
+
+.margin-left-40 {
+    margin-left: 40px;
+}
+
+.margin-right-5 {
+    margin-right: 5px !important;
+}
+
+.margin-right-10 {
+    margin-right: 10px !important;
+}
+
+.margin-right-17 {
+    margin-right: 17px !important;
+}
+
+.no-padding-top {
+    padding-top: 0px !important;
+}
+
+.no-padding-right {
+    padding-right: 0px !important;
+}
+
+.no-padding-bottom {
+    padding-bottom: 0px !important;
+}
+
+.no-padding-left {
+    padding-left: 0px !important;
+}
+
+.vertical-align-top {
+    vertical-align: top;
+}
+
+.border-none {
+    border: none;
+}
+
+.wrap-text {
+    white-space: normal;
+}
+
+.sub-menu-wid {
+    float: left;
+    min-width: 165px;
+}
+
+.dropdown-menu-wid {
+    width: 360px;
+}
+
+.dropdown-menu > li > div > a {
+    display: block;
+    padding: 8px 20px;
+    color: #070707;
+    clear: both;
+    white-space: nowrap;
+}
+
+.auto-scroll-x {
+    overflow-x: auto;
+    width: 100%;
+}
+
+/* Layout */
+div#topContent {
+    padding: 30px 30px 0 30px;
+    background: #e6e6e5;
+    border-bottom: 1px solid #ccc;
+}
+
+div#title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+div#searchArea {
+    margin: 5px 0 20px 0;
+}
+
+div#searchAction {
+    margin-right: -5px;
+    margin-bottom: 20px;
+    text-align: right;
+}
+
+div#topContent hr {
+    margin-left: -30px;
+    margin-right: -30px;
+    border-color: #ccc;
+}
+
+div#registButton {
+    padding: 10px 20px 10px 25px;
+}
+
+div#mainContent {
+    margin: 10px 30px 30px 30px;
+    padding-bottom: 1px;
+}
+
+.dialog-top {
+    background: #e6e6e4;
+    border-bottom: 1px solid #ccc;
+}
+
+    .dialog-top div#title {
+        padding: 30px;
+    }
+
+    .dialog-top .button-zone {
+        padding: 20px 30px 20px 30px;
+        border-top: 1px solid #ccc;
+        text-align: right;
+    }
+
+        .dialog-top .button-zone #btnSearch {
+            margin-right: 10px;
+        }
+
+    .dialog-top .search-zone {
+        padding: 0 30px 20px 52px;
+    }
+
+        .dialog-top .search-zone input[type="text"] {
+            width: 500px;
+        }
+
+.show-hide-search {
+    margin-right: 25px;
+    text-align: right;
+}
+
+.dialog-bottom {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin-left: -30px;
+    padding: 15px 30px !important;
+    background: #e6e6e4;
+    border-top: 1px solid #ccc;
+    text-align: left !important;
+}
+
+    .dialog-bottom .dataTables_length {
+        float: left;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .dialog-bottom .paging-info, .dialog-bottom .dataTables_paginate {
+        float: left;
+        padding: 0 !important;
+        margin: 0 !important;
+        margin-right: 50px !important;
+    }
+
+.dialog-body {
+    margin: 20px 30px 60px 30px;
+}
+
+    /*.dialog-body .dataTables_wrapper .dataTables_scroll {
+    height: 150px;
+    overflow-y: hidden;
+}*/
+
+    .dialog-body .dataTables_scrollBody {
+        height: 100px !important;
+    }
+
+        .dialog-body .dataTables_scrollBody.dtScroll-maxHeight {
+            height: 315px !important;
+        }
+
+.search-customer-dialog .search-title {
+    min-width: 130px;
+}
+
+.search-customer-dialog #InfoTable .short-text {
+    min-width: 100px;
+    max-width: 260px;
+}
+
+.search-pic-dialog .search-title {
+    min-width: 130px;
+}
+
+.search-pic-dialog #InfoTable .short-text {
+    min-width: 180px;
+    max-width: 180px;
+}
+
+.edit-screen {
+    margin: 25px;
+}
+
+/* Start custom css for Estimate list*/
+.estimate-list #searchArea label.first {
+    min-width: 56px;
+}
+
+.estimate-list #searchArea select {
+    width: 100px;
+}
+
+.estimate-list #searchArea .department-index {
+    width: 200px;
+}
+
+.estimate-list #searchArea .pic-index,
+.estimate-list #searchArea .status-index,
+.estimate-list #searchArea .bp-name-disp,
+.estimate-list #searchArea .est-no-disp {
+    width: 130px;
+}
+
+.estimate-list #searchArea .prj-name {
+    width: 180px;
+}
+
+.estimate-list .col-left {
+    float: left;
+    width: 11%;
+}
+
+.estimate-list .col-right {
+    float: left;
+    margin-left: -1px;
+    max-width: 89%;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.estimate-list .dataTable thead th {
+    height: 40px;
+}
+
+.estimate-list.True .col-left {
+    width: 16%;
+}
+
+.estimate-list.True .col-right {
+    max-width: 84%;
+}
+
+.estimate-list table .short-text {
+    max-width: 130px;
+    cursor: text;
+}
+
+.estimate-list #InfoTable tbody td,
+.estimate-list #InfoTable tbody td div {
+    vertical-align: middle;
+}
+
+    .estimate-list #InfoTable tbody td.v-top {
+        vertical-align: top;
+    }
+
+/* End custom css for Estimate list*/
+/* End custom css for PostInformationRegister*/
+#TransMaintRegister label.title-row {
+    min-width: 120px;
+}
+#AllInformationRegister label.title-row{
+    min-width: 120px;
+}
+
+#TransMaintRegister .txt-w-30 {
+    width: 30px;
+}
+
+#TransMaintRegister div.check {
+    margin-left: 125px;
+}
+
+/* Start custom css for PostInformationRegister*/
+
+/* Start custom css for Estimate regist*/
+.estimate-regist label.title-row {
+    min-width: 120px;
+}
+
+.estimate-regist .ddl-w-50 {
+    width: 50px;
+}
+
+.estimate-regist .ddl-w-80 {
+    width: 80px;
+}
+
+.estimate-regist .ddl-w-70 {
+    width: 70px;
+}
+
+.estimate-regist .ddl-w-60 {
+    width: 60px;
+}
+
+.estimate-regist .ddl-w-100 {
+    width: 100px;
+}
+
+.estimate-regist .ddl-w-120 {
+    width: 120px;
+}
+
+.estimate-regist .ddl-w-150 {
+    width: 150px;
+}
+
+.estimate-regist .ddl-w-200 {
+    width: 200px;
+}
+
+.estimate-regist .ddl-w-250 {
+    width: 250px;
+}
+
+.estimate-regist .txt-w-50 {
+    width: 50px;
+}
+
+.estimate-regist .txt-w-74 {
+    width: 74px;
+}
+
+.estimate-regist .txt-w-60 {
+    width: 60px;
+}
+
+.estimate-regist .txt-w-100 {
+    width: 100px;
+}
+
+.estimate-regist .txt-w-150 {
+    width: 150px;
+}
+
+.estimate-regist .txt-w-200 {
+    width: 150px;
+}
+
+.estimate-regist .txt-w-250 {
+    width: 250px;
+}
+
+.estimate-regist .txt-w-500 {
+    width: 500px;
+}
+
+.estimate-regist .txa-w-300 {
+    width: 300px;
+    height: 100px;
+}
+
+.estimate-regist .txa-w-500 {
+    width: 500px;
+    height: 100px;
+}
+
+.estimate-regist .txa-w-570 {
+    width: 500px;
+    height: 70px;
+}
+
+.estimate-regist .txa-w-350 {
+    width: 350px;
+    height: 70px;
+}
+
+.estimate-regist .txt-w-110 {
+    width: 110px;
+}
+
+.estimate-regist .highlight-zone {
+    padding: 25px;
+}
+
+.estimate-regist .no-margin-left {
+    margin-left: 0;
+}
+
+.estimate-regist .highlight-zone label.title-row {
+    min-width: 70px;
+}
+
+.estimate-regist .col-left {
+    float: left;
+    width: 122px;
+    position: relative;
+    z-index: 2;
+}
+
+.estimate-regist .col-right {
+    float: left;
+    width: 80px;
+    position: relative;
+    z-index: 2;
+}
+
+.estimate-regist .col-center {
+    float: left;
+    margin-left: -1px;
+    padding-bottom: 1px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+.estimate-regist .col-center {
+    max-width: 79%;
+}
+
+    .estimate-regist .col-center .dataTable td {
+        text-align: center;
+    }
+
+.sidebar-collapse .estimate-regist .col-center {
+    max-width: 81.5%;
+}
+
+.estimate-regist .col-center table thead th {
+    background: #f1f1f1;
+}
+
+.estimate-regist .dataTable {
+    border-collapse: collapse;
+}
+
+    .estimate-regist .dataTable td {
+        border: 1px solid #d7d7d7;
+        height: 30px;
+    }
+
+.estimate-regist .unittype {
+    text-align: center;
+}
+
+.estimate-regist .dataTable input, .estimate-regist .dataTable select, .estimate-regist .dataTable button {
+    vertical-align: middle;
+}
+
+.estimate-regist .lbl-link {
+    font-weight: normal;
+    margin-left: 5px;
+}
+
+.estimate-regist .attached-file-zone {
+    margin-left: 5px;
+}
+
+.estimate-regist .file-list .col-title {
+    width: 105px;
+}
+
+.estimate-regist .file-list .col-data {
+    width: 89%;
+}
+
+.estimate-regist .file-list .tbFileList {
+    margin-left: 5px;
+}
+
+.estimate-regist .file-list .th-file-name {
+    width: 215px;
+}
+
+.estimate-regist .file-list .th-file-comment,
+.estimate-regist .file-list tbody .txt-file-comment {
+    width: 590px;
+}
+
+.sidebar-collapse .estimate-regist .file-list .th-file-comment,
+.sidebar-collapse .estimate-regist .file-list tbody .txt-file-comment {
+    width: 700px;
+}
+
+.estimate-regist .file-list .th-file-delete {
+    width: 50px;
+}
+
+.estimate-regist .file-list .mw-225 {
+    max-width: 225px;
+}
+
+.estimate-regist .file-list .txt-file-name {
+    width: 220px;
+    margin: 0;
+}
+
+.estimate-regist .form-group .readonly {
+    background-color: #eee !important;
+}
+
+/* End custom css for Estimate regist*/
+
+/* Start custom css for Contract regist*/
+.contract-regist label.title-row {
+    min-width: 120px;
+}
+
+.contract-regist .ddl-w-50 {
+    width: 50px;
+}
+
+.contract-regist .ddl-w-80 {
+    width: 80px;
+}
+
+.contract-regist .ddl-w-70 {
+    width: 70px;
+}
+
+.contract-regist .ddl-w-60 {
+    width: 60px;
+}
+
+.contract-regist .ddl-w-100 {
+    width: 100px;
+}
+
+.contract-regist .ddl-w-120 {
+    width: 120px;
+}
+
+.contract-regist .ddl-w-150 {
+    width: 150px;
+}
+
+.contract-regist .ddl-w-200 {
+    width: 200px;
+}
+
+.contract-regist .ddl-w-250 {
+    width: 250px;
+}
+
+.contract-regist .txt-w-50 {
+    width: 50px;
+}
+
+.contract-regist .txt-w-74 {
+    width: 74px;
+}
+
+.contract-regist .txt-w-60 {
+    width: 60px;
+}
+
+.contract-regist .txt-w-100 {
+    width: 100px;
+}
+
+.contract-regist .txt-w-110 {
+    width: 110px;
+}
+
+.contract-regist .txt-w-150 {
+    width: 150px;
+}
+
+.contract-regist .txt-w-250 {
+    width: 250px;
+}
+
+.contract-regist .txt-w-500 {
+    width: 500px;
+}
+
+.contract-regist .txa-w-300 {
+    width: 300px;
+    height: 100px;
+}
+
+.contract-regist .txa-w-500 {
+    width: 500px;
+    height: 100px;
+}
+
+.contract-regist .txa-w-570 {
+    width: 500px;
+    height: 70px;
+}
+
+.contract-regist .highlight-zone {
+    /*background-color: #f5faff;*/
+    padding: 20px;
+}
+
+.contract-regist .payment-info {
+    background: #fef5fc;
+}
+
+.contract-regist .no-margin-left {
+    margin-left: 0;
+}
+
+.contract-regist .margin-left-5 {
+    margin-left: 5px;
+}
+
+.contract-regist .margin-left-15 {
+    margin-left: 15px;
+}
+
+.contract-regist .margin-left-20 {
+    margin-left: 20px;
+}
+
+.contract-regist .margin-left-25 {
+    margin-left: 25px;
+}
+
+.contract-regist .margin-left-30 {
+    margin-left: 30px;
+}
+
+.contract-regist .margin-left-50 {
+    margin-left: 50px;
+}
+
+.contract-regist .margin-bottom-20 {
+    margin-bottom: 20px;
+}
+
+.contract-regist .highlight-zone label.title-row {
+    min-width: 70px;
+}
+
+.contract-regist .tbl-form-input thead label {
+    margin-bottom: 0;
+    margin-left: 5px;
+}
+
+.contract-regist .tbl-form-input tbody tr {
+    height: 44px;
+}
+
+.contract-regist .tbl-form-input tbody .title-row {
+    min-width: 75px;
+}
+
+.contract-regist .tbl-form-input tbody .formula-des div {
+    padding-left: 5px;
+}
+
+.contract-regist .col-left {
+    float: left;
+    width: 142px;
+    padding-bottom: 1px;
+    position: relative;
+    z-index: 2;
+}
+
+.contract-regist .col-right {
+    float: left;
+    width: 80px;
+    padding-bottom: 1px;
+    position: relative;
+    z-index: 2;
+}
+
+.contract-regist .col-center {
+    float: left;
+    margin-left: -1px;
+    padding-bottom: 1px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+.contract-regist .col-center-tax-amount {
+    overflow-x: hidden;
+}
+
+.contract-regist .col-center {
+    max-width: 79%;
+}
+
+.sidebar-collapse .contract-regist .col-center {
+    max-width: 81%;
+}
+
+.contract-regist .col-center .col-1 {
+    min-width: 144px;
+}
+
+.contract-regist .col-center .col-2,
+.contract-regist .col-center .col-4 {
+    min-width: 136px;
+}
+
+.contract-regist .col-center .col-3,
+.contract-regist .col-center .col-5 {
+    min-width: 94px;
+}
+
+.contract-regist .col-center .col-9,
+.contract-regist .col-center .col-10 {
+    min-width: 113px;
+}
+
+.contract-regist .col-center .col-6,
+.contract-regist .col-center .col-7 {
+    min-width: 109px;
+}
+
+.contract-regist .col-center .col-8 {
+    min-width: 40px;
+}
+
+.contract-regist .col-center .col-11 {
+    min-width: 63px;
+}
+
+.contract-regist .col-center table thead th {
+    background: #f1f1f1;
+}
+
+.contract-regist .dataTable {
+    border-collapse: collapse;
+}
+
+    .contract-regist .dataTable td {
+        border: 1px solid #d7d7d7;
+        /*height: 31px;*/
+        height: 44px;
+    }
+
+.contract-regist .lbl-link {
+    font-weight: normal;
+    margin-left: 5px;
+}
+
+.contract-regist .attached-file-zone {
+    margin-left: 5px;
+}
+
+.contract-regist .file-list .col-title {
+    width: 105px;
+}
+
+.contract-regist .file-list .col-data {
+    width: 89%;
+}
+
+.contract-regist .file-list .tbFileList {
+    margin-left: 5px;
+}
+
+.contract-regist .file-list .th-file-name {
+    width: 215px;
+}
+
+.contract-regist .file-list .th-file-comment,
+.contract-regist .file-list tbody .txt-file-comment {
+    width: 590px;
+}
+
+.sidebar-collapse .contract-regist .file-list .th-file-comment,
+.sidebar-collapse .contract-regist .file-list tbody .txt-file-comment {
+    width: 700px;
+}
+
+.contract-regist .file-list .th-file-delete {
+    width: 50px;
+}
+
+.contract-regist .file-list .mw-225 {
+    max-width: 225px;
+}
+
+.contract-regist .file-list .txt-file-name {
+    width: 220px;
+    margin: 0;
+}
+
+/* End custom css for Contract regist*/
+
+/*
+ * Component: Layout frame
+ * -------------------------
+ */
+body {
+    font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", "Meiryo", Osaka, "ＭＳ Ｐゴシック", "MS PGothic", verdana, Sans-Serif !important;
+    -ms-overflow-style: scrollbar;
+    color: #070707;
+}
+
+/* form tile */
+.form-title {
+    margin-top: 30px;
+    margin-left: 30px;
+    font-size: 24px;
+    font: bold;
+}
+
+/* default control */
+.default-control {
+    border-color: #c9c9c9;
+    background: #fff;
+    color: #000;
+    font-size: 14px;
+}
+
+/* focus control */
+.focus-control {
+    color: #000;
+    font-size: 14px;
+}
+
+.default-link_text {
+    color: #1e90ff;
+    font-size: 14px;
+}
+
+/* focus control */
+.mouse-over-link_text {
+    color: #1e90ff;
+    font-size: 14px;
+}
+
+/* For SearchArea + Summary CSS */
+.estimate-list #searchArea label.first {
+    min-width: 56px;
+}
+
+.estimate-list #searchArea select {
+    width: 100px;
+}
+
+.estimate-list #searchArea .department-index {
+    width: 200px;
+}
+
+.estimate-list #searchArea .pic-index,
+.estimate-list #searchArea .status-index,
+.estimate-list #searchArea .bp-name-disp,
+.estimate-list #searchArea .est-no-disp {
+    width: 130px;
+}
+
+.estimate-list #searchArea .prj-name {
+    width: 180px;
+}
+
+/* For SearchArea + Summary CSS */
+.left_box {
+    float: left;
+    width: 750px;
+}
+
+.right_box {
+    float: right;
+    width: 350px;
+}
+/* For SearchArea + Summary CSS */
+
+/* For label And input CSS */
+/* 通常ラベル */
+.normal-label {
+    text-align: left;
+    padding-left: 10px;
+    width: 100px;
+}
+
+/* 警告ラベル */
+.caution-label {
+    text-align: center;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 150px;
+    color: #ff0000;
+    font-size: 14px;
+}
+
+/* 長いラベル */
+.long-label {
+    text-align: left;
+    padding-left: 10px;
+    width: 200px;
+}
+
+/* 検索入力項目 */
+.search-only {
+    text-align: left;
+    width: 200px;
+}
+
+/* 検索入力項目 */
+.search-input {
+    text-align: left;
+    width: 245px;
+}
+
+/* 年月入力項目 */
+.yyyymm-input {
+    text-align: left;
+    width: 70px;
+}
+
+/* 日入力項目 */
+.dd-input {
+    text-align: left;
+    width: 60px;
+}
+
+/* カテゴリ１入力項目 */
+.category-input-1 {
+    text-align: left;
+    width: 150px;
+}
+
+/* カテゴリ２入力項目 */
+.category-input-2 {
+    text-align: left;
+    width: 150px;
+}
+
+/* カテゴリ３入力項目 */
+.category-input-3 {
+    text-align: left;
+    width: 150px;
+}
+
+div.payment-summary-info {
+    margin: 15px 0px 0px 10px;
+    float: left;
+    width: 300px;
+    display: inline-block;
+}
+
+.summary-box {
+    border: thin solid #c9c9c9;
+}
+
+.summary-box-last {
+    border-top: none;
+}
+
+/* 集計タイトル */
+.summary-title {
+    height: 30px;
+    padding: 6px 0px 0px 9px;
+    background-color: #f7f7f3;
+    color: #1e90ff;
+}
+
+    .summary-title label {
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+/* 集計項目 */
+.summary-field {
+    height: 30px;
+    background-color: #fff;
+    border-top: thin solid #c9c9c9;
+}
+
+/* 集計項目タイトル */
+.summary-field-title {
+    display: inline-block;
+    padding: 7px 0px 0px 9px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* 集計項目値 */
+.summary-field-value {
+    display: inline-block;
+    float: right;
+    min-width: 200px;
+    padding-right: 10px;
+    padding-top: 7px;
+    font-size: 12px;
+    font-weight: normal;
+    text-align: right;
+}
+/* Start Payment List Custom CSS */
+
+.sidebar-collapse .payment-list div#searchArea {
+    width: 930px;
+}
+
+.payment-list div.hideable {
+    padding: 30px 30px 15px 30px;
+    border-bottom: thin solid #e6e6e4;
+}
+
+.payment-list div#title {
+    margin: 0px;
+}
+
+.payment-list div#topContent {
+    padding: 0px !important;
+    background: #fff;
+    border: none;
+}
+
+.payment-list div#searchArea {
+    width: 800px;
+    height: 363px;
+    margin: 15px 0px 0px 0px;
+    padding: 40px 0px 0px 40px;
+    background: #e6e6e5;
+}
+
+.payment-list div#searchAction {
+    padding: 10px 0px 0px 0px;
+    margin: 0px;
+}
+
+.payment-list div.export-csv {
+    padding: 30px 30px 50px 30px;
+    background: #f7f7f3;
+    overflow: auto;
+}
+
+.payment-list .tableHead .dataTables_info {
+    margin-top: 0px;
+}
+
+/* End Payment List Custom CSS */
+
+/* For label And input CSS */
+
+/* Index customer (main) screen*/
+#customer-index .content-header > h1,
+#customer-index .content-header-edit > h1 {
+    padding: 0 0 5px 30px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#customer-index .content {
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+    border-bottom: 1px solid #e6e6e5;
+}
+
+#customer-index .content-header {
+    position: relative;
+    padding-top: 10px;
+    border-bottom: 1px solid #e6e6e5;
+}
+
+#customer-index .content:not(th):not(td) {
+    padding: 40px 30px 30px;
+}
+
+#customer-index .box-title {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#customer-index .box-body .publish_start_date {
+    font-weight: bold;
+    padding-right: 25px;
+    margin-bottom: 0;
+    float: left;
+}
+
+#customer-index .box-body .top-content {
+    float: left;
+    width: 80%;
+    word-break: break-all;
+    line-height: normal;
+    padding-top: 4px;
+}
+
+#customer-index .form-group {
+    margin-bottom: 15px;
+    line-height: 2.2em;
+    clear: both;
+}
+
+    #customer-index .form-group a:hover {
+        color: #337ab7;
+    }
+
+/* RadioButton And CheckBox CSS Style */
+
+
+#holder {
+    width: 100%;
+}
+
+    #holder > div {
+        clear: both;
+        padding: 2%;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #eee;
+        float: left;
+        width: 96%;
+    }
+
+/*label {
+	display: inline;
+}*/
+
+.regular-checkbox {
+    display: none;
+}
+
+    .regular-checkbox + label {
+        background-color: #4ec243;
+        border: 1px solid #cacece;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+        padding: 9px;
+        border-radius: 3px;
+        display: inline-block;
+        position: relative;
+    }
+
+        .regular-checkbox + label:active, .regular-checkbox:checked + label:active {
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
+        }
+
+    .regular-checkbox:checked + label {
+        background-color: #4ec243;
+        border: 1px solid #adb8c0;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
+        color: #99a1a7;
+    }
+
+        .regular-checkbox:checked + label:after {
+            content: '\2714';
+            font-size: 14px;
+            position: absolute;
+            top: 0px;
+            left: 3px;
+            color: #fff; /*	color: #99a1a7;*/
+        }
+
+.big-checkbox + label {
+    padding: 18px;
+}
+
+.big-checkbox:checked + label:after {
+    font-size: 28px;
+    left: 6px;
+}
+
+.tag {
+    font-family: Arial, sans-serif;
+    width: 200px;
+    position: relative;
+    top: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: block;
+    float: left;
+}
+
+.radio-1 {
+    width: 193px;
+}
+
+.button-holder {
+    float: left;
+}
+
+/* RADIO */
+.regular-radio {
+    display: none;
+}
+
+    .regular-radio + label {
+        -webkit-appearance: none;
+        background-color: #fff;
+        border: 1px solid #cacece;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+        padding: 9px;
+        border-radius: 50px;
+        display: inline-block;
+        position: relative;
+    }
+
+    .regular-radio:checked + label:after {
+        content: ' ';
+        width: 12px;
+        height: 12px;
+        border-radius: 50px;
+        position: absolute;
+        top: 3px;
+        background: #4ec243;
+        box-shadow: inset 0px 0px 10px rgba(0,0,0,0.3);
+        text-shadow: 0px;
+        left: 3px;
+        font-size: 32px;
+    }
+
+    .regular-radio:checked + label {
+        background-color: #e9ecee;
+        color: #99a1a7;
+        border: 1px solid #adb8c0;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1), inset 0px 0px 10px rgba(0,0,0,0.1);
+    }
+
+        .regular-radio + label:active, .regular-radio:checked + label:active {
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
+        }
+
+.big-radio + label {
+    padding: 16px;
+}
+
+.big-radio:checked + label:after {
+    width: 24px;
+    height: 24px;
+    left: 4px;
+    top: 4px;
+}
+/* RadioButton And CheckBox CSS Style */
+
+/* Product list dialog search screen*/
+.search-product-dialog .displayfor {
+    margin-left: 10px;
+    margin-right: 40px;
+}
+
+.search-product-dialog .dialog-body .dataTables_scrollBody {
+    height: 210px !important;
+}
+
+/* Contract view screen*/
+.contract-view {
+    padding: 30px;
+}
+
+    .contract-view .txt-width-250 {
+        width: 250px;
+    }
+
+    .contract-view .margin-left-15 {
+        margin-left: 15px;
+    }
+
+    .contract-view div#title {
+        margin-bottom: 15px;
+    }
+
+    .contract-view .title-project-name {
+        width: 162px;
+    }
+
+    .contract-view .title-category {
+        width: 162px;
+    }
+
+    .contract-view select {
+        border: none;
+        background: none;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    }
+
+        .contract-view select[disabled] {
+            color: #000000 !important;
+        }
+
+    .contract-view div.line-contract {
+        margin-bottom: 10px;
+    }
+
+    .contract-view div.contract-oai {
+        display: inline-block;
+        padding: 20px 30px;
+        background-color: #F7F7F3;
+        border-radius: 3px;
+    }
+
+        .contract-view div.contract-oai table thead th {
+            background-color: #f2f2f2;
+            height: 35px;
+            font-size: 12px;
+            font-weight: bold;
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 5px;
+            text-align: left;
+        }
+
+        .contract-view div.contract-oai table tbody td {
+            background-color: #ffffff;
+            height: 35px;
+            font-size: 14px;
+            font-weight: normal;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+            .contract-view div.contract-oai table tbody td select {
+                margin-left: -6px;
+            }
+
+        .contract-view div.contract-oai table .product-name {
+            width: 433px;
+        }
+
+        .contract-view div.contract-oai table .price, .contract-view div.contract-oai table .amount {
+            width: 140px;
+        }
+
+        .contract-view div.contract-oai table .quanlity {
+            width: 80px;
+        }
+
+        .contract-view div.contract-oai table .unit {
+            width: 74px;
+        }
+
+        .contract-view div.contract-oai table .taxable {
+            width: 123px;
+        }
+
+        .contract-view div.contract-oai table .day-long {
+            width: 98px;
+        }
+
+        .contract-view div.contract-oai table .base-amount {
+            width: 126px;
+        }
+
+        .contract-view div.contract-oai table .acceptance-date {
+            width: 120px;
+        }
+
+    .contract-view div.div-sales {
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+
+    .contract-view div.work-period {
+        display: inline-block;
+        margin-top: 25px;
+        height: 50px;
+        width: 490px;
+        font-size: 24px;
+        font-weight: normal;
+        text-align: center;
+    }
+
+    .contract-view div.work-period-left {
+        float: left;
+        width: 30%;
+        border: 1px solid #CCC;
+        height: 50px;
+        background-color: #e4e4e4;
+        font-weight: bold;
+        padding-top: 10px;
+    }
+
+    .contract-view div.work-period-right {
+        border: 1px solid #CCC;
+        height: 50px;
+        padding-top: 10px;
+    }
+
+    .contract-view div.div-contractCustomerInfo {
+        width: 100%;
+        height: 45px;
+        margin-bottom: 30px;
+    }
+
+        .contract-view div.div-contractCustomerInfo .customer-title {
+            float: left;
+            width: 100px;
+            height: 45px;
+            padding-top: 10px;
+            background-color: #e4e4e4;
+            border: 1px solid #CCC;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .contract-view div.div-contractCustomerInfo .customer-oa {
+            float: left;
+            height: 45px;
+            width: 548px;
+            padding-top: 10px;
+            padding-left: 21px;
+            border: 1px solid #CCC;
+            border-left: none;
+            border-right: none;
+            font-size: 20px;
+            font-weight: normal;
+        }
+
+            .contract-view div.div-contractCustomerInfo .customer-oa label {
+                font-size: 20px;
+                font-weight: normal;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+        .contract-view div.div-contractCustomerInfo .customer-pic {
+            float: left;
+            height: 45px;
+            width: 100px;
+            padding-top: 14px;
+            border-left: none;
+            background-color: #e4e4e4;
+            border: 1px solid #CCC;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .contract-view div.div-contractCustomerInfo .customer_staff {
+            height: 45px;
+            width: 237px;
+            border: 1px solid #CCC;
+            padding-top: 13px;
+            padding-left: 20px;
+            float: left;
+            border-left: none;
+        }
+
+            .contract-view div.div-contractCustomerInfo .customer_staff label {
+                font-size: 14px;
+                font-weight: normal;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+    .contract-view div.main-in-charge {
+        width: 100%;
+        height: 45px;
+    }
+
+        .contract-view div.main-in-charge .title {
+            float: left;
+            height: 45px;
+            width: 100px;
+            padding-top: 14px;
+            border: 1px solid #CCC;
+            background-color: #e4e4e4;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .contract-view div.main-in-charge .content {
+            float: left;
+            height: 45px;
+            width: 884px;
+            padding-top: 10px;
+            padding-left: 10px;
+            background-color: #ffffff;
+            border: 1px solid #CCC;
+            border-left: none;
+            text-align: left;
+        }
+
+    .contract-view div.contract-payment-site {
+        width: 100%;
+        height: 45px;
+    }
+
+        .contract-view div.contract-payment-site .title {
+            height: 45px;
+            float: left;
+            width: 100px;
+            background-color: #e4e4e4;
+            border: 1px solid #CCC;
+            text-align: center;
+            padding-top: 13px;
+            font-weight: bold;
+            border-top: none;
+        }
+
+        .contract-view div.contract-payment-site .content {
+            float: left;
+            height: 45px;
+            width: 500px;
+            padding-top: 10px;
+            background-color: #fff;
+            border: 1px solid #CCC;
+            border-top: none;
+            border-left: none;
+            text-align: center;
+            font-weight: normal;
+        }
+
+    .contract-view div.contract-evergreen {
+        width: 100%;
+        height: 45px;
+    }
+
+        .contract-view div.contract-evergreen .title {
+            float: left;
+            height: 45px;
+            width: 150px;
+            padding-top: 15px;
+            background-color: #e4e4e4;
+            border: 1px solid #CCC;
+            border-top: none;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .contract-view div.contract-evergreen .checked-status {
+            float: left;
+            height: 45px;
+            width: 45px;
+            padding-top: 15px;
+            border: 1px solid #CCC;
+            border-top: none;
+            border-left: none;
+            text-align: center;
+            font-weight: normal;
+        }
+
+        .contract-view div.contract-evergreen .target-date-title {
+            float: left;
+            height: 45px;
+            width: 203px;
+            padding: 15px 0px 0px 21px;
+            border: 1px solid #CCC;
+            border-top: none;
+            border-left: none;
+            text-align: left;
+            font-weight: normal;
+        }
+
+        .contract-view div.contract-evergreen .monthly {
+            float: left;
+            height: 45px;
+            width: 202px;
+            padding: 11px 0px 0px 21px;
+            border: 1px solid #CCC;
+            border-top: none;
+            border-left: none;
+            text-align: left;
+            font-weight: normal;
+        }
+
+    .contract-view div.contract-collect {
+        width: 100%;
+        height: 45px;
+    }
+
+        .contract-view div.contract-collect .title {
+            float: left;
+            height: 45px;
+            width: 150px;
+            padding-top: 15px;
+            background-color: #e4e4e4;
+            border: 1px solid #CCC;
+            border-top: none;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .contract-view div.contract-collect .checked-status {
+            float: left;
+            height: 45px;
+            width: 45px;
+            padding-top: 15px;
+            border: 1px solid #CCC;
+            border-top: none;
+            border-left: none;
+            text-align: center;
+            font-weight: normal;
+        }
+
+        .contract-view div.contract-collect .months {
+            float: left;
+            height: 46px;
+            width: 203px;
+            padding: 11px 0px 0px 5px;
+            margin-top: -1px;
+            border: 1px solid #CCC;
+            border-left: none;
+            text-align: left;
+            font-weight: normal;
+        }
+
+            .contract-view div.contract-collect .months select {
+                padding-left: 12px;
+            }
+
+    .contract-view div.contract-date-period {
+        width: 100%;
+        height: 45px;
+    }
+
+        .contract-view div.contract-date-period .start-date-title {
+            height: 45px;
+            float: left;
+            width: 100px;
+            background-color: #e4e4e4;
+            border: 1px solid #CCC;
+            text-align: center;
+            padding-top: 13px;
+            font-weight: bold;
+            border-top: none;
+        }
+
+        .contract-view div.contract-date-period .start-date-content {
+            float: left;
+            height: 45px;
+            width: 206px;
+            padding-top: 13px;
+            background-color: #fff;
+            border: 1px solid #CCC;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            text-align: center;
+            font-weight: normal;
+        }
+
+        .contract-view div.contract-date-period .end-date-title {
+            height: 45px;
+            float: left;
+            width: 100px;
+            background-color: #e4e4e4;
+            border: 1px solid #CCC;
+            text-align: center;
+            padding-top: 13px;
+            font-weight: bold;
+            border-top: none;
+            border-right: none;
+        }
+
+        .contract-view div.contract-date-period .end-date-content {
+            float: left;
+            height: 45px;
+            width: 194px;
+            padding-top: 13px;
+            background-color: #fff;
+            border: 1px solid #CCC;
+            border-top: none;
+            text-align: center;
+            font-weight: normal;
+        }
+
+    .contract-view div.time-claim, .contract-view div.deliverables {
+        width: 100%;
+        height: 45px;
+    }
+
+        .contract-view div.time-claim div.first-title, .contract-view div.deliverables div.first-title {
+            height: 45px;
+            float: left;
+            width: 100px;
+            background-color: #e4e4e4;
+            border: 1px solid #CCC;
+            text-align: center;
+            padding-top: 13px;
+            font-weight: bold;
+            border-top: none;
+        }
+
+        .contract-view div.time-claim div.title, .contract-view div.deliverables div.title {
+            height: 45px;
+            float: left;
+            width: 100px;
+            background-color: #e4e4e4;
+            border: 1px solid #CCC;
+            text-align: center;
+            padding-top: 13px;
+            font-weight: bold;
+            border-top: none;
+            border-left: none;
+        }
+
+        .contract-view div.time-claim div.content, .contract-view div.deliverables div.content {
+            height: 45px;
+            float: left;
+            width: 200px;
+            background-color: #fff;
+            border: 1px solid #CCC;
+            text-align: center;
+            padding-top: 13px;
+            font-weight: normal;
+            border-top: none;
+            border-left: none;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+    .contract-view div.tax-excluded-total-amount {
+        margin-top: 20px;
+        width: 100%;
+        height: 50px;
+        font-size: 22px;
+    }
+
+        .contract-view div.tax-excluded-total-amount div.title {
+            height: 50px;
+            float: left;
+            width: 175px;
+            background-color: #e4e4e4;
+            border: 1px solid #CCC;
+            text-align: center;
+            padding-top: 10px;
+            font-weight: bold;
+        }
+
+        .contract-view div.tax-excluded-total-amount div.content {
+            float: left;
+            height: 50px;
+            min-width: 232px;
+            padding: 10px 10px 0px 20px;
+            background-color: #fff;
+            border: 1px solid #CCC;
+            border-left: none;
+            font-weight: normal;
+            text-align: right;
+        }
+
+    .contract-view div.contract-payment {
+        width: 100%;
+        height: 60px;
+    }
+
+        .contract-view div.contract-payment .title {
+            float: left;
+            height: 60px;
+            width: 100px;
+            background-color: #e4e4e4;
+            border: 1px solid #CCC;
+            border-top: none;
+            padding-top: 22px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .contract-view div.contract-payment .content {
+            float: left;
+            height: 60px;
+            width: 884px;
+            border-left: none;
+            border-top: none;
+            text-align: left;
+        }
+
+            .contract-view div.contract-payment .content .payment-method-type {
+                float: left;
+                height: 60px;
+                width: 130px;
+                padding-top: 17px;
+                background-color: #fff;
+                border-right: none;
+                border-bottom: 1px solid #CCC;
+                text-align: center;
+            }
+
+            .contract-view div.contract-payment .content .payment-method-content {
+                height: 60px;
+                width: 753px;
+                float: left;
+            }
+
+                .contract-view div.contract-payment .content .payment-method-content .table-payment-method {
+                    float: left;
+                    table-layout: fixed;
+                    height: 60px;
+                    border: none;
+                }
+
+                    .contract-view div.contract-payment .content .payment-method-content .table-payment-method thead tr th {
+                        height: 26px;
+                        border: 1px solid #CCC;
+                        border-top: none;
+                        background-color: #f2f2f2;
+                        padding-top: 4px;
+                    }
+
+                    .contract-view div.contract-payment .content .payment-method-content .table-payment-method tbody tr td {
+                        border: 1px solid #CCC;
+                        background-color: #fff;
+                    }
+
+                    .contract-view div.contract-payment .content .payment-method-content .table-payment-method .split-unit {
+                        min-width: 120px;
+                    }
+
+                    .contract-view div.contract-payment .content .payment-method-content .table-payment-method .time {
+                        min-width: 250px;
+                    }
+
+                    .contract-view div.contract-payment .content .payment-method-content .table-payment-method .over-time {
+                        min-width: 127px;
+                        padding-right: 10px;
+                    }
+
+                    .contract-view div.contract-payment .content .payment-method-content .table-payment-method .unit-price,
+                    .contract-view div.contract-payment .content .payment-method-content .table-payment-method .unit-time {
+                        min-width: 128px;
+                        padding-right: 10px;
+                    }
+
+                    .contract-view div.contract-payment .content .payment-method-content .table-payment-method label,
+                    .contract-view div.contract-payment .content .payment-method-content .table-payment-method span {
+                        padding-left: 20px;
+                    }
+
+                    .contract-view div.contract-payment .content .payment-method-content .table-payment-method select {
+                        padding-left: 10px;
+                    }
+
+                    .contract-view div.contract-payment .content .payment-method-content .table-payment-method tr td.time label {
+                        font-weight: normal;
+                        margin-left: -20px;
+                        margin-right: -21px;
+                    }
+
+    .contract-view div.contract-unit, .contract-view div.contract-quality {
+        width: 100%;
+        height: 45px;
+    }
+
+        .contract-view div.contract-unit .title,
+        .contract-view div.contract-quality .title {
+            height: 45px;
+            float: left;
+            width: 100px;
+            background-color: #e4e4e4;
+            border: 1px solid #CCC;
+            text-align: center;
+            padding-top: 13px;
+            font-weight: bold;
+            border-top: none;
+        }
+
+        .contract-view div.contract-unit .content-unit-price {
+            height: 45px;
+            float: left;
+            width: 206px;
+            background-color: #fff;
+            border: 1px solid #CCC;
+            text-align: right;
+            padding-top: 13px;
+            padding-right: 15px;
+            font-weight: normal;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+        }
+
+        .contract-view div.contract-quality .content {
+            height: 45px;
+            float: left;
+            width: 206px;
+            background-color: #fff;
+            border: 1px solid #CCC;
+            text-align: right;
+            padding-top: 13px;
+            padding-right: 20px;
+            font-weight: normal;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+        }
+
+        .contract-view div.contract-unit .content-unit-price label {
+            font-weight: normal !important;
+        }
+
+        .contract-view div.contract-unit .title-tax {
+            height: 45px;
+            float: left;
+            width: 100px;
+            background-color: #e4e4e4;
+            border: 1px solid #CCC;
+            text-align: center;
+            padding-top: 13px;
+            font-weight: bold;
+            border-top: none;
+            border-right: none;
+        }
+
+        .contract-view div.contract-unit .content-tax {
+            float: left;
+            height: 45px;
+            width: 195px;
+            padding-top: 13px;
+            padding-left: 20px;
+            background-color: #fff;
+            border: 1px solid #CCC;
+            border-top: none;
+            text-align: left;
+            font-weight: normal;
+        }
+
+        .contract-view div.contract-quality .content {
+            border-right: 1px solid #CCC;
+            width: 207px;
+        }
+
+    .contract-view div.contract-amount {
+        margin-top: 20px;
+        width: 100%;
+        height: 50px;
+        font-size: 22px;
+    }
+
+        .contract-view div.contract-amount .amount-title {
+            height: 50px;
+            float: left;
+            width: 100px;
+            background-color: #e4e4e4;
+            border: 1px solid #CCC;
+            text-align: center;
+            padding-top: 10px;
+            font-weight: bold;
+        }
+
+        .contract-view div.contract-amount .count-amount {
+            float: left;
+            height: 50px;
+            width: 254px;
+            background-color: #fff;
+            border: 1px solid #CCC;
+            border-left: none;
+            border-right: none;
+            padding-top: 10px;
+            padding-right: 15px;
+            font-weight: normal;
+            text-align: right;
+        }
+
+        .contract-view div.contract-amount .tax-rate-content {
+            float: left;
+            height: 50px;
+            width: 248px;
+            background-color: #fff;
+            border: 1px solid #CCC;
+            border-left: none;
+            padding-top: 10px;
+            padding-left: 20px;
+            font-weight: normal;
+        }
+
+        .contract-view div.contract-amount .payment-site-title, .contract-view div.contract-amount .tax-rate {
+            height: 50px;
+            float: left;
+            width: 100px;
+            background-color: #e4e4e4;
+            border: 1px solid #CCC;
+            padding-top: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .contract-view div.contract-amount .payment-site-content {
+            float: left;
+            height: 50px;
+            width: 350px;
+            padding-top: 10px;
+            background-color: #fff;
+            border: 1px solid #CCC;
+            border-left: none;
+            font-weight: normal;
+        }
+
+            .contract-view div.contract-amount .payment-site-content > select {
+                margin: 0px;
+                padding: 0px;
+            }
+
+            .contract-view div.contract-amount .payment-site-content > label {
+                margin-left: 10px;
+            }
+
+        .contract-view div.contract-amount .tax-rate-content > label {
+            margin-left: 20px;
+        }
+
+    .contract-view .text-bold {
+        font-weight: bold !important;
+    }
+
+    .contract-view .line {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border-top: 1px solid #c9c9c9;
+        clear: both;
+    }
+
+    .contract-view *[disabled] {
+        background: none !important;
+        border-color: #c9c9c9 !important;
+        box-shadow: none !important;
+        cursor: not-allowed;
+    }
+
+    .contract-view .special-payment-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 16px;
+    }
+
+    .contract-view .special-payment table {
+        table-layout: fixed;
+    }
+
+        .contract-view .special-payment table thead tr th {
+            height: 35px;
+            padding-left: 10px;
+            padding-top: 5px;
+            background-color: #f2f2f2;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        .contract-view .special-payment table tbody tr td {
+            height: 35px;
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 5px;
+            background-color: #ffffff;
+            font-size: 14px;
+        }
+
+            .contract-view .special-payment table tbody tr td.padding-left-2 {
+                padding-left: 2px;
+            }
+
+            .contract-view .special-payment table tbody tr td select {
+                margin: 0px !important;
+            }
+
+    .contract-view .special-payment .day {
+        width: 62px;
+        min-width: 62px;
+    }
+
+    .contract-view .special-payment .day-long {
+        width: 98px;
+        min-width: 98px;
+    }
+
+    .contract-view .special-payment .base-amount {
+        width: 126px;
+        min-width: 126px;
+    }
+
+    .contract-view .special-payment .tax-rate {
+        width: 100px;
+        min-width: 100px;
+    }
+
+    .contract-view .special-payment .payment-method {
+        width: 90px;
+        min-width: 90px;
+    }
+
+    .contract-view .special-payment .deposit-plan-date, .contract-view .special-payment .payment-plan-date,
+    .contract-view .special-payment .acceptance-date {
+        width: 105px;
+        min-width: 105px;
+    }
+
+    .contract-view .special-payment .product-name {
+        width: 120px;
+        min-width: 120px;
+    }
+
+    .contract-view .special-payment .taxable {
+        width: 110px;
+        min-width: 110px;
+    }
+
+    .contract-view .special-payment .time-unit, .contract-view .special-payment .payment-due-date {
+        width: 85px;
+        min-width: 85px;
+    }
+
+    .contract-view .special-payment .unit {
+        width: 138px;
+        min-width: 138px;
+    }
+
+    .contract-view .special-payment .devide-unit {
+        width: 60px;
+        min-width: 60px;
+    }
+
+    .contract-view .special-payment .unit-type {
+        width: 70px;
+        min-width: 70px;
+    }
+
+    .contract-view .special-payment .quantity {
+        width: 60px;
+        min-width: 60px;
+    }
+
+    .contract-view .special-payment .amount {
+        width: 110px;
+        min-width: 110px;
+    }
+
+    .contract-view .special-payment .time {
+        width: 94px;
+        min-width: 94px;
+    }
+
+    .contract-view .special-payment .overtime-rate, .contract-view .special-payment .deduction-unit-price {
+        width: 76px;
+        min-width: 76px;
+    }
+
+    .contract-view .special-payment select {
+        padding-left: -10px;
+    }
+
+    .contract-view .contract-note {
+        display: inline-block;
+        width: 100%;
+        margin-top: 25px;
+        font-size: 14px;
+    }
+
+    .contract-view .contract-note-left {
+        display: inline-block;
+        float: left;
+        width: 49%;
+    }
+
+    .contract-view .contract-note-right {
+        display: inline-block;
+        width: 49%;
+    }
+
+    .contract-view .contract-note .title {
+        float: left;
+        width: 20%;
+    }
+
+    .contract-view .contract-note .content {
+        float: left;
+        width: 75%;
+        margin-left: 10px;
+        word-wrap: break-word;
+    }
+
+    .contract-view .contract-amount-total {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 100%;
+        height: 50px;
+        font-size: 22px;
+    }
+
+        .contract-view .contract-amount-total .amount-title,
+        .contract-view .contract-amount-total .profit-title,
+        .contract-view .contract-amount-total .tax-rate-title,
+        .contract-view .contract-amount-total .consumption-tax-amount-title {
+            height: 50px;
+            float: left;
+            width: 175px;
+            background-color: #e4e4e4;
+            border: 1px solid #CCC;
+            text-align: center;
+            padding-top: 10px;
+            font-weight: bold;
+        }
+
+        .contract-view .contract-amount-total .amount-total {
+            float: left;
+            height: 50px;
+            min-width: 232px;
+            padding: 10px 10px 0px 20px;
+            border: 1px solid #CCC;
+            border-left: none;
+            background-color: #FFF;
+            text-align: right;
+        }
+
+        .contract-view .contract-amount-total .profit-total,
+        .contract-view .contract-amount-total .tax-rate-content {
+            float: left;
+            height: 50px;
+            min-width: 248px;
+            padding: 10px 10px 0px 20px;
+            border: 1px solid #CCC;
+            border-left: none;
+            background-color: #FFF;
+            text-align: right;
+        }
+
+        .contract-view .contract-amount-total .profit-title {
+            width: 100px;
+        }
+
+        .contract-view .contract-amount-total .tax-rate-title {
+            width: 110px;
+            margin-left: -1px;
+        }
+
+        .contract-view .contract-amount-total .consumption-tax-amount-title {
+            width: 200px;
+            padding-left: 20px;
+            text-align: left;
+        }
+
+    .contract-view .div-suppliers {
+        background-color: #fef5fc;
+        border-radius: 3px;
+        margin-bottom: 25px;
+        padding: 30px;
+        width: 101%;
+    }
+
+        .contract-view .div-suppliers .supplier-title {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .contract-view .div-suppliers .supplier-op {
+            height: 45px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+            .contract-view .div-suppliers .supplier-op .title {
+                height: 45px;
+                float: left;
+                width: 100px;
+                background-color: #e4e4e4;
+                border: 1px solid #CCC;
+                text-align: left;
+                padding-top: 13px;
+                font-weight: bold;
+                padding-left: 15px;
+            }
+
+            .contract-view .div-suppliers .supplier-op .title-supplier {
+                font-size: 22px;
+                padding-top: 8px;
+            }
+
+            .contract-view .div-suppliers .supplier-op .content {
+                float: left;
+                height: 45px;
+                width: 284px;
+                padding-top: 14px;
+                padding-left: 20px;
+                background-color: #ffffff;
+                border: 1px solid #CCC;
+                border-left: none;
+                font-weight: normal;
+                text-align: left;
+            }
+
+                .contract-view .div-suppliers .supplier-op .content label {
+                    font-size: 14px;
+                    font-weight: normal;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+
+            .contract-view .div-suppliers .supplier-op .dsp-name {
+                width: 500px;
+                padding-top: 8px;
+                background-color: #ffffff;
+                font-size: 22px;
+                border-right: none;
+            }
+
+                .contract-view .div-suppliers .supplier-op .dsp-name label {
+                    font-size: 20px;
+                    font-weight: normal;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+
+    .contract-view .table-bordered {
+        border-right: none;
+        border-collapse: separate;
+    }
+
+        .contract-view .table-bordered thead tr th {
+            border-top: none;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .contract-view .table-bordered tbody tr td {
+            border: none;
+            border-top: 1px solid #CCC;
+            border-right: 1px solid #CCC;
+        }
+
+    .contract-view .contract-info {
+        margin-bottom: 40px;
+    }
+
+    .contract-view .form-group {
+        margin-bottom: 15px;
+        margin-right: -15px;
+        margin-left: -13px;
+        width: 100%;
+        min-height: 20px;
+    }
+
+        .contract-view .form-group .delivery-location {
+            padding-bottom: 10px;
+            padding-left: 0px;
+        }
+
+    .contract-view .quote-info .title {
+        font-size: 18px;
+        margin-bottom: 15px;
+        font-weight: bold;
+    }
+
+    .contract-view .quote-info .comment {
+        width: 770px;
+        text-align: left;
+    }
+
+    .contract-view .quote-info .file-name {
+        text-align: left;
+    }
+
+    .contract-view select::-ms-expand {
+        display: none;
+    }
+
+#contractView .ddl-w-100 {
+    width: 100px;
+}
+/* End CSS for Contract View*/
+
+/* Custom css for Billing List screen*/
+div#billingList .btn-icon {
+    padding-left: 22px;
+}
+
+div#billingList div.hideable {
+    padding: 30px 30px 15px 30px;
+    border-bottom: thin solid #e6e6e4;
+}
+
+div#billingList div#title {
+    margin: 0px;
+}
+
+div#billingList div.top-content {
+    padding: 0px !important;
+    background: #fff;
+    border: none;
+}
+
+div#billingList div#searchArea {
+    width: 800px;
+    height: 363px;
+    margin: 15px 0px 0px 0px;
+    padding: 23px 0px 0px 30px;
+    background: #e6e6e5;
+}
+
+.sidebar-collapse div#billingList div#searchArea {
+    width: 930px;
+}
+
+div#billingList div#searchArea .btn {
+    height: 30px;
+}
+
+div#billingList div#searchAction {
+    padding: 10px 0px 0px 0px;
+    margin: 0px;
+}
+
+div#billingList div.form-group {
+    margin-bottom: 12px;
+}
+
+div#billingList div.bottom-buttons {
+    padding: 20px 30px;
+    background: #f7f7f3;
+}
+
+div#billingList label.first {
+    min-width: 90px;
+}
+
+div#billingList label.caution-label {
+    width: 70px;
+    padding: 0px;
+    text-align: left;
+}
+
+div#billingList label.control-label {
+    width: 80px;
+}
+
+div#billingList input[type="text"] {
+    height: 30px;
+}
+
+div#billingList #tbTemp {
+    border-collapse: collapse;
+    overflow-x: auto;
+    display: inherit;
+    border-bottom: none;
+}
+
+div#billingList #InfoTable tbody td {
+    vertical-align: middle;
+}
+
+#billingList #tbLeft tbody td {
+    padding-bottom: 5px;
+    padding-top: 8px;
+}
+
+div#billingList .dataTable .center {
+    text-align: center;
+}
+
+#billingList .mw-110 {
+    max-width: 100px;
+}
+
+#billingList .col-left {
+    float: left;
+    width: 38%;
+}
+
+#billingList .col-right {
+    float: left;
+    margin-left: -1px;
+    max-width: 62%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 1px;
+}
+
+    #billingList .col-right .text-overflow {
+        max-width: 120px;
+    }
+
+div#billingList .col-left .text-overflow {
+    max-width: 100px;
+}
+
+div#billingList .yet-payment-text {
+    color: #f00;
+    font-weight: bold;
+}
+
+div#billingList .flg-attention::after {
+    content: url('/Images/attention.png');
+}
+
+div#billingList .flg-format::after {
+    content: url('/Images/format.png');
+}
+
+div#billingList .display-inline {
+    display: inline-flex;
+}
+
+    div#billingList .display-inline div {
+        margin-top: -1px;
+        padding-right: 5px;
+    }
+
+/* End CSS for Billing List screen*/
+
+/* Custom css for Billing input date*/
+#billingInputDateList .edit-billing-note {
+    width: 100%;
+    height: 100px;
+    resize: none;
+}
+
+#billingInputDateList table .short-text {
+    max-width: 130px;
+    cursor: text;
+}
+
+#billingInputDateList #searchArea .first {
+    min-width: 90px;
+}
+
+#billingInputDateList #searchArea select {
+    width: 120px;
+}
+
+#billingInputDateList .w-110 {
+    max-width: 115px;
+}
+
+#billingInputDateList table .w-95 {
+    max-width: 95px;
+}
+
+#billingInputDateList .w-150 {
+    width: 150px;
+}
+
+#billingInputDateList .mw-160 {
+    max-width: 160px;
+}
+
+#billingInputDateList .w-160 {
+    width: 160px;
+}
+
+#billingInputDateList .w-190 {
+    width: 190px;
+}
+
+#billingInputDateList .mw-100 {
+    max-width: 100px;
+}
+
+#billingInputDateList .w-100 {
+    width: 100px;
+}
+
+#billingInputDateList .w-300 {
+    width: 300px;
+}
+
+#billingInputDateList tr td {
+    vertical-align: top;
+}
+
+#billingInputDateList #searchArea #CLOSING_DAY {
+    width: 70px;
+}
+
+#billingInputDateList .margin-left-15 {
+    margin-left: 15px;
+}
+
+#billingInputDateList .margin-left-25 {
+    margin-left: 25px;
+}
+
+#billingInputDateList .margin-left-40 {
+    margin-left: 40px;
+}
+
+#billingInputDateList #InfoTable {
+    border-bottom: none;
+    width: 100% !important;
+    display: inline-block;
+    overflow-x: auto;
+}
+
+#billingInputDateList #searchArea #BP_NAME_KANA {
+    ime-mode: auto;
+}
+
+#billingInputDateList #AddTable #CONTRACT_TYPE_INDEX_ADD,
+#billingInputDateList #AddTable #CONTRACT_SUBTYPE_INDEX_ADD_KEY,
+#billingInputDateList #AddTable #PRODUCT_INDEX {
+    width: 120px;
+}
+
+#billingInputDateList #AddTable {
+    float: left;
+    width: auto;
+}
+/* End custom css for Billing input date */
+
+.billingSetting #scrollForTable {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* Custom css for Payment not Payment screen */
+.payment-not-payment div.left_box {
+    width: 100%;
+    padding: 0px 30px 20px 30px;
+}
+
+.payment-not-payment #mainContent {
+    padding-bottom: 0px;
+    margin-bottom: 15px;
+}
+
+    .payment-not-payment #mainContent hr {
+        margin-bottom: 0px;
+    }
+
+.payment-not-payment label.caution-label {
+    width: 65px;
+}
+
+.payment-not-payment label.title-label {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.payment-not-payment .dataTable {
+    display: inline-block;
+    overflow-x: auto;
+    width: 100%;
+}
+
+.payment-not-payment #searchArea #BP_NAME_KANA {
+    width: 414px;
+}
+
+.payment-not-payment .title-row {
+    min-width: 75px;
+}
+/* End custom css for Payment not Payment screen */
+
+/* Custom css for Create Red Invoice screen */
+div.create-red-invoice table.dataTable {
+    border-collapse: collapse;
+    width: 100% !important;
+}
+
+div.create-red-invoice label.first {
+    min-width: 105px !important;
+}
+
+div.create-red-invoice div#mainContent {
+    margin-bottom: 0px !important;
+}
+
+div.create-red-invoice .action-button-bottom {
+    padding-bottom: 20px;
+}
+
+div.create-red-invoice #InfoTable {
+    border-bottom: none !important;
+}
+
+    div.create-red-invoice #InfoTable tfoot {
+        border-top: 1px solid #E4E4E4;
+    }
+/* End custom css for Create Red Invoice screen */
+
+/* Custom css for Issue Order for Payment screen */
+div.issue-order-for-payment table.dataTable {
+    display: inline-block;
+}
+/* End custom css for Issue Order for Payment screen */
+
+/* Custom css for Payment Clear Setting screen */
+div.payment-clear-setting div.auto-overflow {
+    margin: 30px 30px 0px 30px;
+}
+
+div.payment-clear-setting table.dataTable {
+    table-layout: fixed;
+    border-collapse: collapse;
+    display: inline-block;
+    width: 100% !important;
+}
+
+    div.payment-clear-setting table.dataTable input {
+        width: 80px;
+        float: right;
+        text-align: right;
+    }
+
+    div.payment-clear-setting table.dataTable label {
+        padding-top: 3px;
+    }
+
+    div.payment-clear-setting table.dataTable thead th {
+        padding: 10px 7px;
+        white-space: nowrap;
+    }
+
+    div.payment-clear-setting table.dataTable tbody td {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding: 10px 7px;
+    }
+
+    div.payment-clear-setting table.dataTable tfoot td {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding: 10px 7px;
+    }
+
+div.payment-clear-setting div.action-button-bottom {
+    padding-left: 30px;
+}
+/* End custom css for Payment Clear Setting screen */
+
+/* Custom css for Export Sale Payments Info screen */
+#export-sale-payments-info .margin-left-50 {
+    margin-left: 50px;
+}
+
+#export-sale-payments-info div.top-title {
+    margin-bottom: 0px;
+    padding: 20px 20px 0px 30px;
+    font-size: 30px;
+}
+
+#export-sale-payments-info div.control-buttons {
+    width: 100%;
+}
+
+    #export-sale-payments-info div.control-buttons #btnSelectAll {
+        margin-left: 80%;
+    }
+
+#export-sale-payments-info label.group-label {
+    display: block;
+    padding-top: 15px;
+    padding-left: 41px;
+}
+
+#export-sale-payments-info label.checkbox-label {
+    width: 160px;
+}
+
+#export-sale-payments-info #btnOutput {
+    width: 100px;
+    margin: 10px 0px 20px 50px;
+}
+
+/* End custom css for Export Sale Payments Info screen */
+
+/* Custom css for Billing input operate time */
+#billingInputOperateTimeList .edit-billing-note {
+    width: 100%;
+    height: 100px;
+    resize: none;
+}
+
+#billingInputOperateTimeList #searchArea .first {
+    min-width: 90px;
+}
+
+#billingInputOperateTimeList #searchArea select {
+    width: 140px;
+}
+
+#billingInputOperateTimeList .mw-80 {
+    max-width: 80px;
+}
+
+#billingInputOperateTimeList .mw-110 {
+    max-width: 110px;
+}
+
+#billingInputOperateTimeList .mw-160 {
+    max-width: 160px;
+}
+
+#billingInputOperateTimeList .mw-260 {
+    max-width: 215px;
+}
+
+#billingInputOperateTimeList .display-billing-note {
+    width: 215px;
+}
+
+#billingInputOperateTimeList #searchArea #CLOSING_DAY {
+    width: 70px;
+}
+
+#billingInputOperateTimeList #searchArea #ORDER_BY {
+    width: 180px;
+}
+
+#billingInputOperateTimeList tr td {
+    vertical-align: top;
+}
+
+#billingInputOperateTimeList .margin-left-40 {
+    margin-left: 40px;
+}
+
+#billingInputOperateTimeList .dataTable {
+    border-collapse: collapse;
+}
+
+/* End custom css for Billing input operate time */
+
+/* CSS for Contract product sales regist*/
+
+div.product-sales-regist .highlight-zone .title-row {
+    width: 85px;
+}
+
+div.product-sales-regist .col-left {
+    width: auto;
+}
+
+div.product-sales-regist .dataTable td {
+    height: 30px;
+}
+
+div.product-sales-regist .dataTable tbody tr td input[type=text] {
+    font-weight: bold;
+}
+
+div.product-sales-regist .dataTable .nomen-coai, div.product-sales-regist .dataTable .nomen-copd {
+    max-width: 120px;
+}
+
+div.product-sales-regist .dataTable .unit-type-coai, div.product-sales-regist .dataTable .unit-type-copd {
+    max-width: 80px;
+}
+/* End CSS for Contract product sales regist*/
+
+/* CSS for Contract product sales monthly regist*/
+div.contract-product-sales-monthly-regist .div-sales .form-group {
+    min-height: 30px;
+}
+
+div.contract-product-sales-monthly-regist .div-sales .div-sale-options {
+    margin-left: 628px;
+    margin-top: -89px;
+    padding-bottom: 30px;
+    margin-top: -130px;
+}
+
+div.contract-product-sales-monthly-regist .div-sales .title-row {
+    width: 85px;
+}
+
+div.contract-product-sales-monthly-regist .col-left {
+    width: auto;
+}
+
+div.contract-product-sales-monthly-regist .dataTable td {
+    height: 30px;
+}
+
+div.contract-product-sales-monthly-regist .dataTable tbody tr td input[type=text] {
+    font-weight: bold;
+}
+
+div.contract-product-sales-monthly-regist .dataTable .nomen-coai, div.product-sales-regist .dataTable .nomen-copd {
+    max-width: 120px;
+}
+
+div.contract-product-sales-monthly-regist .dataTable .unit-type-coai, div.product-sales-regist .dataTable .unit-type-copd {
+    max-width: 80px;
+}
+/* End CSS for Contract product sales monthly regist*/
+
+/* CSS for Contract package regist*/
+div.contract-package-regist .highlight-zone {
+    border-radius: 3px;
+}
+
+div.contract-package-regist .div-coai-left {
+    float: left;
+    width: 9%;
+}
+
+div.contract-package-regist .div-coai-right {
+    float: left;
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+div.contract-package-regist .div-coai .nomen-coai {
+    width: 150px;
+    font-weight: bold;
+}
+
+div.contract-package-regist .div-coai .unit-price-coai {
+    width: 110px;
+    font-weight: bold;
+}
+
+div.contract-package-regist .div-coai .qty-coai {
+    width: 70px;
+    font-weight: bold;
+}
+
+div.contract-package-regist .div-coai .unit-type-coai {
+    width: 50px;
+    font-weight: bold;
+}
+
+div.contract-package-regist .div-coai .amount-coai {
+    width: 110px;
+    font-weight: bold;
+    padding: 0;
+    background-color: transparent !important;
+    border: 0px solid;
+    border-bottom: 1px solid #CCC;
+    border-radius: 0px;
+    color: #333 !important;
+    box-shadow: none;
+}
+
+div.contract-package-regist .dataTable tbody tr td {
+    height: 29px;
+}
+
+div.contract-package-regist .col-left {
+    width: 150px;
+}
+
+div.contract-package-regist .div-suppliers .form-group {
+    min-height: 31px;
+}
+
+div.contract-package-regist .div-suppliers .time-claim {
+    margin-left: 650px;
+    margin-top: -185px;
+}
+
+    div.contract-package-regist .div-suppliers .time-claim label.title-row {
+        min-width: 55px;
+    }
+
+div.contract-package-regist .div-suppliers label.title-row {
+    min-width: 85px;
+}
+
+/* End CSS for Contract package regist*/
+
+/* CSS for Contract maintain regist*/
+div.contract-maintain-regist .highlight-zone {
+    border-radius: 3px;
+}
+
+div.contract-maintain-regist .div-coai-left {
+    float: left;
+    width: 9%;
+}
+
+div.contract-maintain-regist .div-coai-right {
+    float: left;
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+div.contract-maintain-regist .div-coai .amount-coai {
+    width: 110px;
+    font-weight: bold;
+    padding: 0;
+    background-color: transparent !important;
+    border: 0px solid;
+    border-bottom: 1px solid #CCC;
+    border-radius: 0px;
+    color: #333 !important;
+    box-shadow: none;
+}
+
+div.contract-maintain-regist .div-coai .nomen-coai {
+    width: 150px;
+    font-weight: bold;
+}
+
+div.contract-maintain-regist .div-coai .unit-price-coai {
+    width: 110px;
+    font-weight: bold;
+}
+
+div.contract-maintain-regist .div-coai .qty-coai {
+    width: 70px;
+    font-weight: bold;
+}
+
+div.contract-maintain-regist .div-coai .unit-type-coai {
+    width: 50px;
+    font-weight: bold;
+}
+
+div.contract-maintain-regist .div-coai .taxable-flg-coai {
+    width: 100px;
+}
+
+div.contract-maintain-regist .dataTable tbody tr td {
+    height: 29px;
+}
+
+div.contract-maintain-regist .div-suppliers {
+    background-color: #fef5fc;
+    margin-bottom: 25px;
+    padding: 30px;
+    width: 100%;
+}
+
+div.contract-maintain-regist .col-left {
+    width: 150px;
+}
+
+div.contract-maintain-regist .div-suppliers label.title-row {
+    min-width: 85px;
+}
+
+div.contract-maintain-regist div.highlight-zone label.payment-plan-date-lb, div.contract-maintain-regist div.highlight-zone label.deposit-plan-date-lb {
+    min-width: 115px;
+    margin-top: 4px;
+}
+
+/* End CSS for Contract maintain regist*/
+
+
+/* Start maint css for TransMaint Register screen */
+#MaintRegister div.password {
+    border-style: solid;
+    border-width:thin;
+    width: 445px !important;
+    padding: 10px;
+}
+
+#MaintRegister div.width-700{
+    width: 700px !important;
+    padding:10px;
+}
+
+#MaintRegister button.psresetbtn{
+
+    margin-top:10px;
+    margin-right:23px;
+}
+
+#MaintRegister div.setupbox {
+    display: -moz-inline-box; 
+    display: inline;
+    display: inline-block; 
+    vertical-align: top;
+}
+
+#MaintRegister label.title-row {
+    min-width: 140px;
+}
+
+#MaintRegister label.title-row200right {
+    min-width: 200px;
+    text-align: right;
+}
+
+#MaintRegister label.title-row250right {
+    min-width: 250px;
+    text-align: right;
+}
+
+#MaintRegister label.title-row300right {
+    min-width: 300px;
+    text-align: right;
+}
+
+#MaintRegister label.title-row600 {
+    min-width: 655px;
+}
+
+#MaintRegister label.title-row-wide {
+    min-width: 230px;
+}
+
+#MaintRegister .txt-w-30 {
+    width: 30px;
+}
+
+#MaintRegister .txt-w-50 {
+    width: 50px;
+}
+
+#MaintRegister .txt-w-55 {
+    width: 55px;
+}
+
+#MaintRegister .txt-w-70 {
+    width: 70px;
+}
+
+#MaintRegister .txt-w-100 {
+    width: 100px;
+}
+
+#MaintRegister .txt-w-120 {
+    width: 120px;
+}
+
+#MaintRegister .txt-w-150 {
+    width: 150px;
+}
+
+#MaintRegister .txt-w-200 {
+    width: 200px;
+}
+
+#MaintRegister .txt-w-250 {
+    width: 250px;
+}
+
+#MaintRegister .txt-w-300 {
+    width: 300px;
+}
+
+#MaintRegister .txt-w-350 {
+    width: 350px;
+}
+
+#MaintRegister .txt-w-450 {
+    width: 450px;
+}
+
+#MaintRegister div.check {
+    margin-left: 125px;
+}
+
+#MaintRegister .check-left {
+    margin-left: 0px;
+}
+
+#MaintRegister .disabled {
+    width: 50px;
+}
+
+
+.decimal_11 {
+    width: 100%;
+    text-align: right;
+}
+
+.decimal_7 {
+    width: 100%;
+    text-align: right;
+}
+
+/* End maint css for TransMaint Register screen */
+
+#maintInputDateList table.dataTable {
+    width: 100% !important;
+}
+
+/*2016/7/12 120から変更*/
+#maintInputDateList label.title-row {
+    min-width: 140px;
+}
+
+#maintInputDateList div.col-left {
+    float: left;
+    width: 25%;
+}
+
+#maintInputDateList div.col-right {
+    float: left;
+    width: 75%;
+    overflow: auto;
+}
+
+#maintInputDateList div.col-left2 {
+    float: left;
+    width: 60%;
+}
+
+#maintInputDateList div.col-right2 {
+    float: left;
+    width: 40%;
+    overflow: auto;
+}
+
+#maintInputDateList div.col-left3 {
+    float: left;
+    width: 35%;
+}
+
+#maintInputDateList div.col-right3 {
+    float: left;
+    width: 65%;
+    overflow: auto;
+}
+
+#maintInputDateList .col-left tbody td {
+    padding-bottom: 5px;
+    padding-top: 8px;
+}
+
+#maintInputDateList .col-right #InfoTable tbody td,
+#maintInputDateList .col-right #InfoTable2 tbody td {
+    vertical-align: middle;
+}
+
+/* Org */
+div.org-maint-dialog .dialog-top {
+    background: #FFFFFF;
+    border-bottom: none;
+}
+
+div.org-maint-dialog .search-zone {
+    background: #F7F7F3;
+    border-bottom: 1px solid #ccc;
+    height: 85px;
+}
+
+div.org-maint-dialog .dialog-top .nav-tabs > li {
+    margin-left: 20px;
+    margin-bottom: 0px;
+    margin-right: -10px;
+    font-weight: bold;
+}
+
+    div.org-maint-dialog .dialog-top .nav-tabs > li.active {
+        margin-top: -6px;
+        position: absolute;
+    }
+
+        div.org-maint-dialog .dialog-top .nav-tabs > li.active a {
+            background: #F7F7F3;
+            cursor: pointer;
+            padding-top: 17px;
+        }
+
+            div.org-maint-dialog .dialog-top .nav-tabs > li.active a:hover {
+                cursor: pointer;
+                text-decoration: none;
+            }
+
+    div.org-maint-dialog .dialog-top .nav-tabs > li a {
+        width: 150px;
+        text-align: center;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-bottom-color: transparent;
+    }
+
+        div.org-maint-dialog .dialog-top .nav-tabs > li a:hover {
+            text-decoration: underline;
+        }
+
+div.org-maint-dialog .tab-content .form-group {
+    margin-top: 30px;
+    margin-left: 32px;
+}
+
+    div.org-maint-dialog .tab-content .form-group input {
+        width: 250px;
+    }
+
+div.org-maint-dialog .table-bordered thead tr th {
+    width: 605px;
+    text-align: left;
+    border-top: none;
+    border-left: none;
+    padding: 5px;
+    padding-left: 20px;
+}
+
+div.org-maint-dialog .table-bordered tbody tr td {
+    border: none;
+    border-top: 1px solid #CCC;
+    border-right: 1px solid #CCC;
+    padding-left: 20px;
+    width: 605px;
+    cursor: pointer;
+}
+
+div.org-maint-dialog .table-bordered tbody tr:hover {
+    background-color: #e4e4e4;
+}
+
+div.org-maint-dialog .dataTable thead th {
+    background-color: #f2f2f2;
+}
+
+div.org-maint-dialog .dataTables_search_mail_dialog {
+    overflow-x: auto;
+}
+
+div.org-maint-dialog .table-bordered {
+    border-right: none;
+}
+
+div.org-maint-dialog .dialog-body {
+    margin-bottom: 30px;
+    margin: 10px 30px 60px 30px;
+    overflow-x: auto;
+    overflow-y: auto;
+    width: 1138px;
+    height: 212px;
+}
+
+div.org-maint-dialog .row {
+    margin-right: 0px;
+}
+
+div.org-maint-dialog .mail-selected {
+    margin: 0px;
+    padding: 15px 20px 8px 30px !important;
+    background-color: #f7f7f3;
+}
+
+div.org-maint-dialog label.to {
+    padding-top: 5px;
+}
+
+div.org-maint-dialog .mail-selected input.current-mail {
+    width: 96%;
+}
+
+div.org-maint-dialog .mail-selected .action {
+    margin-top: 5px;
+    text-align: right;
+    padding-right: 5px;
+}
+
+div.org-maint-dialog #Organization {
+    text-align: left;
+}
+
+    div.org-maint-dialog #Organization .organization-content {
+        margin: 10px 15px 60px 30px;
+    }
+
+    div.org-maint-dialog #Organization .div-left {
+        width: 400px;
+        float: left;
+        margin-right: 30px;
+        border: 1px solid #d7d7d7;
+        border-right: none;
+        border-bottom: none;
+        border-top: none;
+    }
+
+        div.org-maint-dialog #Organization .div-left .content {
+            width: 399px;
+            height: 180px;
+            overflow-x: scroll;
+            overflow-y: scroll;
+            padding: 10px;
+        }
+
+        div.org-maint-dialog #Organization .div-left .title {
+            border: 1px solid #d7d7d7;
+            background: #f2f2f2;
+            height: 32px;
+            font-weight: bold;
+            padding: 5px;
+            border-left: none;
+            padding-left: 20px;
+        }
+
+        div.org-maint-dialog #Organization .div-left ul li {
+            text-align: left;
+        }
+
+    div.org-maint-dialog #Organization .div-right-mail-list {
+        width: 61.5%;
+        float: left;
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height: 212px;
+    }
+
+    div.org-maint-dialog #Organization .dataTable {
+        text-align: left;
+    }
+
+        div.org-maint-dialog #nameList .dataTable .name,
+        div.org-maint-dialog #Organization .dataTable .name {
+            font-weight: bold;
+        }
+
+        div.org-maint-dialog #Organization .dataTable .name {
+            font-weight: bold;
+            width: 300px;
+            cursor: pointer;
+        }
+
+        div.org-maint-dialog #Organization .dataTable .name-kata,
+        div.org-maint-dialog #Organization .dataTable .mailAddr {
+            width: 584px;
+        }
+
+div.org-maint-dialog #btnCancel {
+    width: 100px;
+}
+
+div.org-maint-dialog #btnOk {
+    width: 80px;
+}
+
+div.org-maint-dialog .treeview a.selected {
+    background-color: #FFFFFF;
+}
+
+div.org-maint-dialog .nav-tabs {
+    padding-left: 10px;
+}
+
+    div.org-maint-dialog .nav-tabs li.li-nameList {
+    }
+
+    div.org-maint-dialog .nav-tabs li.li-organization {
+        margin-left: 185px;
+    }
+
+div.org-maint-dialog .treeview a:hover,
+div.org-maint-dialog .treeview a.selected:hover {
+    text-decoration: underline;
+    color: blue;
+}
+
+
+#formOrgMaint .txt-w-250 {
+    width: 250px;
+}
+
+#formOrgMaint .txt-w-500 {
+    width: 500px;
+}
+
+div#searchAreaOrg {
+    margin: 0px 0 15px 0;
+}
+
+div#org-row {
+    margin: 5px 0 0 0;
+}
+
+#searchArea .txt-w-50 {
+    width: 50px;
+}
+
+#searchArea .txt-w-55 {
+    width: 55px;
+}
+
+#searchArea .txt-w-150 {
+    width: 150px;
+}
+
+#searchArea .margin-left-20 {
+    margin-left: 20px;
+}
+
+#searchArea .margin-left-130 {
+    margin-left: 130px;
+}
+/* Org End */
+
+/* Start custom css for AccountingSubjectGroupMaint list*/
+#MaintRegister .margin-left-8 {
+    margin-left: 8px;
+}
+
+#accountingGroupList table.dataTable {
+    width: 100% !important;
+}
+
+#accountingGroupList label.title-row {
+    min-width: 120px;
+}
+
+#accountingGroupList div.col-left {
+    float: left;
+    width: 49%;
+}
+
+#accountingGroupList div.col-right {
+    float: left;
+    width: 51%;
+    overflow: auto;
+}
+
+#accountingGroupList div.col-left2 {
+    float: left;
+    width: 40%;
+}
+
+#accountingGroupList div.col-right2 {
+    float: left;
+    width: 60%;
+    overflow: auto;
+}
+
+
+#accountingGroupList .col-left tbody td {
+    padding-bottom: 5px;
+    padding-top: 8px;
+}
+
+#accountingGroupList .col-right #InfoTable tbody td,
+#accountingGroupList .col-right #InfoTable2 tbody td {
+    vertical-align: middle;
+}
+/* End custom css for  AccountingSubjectGroupMaint list*/
+
+/* Start custom css for AccountingSubjectMaint list*/
+.AccountingSubjectMaintList .min-width-100 {
+    min-width: 100px !important;
+}
+
+.AccountingSubjectMaintList .min-width-80 {
+    min-width: 80px !important;
+}
+
+title-row min-width-110
+/* End custom css for  AccountingSubjectMaint list*/
+/* Start custom css for AuthorityGroupMaint list*/
+.AuthorityGroupkList-title {
+    font-size: 18px;
+}
+
+.AuthorityGroupCheckList {
+    display: inline-block;
+    max-width: 550px;
+    padding-left: 50px;
+}
+
+    .AuthorityGroupCheckList .form-group {
+        float: left;
+    }
+
+#authorityGroupList table.dataTable {
+    width: 100% !important;
+}
+
+#authorityGroupList label.title-row {
+    min-width: 125px;
+}
+
+#authorityGroupList .min-width-150 {
+    min-width: 150px !important;
+}
+
+#authorityGroupList .min-width-110 {
+    min-width: 110px !important;
+}
+
+#authorityGroupList .min-width-90 {
+    min-width: 90px !important;
+}
+
+#authorityGroupList div.col-left {
+    float: left;
+    width: 60%;
+}
+
+#authorityGroupList div.col-right {
+    float: left;
+    width: 40%;
+    overflow: auto;
+}
+
+#authorityGroupList .col-left tbody td {
+    padding-bottom: 5px;
+    padding-top: 8px;
+}
+
+#authorityGroupList .col-right #InfoTable tbody td,
+#authorityGroupList .col-right #InfoTable2 tbody td {
+    vertical-align: middle;
+}
+
+/* End custom css for  AuthorityGroupMaint list*/
+
+/* Start custom css for ContractCompanyMaint list*/
+.ContractCompanyMaintList .min-width-60 {
+    min-width: 60px !important;
+}
+
+.ContractCompanyMaintList .min-width-40 {
+    min-width: 40px !important;
+}
+
+.ContractCompanyMaintList div.col-left {
+    float: left;
+    width: 39% !important;
+}
+
+.ContractCompanyMaintList div.col-right {
+    float: left;
+    width: 61% !important;
+    overflow: auto;
+}
+/* End custom css for  ContractCompanyMaint list*/
+
+/* Start custom css for UserMaint list*/
+.UserMaintList .min-width-150 {
+    min-width: 150px !important;
+}
+
+.UserMaintList .min-width-110 {
+    min-width: 110px !important;
+}
+
+.UserMaintList .min-width-70 {
+    min-width: 70px !important;
+}
+
+/* Start custom css for UserMaint list*/
+.planMaintList .min-width-110 {
+    min-width: 110px !important;
+}
+
+.planMaintList .min-width-70 {
+    min-width: 70px !important;
+}
+
+/* End custom css for  UserMaint list*/
+
+/* Start custom css for CategoryMaint list*/
+.CategoryMaintList .min-width-85 {
+    min-width: 85px !important;
+}
+
+.CategoryMaintList .min-width-60 {
+    min-width: 60px !important;
+}
+
+.CategoryMaintList .min-width-100 {
+    min-width: 100px !important;
+}
+
+/* End custom css for  CategoryMaint list*/
+
+/* Start custom css for SubCategory list*/
+.SubCategoryMaintList .min-width-60 {
+    min-width: 60px !important;
+}
+/* End custom css for  SubCategory list*/
+
+/* Start custom css for ProductMaint list*/
+.ProductMaintList .min-width-80 {
+    min-width: 80px !important;
+}
+
+/* Start custom css for ProductMaint list*/
+#InfoTable .dataTable tr {
+   /*text-overflow: ellipsis;*/
+}
+
+
+#allInformationList #InfoTable td {
+    max-width: 10px;
+    text-overflow:ellipsis;
+    overflow:hidden;
+}
+
+/* End custom css for  ProductMaint list*/
+div.bottom-buttons {
+    padding: 0 30px 20px 30px;
+}
+
+div.bold-cell {
+    font-weight: bold;
+}
+.no-margin{
+    margin-left:0px;
+    margin-right:0px;
+}
+.padding-right-5{
+    padding-right:5px!important;
+}
+.padding-right-10{
+    padding-right:10px!important;
+}
+
+#AllInformationRegister .txt-w-800 {
+    width: 800px;
+}
+.max-width-100 {
+    max-width: 100px;
+}
+.max-width-150 {
+    max-width: 150px;
+}
+
+#CategorySetDuplicate .arrow_down_img::after{
+    content: url('/Images/arrow_down.png');
+    padding-left:85px;
+}
+
+#CategorySetDuplicate .width-240{
+    width:240px;
+}
+
+#CategorySetDuplicate .margin-top-50{
+    margin-top:50px;
+}
+
+#CategorySetDuplicate .form-image{
+    margin-top:30px;
+    margin-bottom:30px;
+}
+
+#CategorySetDuplicate #mainContent{
+    margin:25px;
+}

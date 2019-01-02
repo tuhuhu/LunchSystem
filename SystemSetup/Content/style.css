@@ -1,0 +1,107 @@
+﻿body {
+	background-color: #ffffff;
+}
+
+.body
+{
+    position: relative;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    width: 100%;
+}
+
+
+.login{
+        width: 633px;
+        height: 275px;
+        background: url('../Images/apple-orage.png') no-repeat;
+        margin: 30px auto 0px;
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+}
+
+.login_article
+{
+    background: #0C648C;
+    width: 633px;
+    margin: -20px auto 0;
+    padding-bottom: 15px;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+.TABLE_ARTICLE
+{
+	margin: 0 auto;
+}
+.TABLE_ARTICLE1
+{
+	border: 1px solid #696969;
+	background-color: #cccccc;
+	text-align: left;
+	vertical-align: middle;
+	padding-right: 5px;
+	padding-left: 5px;
+}
+.TR_ARTICLE
+{
+	height: 40px;
+}
+.TR_ARTICLE_2
+{
+	background-color: Gray;
+}
+.TR_ARTICLE_BTN
+{
+    align-content:center;
+}
+.TD_ARTICLE_1
+{
+	width: 1px;
+	border: 1px solid #999999;
+	background-color: #696969;
+}
+.TD_ARTICLE_2
+{
+	white-space: nowrap;
+    color: #fff;
+}
+.TD_ARTICLE_3
+{
+	align-items:center;
+    padding-top: 10px;
+}
+
+.footer
+{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.footer_1
+{
+    margin: 0 auto;
+}
+
+div.login_article .validation-summary-errors ul {
+	margin-left:0px;
+	list-style-type: none;
+}
+
+.validation-summary-errors li {
+    margin-left: 224px;
+    color: red;
+    font-weight: bold;
+    padding: 5px;
+}
+.validation-summary-errors ul {
+    margin-bottom: 0;
+    list-style-type: none;
+}
+
+input[type="password"]::-ms-reveal {display : none ;}
+::-ms-clear {display: none;}

@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+    <title>@ViewBag.Title</title>   
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    @RenderPage("~/Views/Shared/_CommonScript.cshtml")
+    @Styles.Render("~/Content/themes/iseiQ/css")
+    @Styles.Render("~/Content/common")
+
+    @Scripts.Render("~/bundles/jquery")       
+    @Scripts.Render("~/bundles/common")
+    @Scripts.Render("~/bundles/jquery/bootstrapPlugins")
+    @Scripts.Render("~/bundles/input")
+</head>
+<body style="background: #4ec243">
+    <div id="login">
+        @RenderBody()
+    </div>
+    @Html.Raw(ViewBag.BuildInfo)
+</body>
+</html>

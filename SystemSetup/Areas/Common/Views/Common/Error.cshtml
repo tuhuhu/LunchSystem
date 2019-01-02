@@ -1,0 +1,19 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    Layout = null;
+    ViewBag.Title = "エラー発生";
+}
+
+<hgroup class="title">
+    <h2 class="error">申し訳ございません。m(_ _)m</h2>
+    <p>回復不能なシステム障害が発生しました。Webブラウザを閉じ、しばらく待ってからログインしなおしてください。</p>
+    <a href="/UserManagement/Login/Logout">ログインページへ戻る</a>
+    <p>@ViewBag.Message</p>
+    <p>@ViewBag.StackTrace</p>
+</hgroup>
+<script type="text/javascript">
+    window.location.hash = "view";
+    window.location.hash = "ChromeView"; //again because google chrome don't insert first hash into history
+    window.onhashchange = function() { window.location.hash = "view"; }
+</script>

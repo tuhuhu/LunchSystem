@@ -1,0 +1,409 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+
+@{
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+}
+
+<script>
+
+    // Constant common
+    var Constant = {
+        ERR_REQUIRED: 'は必須項目です。',
+        ERR_FORMAT: 'の入力形式に誤りがあります。',
+        ERR_FORMAT_DATE: 'の入力形式に誤りがあります(yyyy/mm/dd)。',
+        ERR_INCORRECT_DATE: 'の指定が正しくありません。',
+        ERR_FORMAT_YM: 'の入力形式に誤りがあります(yyyy/mm)。',
+        ERR_COMPARE_DATE: 'は契約開始日以降を指定してください。',
+        ERR_COMPARE_DELIVERY_DATE: 'は契約開始日以降を指定してください。',
+        ERR_COMPARE_FINISH_DATE: 'は契約開始日以降を指定してください。',
+        ERR_COMPARE_END_DATE: 'は契約終了日以前を指定してください。',
+        ERR_TARGETYM_DUPLICATE: '入力された年月は既に存在しています。',
+        ERR_TARGETYM_INVALID: '特殊精算の年月が正しくありません。',
+        ERR_PROCESSYM_INVALID: '売上年月が正しくありません。',
+        ERR_BILLING_YM_INVALID: '請求年月が正しくありません。',
+        ERR_PAYMENT_YM_INVALID: '支払年月が正しくありません。',
+        ERR_REQUIRE_BILLING_YM: '請求年月を入力してください。',
+        ERR_REQUIRE_PAYMENT_YM: '支払年月を入力してください。',
+        ERR_REQUIRE_PROCESS_YM: '売上年月を入力してください。',
+        ERR_COMPARE_BASETIME: '基準時間上限は基準時間下限より大きい値を入力してください。',
+        ERR_COMPARE_ACCEPTANCE_DATE: 'は納品日以降を指定してください。',
+        ERR_COMPARE_TOW_DATE: '{0}は{1}以降を指定してください。',
+        ERR_COMPARE_OVE_DATE: '{0}は{1}以前を指定してください。',
+        ERR_REQUIRED_CHOOSE: 'を選択してください。',
+        ERR_REQUIRED_SELECT: 'を指定してください。',
+        ERR_REQUIRED_TIME: 'を設定してください。',
+        ERR_REQUIRED_FILE_NAME: '添付ファイルの表示名を設定してください。',
+        ERR_REQUIRED_PROGRESS: '未入力の進捗があります。',
+        ERR_REQUIRED_SUBCONTRACTOR_PIC: '外注先担当者を選択してください。',
+        ERR_STRING_LENGTH: '{0}は{1}文字以内で入力してください。',
+        ERR_STRING_BYTE: '{0}の入力が長すぎます。',
+        ERR_INVALID_FORMAT: '{0}の入力形式が正しくありません。',
+        ERR_RANGE_DSP_PRIORITY: '{0}は1から999の範囲内で入力してください。',
+        ERR_RANGE_UNIT_PRICE: 'は9桁以内で入力してください。',
+        ERR_RANGE_QUANTITY: 'は5桁以内で入力してください。',
+        ERR_RANGE_AMOUNT: 'は13桁以内で入力してください。',
+        ERR_RANGE_TAXRATE: 'は2桁以内で入力してください。',
+        ERR_RANGE_BASETIMELOWER: 'は7桁以内で入力してください。',
+        ERR_RANGE_BASETIMEUPPER: 'は7桁以内で入力してください。',
+        ERR_RANGE_UNITTIME: 'は5桁以内で入力してください。',
+        ERR_RANGE_VALUE_UNITTIME: 'は60分以内で入力してください.',
+        ERR_SPECIAL_QUANTITY: 'に0を入力することはできません。',
+        ERR_MAX_CONDITION_MEMO: 'は4000文字以内で入力してください。',
+        ERR_CONNECT_TIMEOUT: '接続の有効時間が切れました。再度ログインしなおしてください。',
+        ERR_RECEIVING_INSPECTION_PLAN_DATE: '検収予定日は売上月と同月である必要があります。',
+        ERR_INCORRECT_BILLING_NO: '入力された請求番号は存在しません。',
+        ERR_itemsegno_UNDEFINED: '選択されていません。',
+        ERR_CHECKBOX_REQUIRE: '消し込むデータをチェックしてください。',
+        ERR_MULTI_SELECTED_CUSTOMER: 'チェックされているデータの内で複数の請求先が混在しているため続行できません。',
+        ERR_UPLOAD_EMPTY_FILE: '空のファイルはアップロードできません。',
+        ERR_DELETED_BILLING_HEADER: '指定された請求番号は削除されています。',
+        ERR_MISMATCH_SALE_AMOUNT_CONTRACT_AMOUNT: '売上金額の合計が契約金額と異なります。',
+        ERR_MISMATCH_BILLING_AMOUNT_CONTRACT_AMOUNT: '請求金額の合計が契約金額と異なります。',
+        ERR_REQUIRED_BILLING: '請求先を指定してください。',
+        ERR_EXIST_BILLING: '既に存在している請求先、カテゴリのデータは追加できません。',
+        ERR_DATA_CREATE_BILLING_INFO: '稼働時間が未入力のレコードが含まれています。',
+        ERR_NOT_SELECTED: '選択されていません。',
+        ERR_NOT_POSITIVE_NUMBER: 'は正の整数で入力してください。',
+        ERR_GREATER_THAN_BALANCE: 'は差額以下の金額を入力してください。',
+        ERR_PAYMENT_CLEAR_MISSING_CURRENT_DEPOSIT_AMOUNT: '今回入金総額を入力してください。',
+        ERR_PAYMENT_CLEAR_PAYMENT_WRONG_ALLOCATION: '今回入金総額が正しく振り分けられていません。',
+        ERR_CLOSING_DAY_BIGGER_THAN_PAYMENT_DAY: '支払日は締日より後の日を選択してください。',
+        ERR_DUPLICATE_TARGET_YEAR_MONTH: '特殊精算の対象年月が重複しています。',
+        ERR_DUPLICATE_NORMAL_BASE_TIME_TYPE_PRODUCT: '基準時間区分（通常）が複数選択されています。',
+        BILLING: '請求先',
+        REGISTER_SUCCESS: '{0}を{1}しました。',
+        REGISTER_SUCCESS_EN: '{0} {1} Successful!!!',
+        REGISTER_FAILED: '{0}の{1}に失敗しました。',
+        CONFIRM_CHANGE_TAX_RATE: '消費税率を変更しますか？',
+        CONFIRM_CHANGE_CUSTOMER: '請求先を変更すると入力されている情報が上書きされます。よろしいですか？',
+        CONFIRM_CHANGE_SUPPLIER: '支払先を変更すると入力されている情報が上書きされます。よろしいですか？',
+        CONFIRM_REDIRECT: 'ページを移動すると入力した内容が失われます。このまま移動しますか？',
+        CONFIRM_SAVE_ROW: '追加した行が保存されていません。よろしいですか？',
+        SUBCONTRACTOR_HAS_BEEN_SELECTED: '既に選択されている外注先です。',
+        BILLING_NO_DSP: '請求番号',
+        DEPOSIT_PLAN_DATE_FROM: '入金予定日から',
+        DEPOSIT_PLAN_DATE_TO: '入金予定日まで',
+        DEPOSIT_DATE_FROM: '入金日から',
+        DEPOSIT_DATE_TO: '入金日まで',
+        PROJECT_NO: 'プロジェクトNo.',
+        DSP_PRIORITY: '表示順',
+        CUSTOMER_NAME: '取引先企業',
+        CUSTOMER_PIC_NAME: '請求先担当者名',
+        BILLING_DSP_TAG: '請求書検索用タグ',
+        PROJECT_PIC: '主担当者名',
+        STAFF_ID: '請求先自社担当者名',
+        STAFF_ID_OP: '支払先自社担当者名',
+        DEPOSIT_DATE: '入金日',
+        SUPPLIER_NAME: '支払先',
+        SUPPLIER_PIC: '支払先担当者名',
+        COLLECT_CONTRACT_MONTH: 'おまとめ請求',
+        INVALID_COLLECT_CONTRACT_MONTH: '契約月数がおまとめ請求の月数で割り切れません。',
+        BILL_ISSUE_TARGET_DATE: '請求書発行日付 毎月 ',
+        PROJECT_NAME: '案件名',
+        WORKING_CONTENT: '作業内容',
+        WORKING_LOCATION: '作業場所',
+        DELIVERABLES: '納品物件',
+        PROJECT_DISPLAY_NAME: '案件表示名',
+        PROJECT_DETAIL_NAME: '案件詳細名',
+        WORKER_NAME: '作業者名',
+        WORKER_NAME_KANA: '作業者名【カナ】',
+        WORKER_PRINT_NAME: '書類表記作業者名',
+        DELIVERY_LOCATION: '納品場所',
+        PROJECT_MEMO: '社内共有情報',
+        PRODUCT_NAME: '品名',
+        ITEM_SEQ_NO: '品目通し番号',
+        ATTACHED_FILE_NAME: 'ファイル名',
+        ATTACHED_MEMO: '添付メモ',
+        UNIT_PRICE: '単価',
+        QUANTITY: '数量',
+        UNIT_TYPE: '単位',
+        BASE_TIME_LOWER: '基準時間下限',
+        BASE_TIME_UPPER: '基準時間上限',
+        EXCEED_UNIT: '超過単価',
+        DEDUCTION_UNIT: '控除単価',
+        UNIT_TIME: '時間単位',
+        UNIT_TIME_DATA_MIN: '1',
+        UNIT_TIME_DATA_MAX: '60',
+        UNIT_TIME_DATA_VAL: 'true',
+        TAXRATE: '消費税率',
+        TAX: '消費税額（参考）',
+        ESTIMATE_CONDITION: '見積条件',
+        MEMO: '共有メモ',
+        ESTIMATE_MANDAY: '見積工数',
+        PROGRESS: '進捗',
+        PROGRESS_REGIST_DATE: '登録日',
+        BILLING_YM: '請求月',
+        PAYMENT_YM: '支払月',
+        PERIOD_START: '契約期間（開始）',
+        PERIOD_END: '契約期間（終了）',
+        WORK_PERIOD_START: '作業期間（開始日）',
+        WORK_PERIOD_END: '作業期間（終了日）',
+        START_DATE: '開始日',
+        END_DATE: '終了日',
+        DELIVERY_DATE: '納品日',
+        ISSUE_DATE: '発行日',
+        FINISH_DATE: '終了日',
+        ACCEPTANCE_DATE: '検収日',
+        DEPOSIT_PLAN_DATE: '入金予定日',
+        PAYMENT_PLAN_DATE: '支払予定日',
+        RECEIVING_INSPECTION_DATE: '検収予定日',
+        PROJECT_STATUS: 'ステータス',
+        CHARGE_PERSON: '担当者',
+        TARGET_PHASE: '対象フェーズ',
+        SUB_CATEGORY: 'サブカテゴリ',
+        TOTAL_SALES: '売上金額',
+        AMOUNT: '金額',
+        CURRENT_TOTAL_AMOUNT: '今回入金総額',
+        DEPOSIT_AMOUNT: '入金額',
+        TOTAL_PAYMENT: '支払金額',
+        CONT_AMOUNT_TOTAL: '税抜金額合計',
+        TOTAL_AMOUNT_SUBCONTRACTOR: '外注先の合計金額',
+        TAX_RATE: '消費税率',
+        UNIT_PRICE_MEMBER_LIST: 'アサイン一覧の単価',
+        ESTIMATE_TIME_MEMBER_LIST: 'アサイン一覧の予定工数',
+        INDIVIDUAL_SALES_LIST: '個人売上',
+        AMOUNT_PAYMENT_LIST: '支払一覧の金額',
+        NONE_SPECIFIED: '指定なし',
+        CLOSING_DAY: '締めサイト（締日）',
+        PAYMENT_SITE_TYPE: '支払サイト',
+        PAYMENT_DAY: '支払サイト（支払日）',
+        NOTE: '備考',
+        MAX_ANY_GROUP_CODE: 15,
+        ANY_GROUP_CODE: '組織コード',
+        TARGET_YM: '対象年月',
+        ADJUSTED_YM: '精算年月',
+        DATE_FORMAT: 'yyyy/mm/dd',
+        YM_FORMAT: 'yyyy/mm',
+        MIN_YEAR: '1990',
+        MAX_YEAR: '2100',
+        MAX_MONEY: '999,999,999',
+        POSITIVE_MONEY_MAX_LENGTH: 9,
+        NEGATIVE_MONEY_MAX_LENGTH: 10,
+        POSITIVE_AMOUNT_MAX_LENGTH: 13,
+        NEGATIVE_AMOUNT_MAX_LENGTH: 14,
+        MIN_UNIT_PRICE: -999999999,
+        MAX_UNIT_PRICE: 999999999,
+        MIN_AMOUNT: -9999999999999,
+        MAX_AMOUNT: 9999999999999,
+        DEFAULT_UNIT_TIME: 30,
+        MIN_INPUT_ACCOUNT: '6',
+        MAX_INPUT_ACCOUNT: '100',
+        MIN_INPUT_PASS: '6',
+        MAX_INPUT_PASS: '32',
+        STRENGTH_INPUT_PASS: '3',
+        MIN_QUANTITY: '-99999.99',
+        MAX_QUANTITY: '99999.99',
+        MAX_TIME_UNIT: '5',
+        MAX_TAXRATE: '2',
+        MAX_EXCEED_UNIT: '9',
+        MAX_BASE_TIME: '6',
+        MAX_TARGETYM: '6',
+        MAX_CUSTOMER_NAME: '40',
+        MAX_ADDRESS_NAME: '40',
+        MAX_ADDRESS: '50',
+        MAX_ATTACHED_FILE_NAME: '50',
+        MAX_PRODUCT_NAME: '40',
+        MAX_DATE: '10',
+        MAX_PROJECT_NAME: '100',
+        MAX_MANDAY: '9999',
+        MAX_DSP_PRIORITY: '999',
+        MAX_PERCENT: '100',
+        MAX_MEMO: '20',
+        MAX_AREA_LENGTH: '4000',
+        TITLE_MAX_LENGTH: '100',
+        MAX_WORKING_CONTENT: '50',
+        MAX_WORKING_LOCATION: '50',
+        MAX_DELIVERABLES: '25',
+        MAX_WORKER_NAME: '25',
+        MAX_DELIVERY_LOCATION: '25',
+        MAX_QUANTITY_LENGTH: '8',
+        MAX_AMOUNT_LENGTH: '13',
+        MAX_BILLING_NO_DSP_LENGTH: '14',
+        MAX_POSCODE: '8',
+        MAX_NOTE: '255',
+        MAX_PRJ_NAME: '100',
+        MAX_BILLING_AMOUNT_DISPLAY: '17',
+        BILLING_AMOUNT_DISPLAY: '14',
+        MAX_MONTH_PROJECT_DURATION: 36,
+        MAX_PREFIX_STRING: 3,
+        DECIMAL_4_2: '4_2',
+        DECIMAL_5_2: '5_2',
+        DECIMAL_7_2: '7_2',
+        URL_REDIRECT_TIMEOUT: '/UserManagement/Login/Login',
+        URL_REDIRECT_PAYMENT_NOT_PAYMENT: '/Payment/Payment/PaymentNotPayment/',
+        ESTIMATE_TIME_MAX_LENGTH: 6,
+        DECIMAL_AFTER_POINT_MAX_LENGTH: 1,
+        NO_SELECT: '0',
+        SES_SELECT: '1',
+        DELEGATION_SELECT: '2',
+        PAKAGE_SELECT: '3',
+        MAINTAIN_SELECT: '4',
+        NEW_MEMBER_TITLE: 'new',
+        ADDR_TO: '送信先',
+        ADDR_CC: 'CC',
+        ADDR_BCC: 'BCC',
+        MAIL_SUBJECT: '表題',
+        MAIL_BODY: '本文',
+        OUTSOURCING: '1',
+        STAFF: '2',
+        CONTRACT: '3',
+        GENERAL_DISPATCH: '4',
+        SPECIFIC_DISPATCH: '5',
+        TRUSTEE: '6',
+        PRODUCT_SALE: '7',
+        DELEGATION: '8',
+        MAINTAINANCE: '9',
+        PRODUCT_SALE_MONTH: 'A',
+        REGEX_PASSWORD: /[^a-zA-Z0-9\!\""\#\$\%\&\'\(\)\=\~\|\-\_\^\@@\[\;\:\]\,\.\/\`\{\+\*\}\>\?]/g,
+        ROUND_TYPE: {
+            DOWN: '0',
+            UP: '1',
+            AUTO: '2'
+        },
+        DEFAULT_STATUS: '1',
+        MENU_STATE_COOKIE: 'MENU_STATE_COOKIE',
+        ESTTIMATE_AMOUNT_TOTAL: '見積金額合計',
+        ESTTIMATE_AMOUNT_TOTAL_ON_TAX: '見積金額合計（税込）',
+        ESTTIMATE_TAXABLE_AMOUNT_TOTAL: '課税対象額合計',
+        ESTTIMATE_TAX: '消費税額',
+        WITHDRAWAL_DESTINATION_ACCOUNT_INFORMATION: '引落先口座情報',
+        IS_DISPLAY_SUBCONTRACT_TYPE: "@currentUser.isDisplaySubContractType.ToString()" == 'True' ? true : false,
+        DEFAULT_SUB_CONTRACT_TYPE_VALUE: '@Constant.DEFAULT_SUB_CONTRACT_TYPE_VALUE',
+        IN_TAX_FLG: {
+            TAX_EXCLUSIVE: 0,
+            TAX_INCLUDED: 1
+        },
+        DEPOSIT_STATE_RELATION: {
+            NO_RELATION: 0,
+            RELATION_NOT_PAID: 1,
+            RELATION_PAID: 2
+        }
+    }
+
+    var SendMailFromSource = {
+        Extend: 1,
+        ContractView: 2,
+        ContractFinishNormal: 3,
+        ContractFinishInMiddle: 4,
+        ContractFinishMiddleWithSpecialPayment: 5,
+        ContractEdit: 6
+    }
+
+    var ContractRegistSource = {
+        CreateNewContract: 0,
+        FromEstimate: 1,
+        CopyContract: 2,
+        ExpandContract: 3,
+        ChangeContract: 4,
+        Finish: 5,
+        NoRegistration: 99
+    }
+
+    var PaymentMethodType = {
+        Duration : "1",
+        Fixed : "2",
+        Hour : "3"
+    }
+
+    var PaymentSiteType = {
+        None: "0",
+        ThisMonth: "1",
+        NextMonth: "2",
+        TwoMonthsAfter: "3",
+        ThreeMonthsAfter: "4",
+        FourMonthsAfter: "5"
+    }
+
+    var ContractState = {
+        CREATE_NEW: "00",
+        CREATE_ESTIMATE: "10",
+        EDIT_ESTIMATE: "17",
+        ISSUE_ESTIMATE: "15",
+        REISSUE_ESTIMATE: "19",
+        CREATE_CONTRACT: "30",
+        IMPLEMENT_CONTRACT: "35",
+        CHANGE_CONTRACT: "37",
+        CONTRACTED: "90",
+        DELETE_ESTIMATE: "91",
+        FINISH_IN_MIDDLE: "95",
+        FINISH_EXPAND: "97",
+        FINISH_COMPLETE: "99",
+        ISSUE_BILLING: "999"
+    }
+
+    var TimeIndex = {
+        CONTRACT_PERIOD_START: 1,
+        CONTRACT_PERIOD_END: 2,
+        DELIVERY_DATE: 3,
+        ACCEPTANCE_DATE: 4,
+        PROJECT_JOINING_DATE: 5
+    }
+
+    var DepositStateType = {
+        NOT_PAID: "0",
+        PARTLY_PAID: "1",
+        PAID: "2",
+        ALL: "3"
+    }
+
+    var DepositType = {
+        Billing: "0",
+        Debit: "1"
+    }
+
+    var ContractConditionFlag = {
+        FINISH_NORMAL: 0,
+        FINISH_IN_MIDDLE: 1,
+        FINISH_IN_MIDDLE_WITH_SPECIAL_PAYMENT: 2,
+    }
+
+    var ClosingDay = {
+        None: 0,
+        Day1: 1,
+        Day31: 31
+    }
+
+    var PaymentDay = {
+        None: 0,
+        Day1: 1,
+        Day31: 31
+    }
+
+    var HTTPCode = {
+        TIME_OUT: 419,
+        NOT_FOUND: 404,
+        // request has been fulfilled and resulted in a new resource being created
+        CREATED: 201,
+        // response for successful HTTP requests
+        SUCCESSFUL: 200
+    }
+
+    var KeyCode = {
+        ShiftKey: 16,
+        HomeKey: 36,
+        SelectKey: 41
+    }
+
+    var OuterTimeCalcUnitType = {
+        Normal: "1",
+        Upper: "2",
+        Middle: "3",
+        Lower: "4",
+        Other: "5"
+    }
+
+    var Payee = {
+        NotInput: "0",
+        PayeeRequire: "振込先"
+    }
+
+    function GetPath(path) {
+        var contentPath = '@Url.Content("~/")';
+        var fullPath = path.replace(/^~/, '');
+        fullPath = fullPath.replace(/^\//, contentPath);
+        return fullPath;
+    }
+
+    var firstLoad = true;
+</script>

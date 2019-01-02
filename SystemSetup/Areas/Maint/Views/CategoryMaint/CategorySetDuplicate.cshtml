@@ -1,0 +1,143 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Resources;
+<!-- CSS -->
+@Styles.Render("~/Content/themes/iseiQ/maint.css")
+@model CategorySetDuplicateModel
+
+@{
+    ViewBag.Title = SideMenu.CategorySetDuplicate;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+}
+
+<div id="CategorySetDuplicate" class="CategorySetDuplicate">
+    @using (Html.BeginForm("CategorySettingDuplicate", "CategoryMaint", FormMethod.Post, new { id = "formCategorySetDuplicate", enctype = "multipart/form-data", @class = "form-horizontal" }))
+    {
+        <div id="topContent">
+            <div id="title">@SideMenu.CategorySetDuplicate</div>
+
+        </div>
+        <div id="mainContent">
+            <div class="form-group margin-top-50">
+                <label class="title-row min-width-85">@Maint.DuplicateSourceCompanyCode <span class="RequiredField ConditionalDisplay">*</span></label>
+                @Html.DropDownListFor(m => m.SOURCE_COMPANY_CODE, Model.SOURCE_COMPANY_CODE_LIST, new { @class = "width-240" })
+            </div>
+            <div class="form-image">
+                <label class="title-row">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <div class="width-240" style="display:inline-block"> <span class="arrow_down_img"></span></div>
+            </div>
+            <div class="form-group">
+                <label class="title-row min-width-85">@Maint.DuplicateDestinationCompanyCode <span class="RequiredField ConditionalDisplay">*</span></label>
+                @Html.DropDownListFor(m => m.DESTINATION_COMPANY_CODE, Model.DESTINATION_COMPANY_CODE_LIST, new { @class = "width-240" })
+            </div>
+            <div class="form-group action-button-bottom">
+                <div class="pull-right">
+                    <button type="button" id="btnClear" name="btnClear" class="btn btn-default"><i class="btn-icon btn-clear">@EstimationRegister.btnClear</i></button>
+                    <button type="button" id="btnSubmit" name="btnSubmit" class="btn btn-orange"><i class="btn-icon btn-edit">@EstimationRegister.btnRegister</i></button>
+                </div>
+            </div>
+        </div>
+        
+    }
+</div>
+
+<script type="text/javascript">
+
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+
+    function validateData() {
+        var invalidMess = [];
+
+        var sourceCompanyCode = $('#SOURCE_COMPANY_CODE').val() == null ? "" : $('#SOURCE_COMPANY_CODE').val();
+        var DestinationCompanyCode = $('#DESTINATION_COMPANY_CODE').val() == null ? "" : $('#DESTINATION_COMPANY_CODE').val();
+
+        if (sourceCompanyCode.trim() == "") {
+            errDisplay = '@Maint.NotSelectedSourceCompany';
+            invalidMess.push(errDisplay);
+        }
+
+        if (DestinationCompanyCode.trim() == "") {
+            errDisplay = '@Maint.NotSelectedDestinationCompany';
+            invalidMess.push(errDisplay);
+        }
+
+        return invalidMess;
+    }
+
+    $(document).off('#btnClear');
+    $(document).on('click', '#btnClear', function () {
+        iseiQ.utility.showConfirmModal('@string.Format(@Messages.ConfirmClear)', function (action) {
+            $('.validation-summary-errors').remove();
+            if (action) {
+                    $('#SOURCE_COMPANY_CODE').val('@Model.SOURCE_COMPANY_CODE_LIST.FirstOrDefault()');
+                    $('#DESTINATION_COMPANY_CODE').val('@Model.DESTINATION_COMPANY_CODE_LIST.FirstOrDefault()');
+            }
+        });
+
+    });
+
+    $(document).off('#btnSubmit');
+    $(document).on('click', '#btnSubmit', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+        $('.validation-summary-errors').remove();
+        var invalidMess = validateData();
+        if (invalidMess.length > 0) {
+            iseiQ.utility.showClientError(invalidMess);
+            return false;
+        }
+
+        iseiQ.utility.showConfirmModal('@string.Format(@Messages.ComfirmDuplicateCategory)', function (action) {
+            if (action) {
+                $("#formCategorySetDuplicate").submit();
+            }
+        })
+    });
+
+    $("#formCategorySetDuplicate").submit(function (event) {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+
+        var formData = new FormData($(this)[0]);
+        $.ajax(
+        {
+            url: '@Url.Action("CategorySettingDuplicate", "CategoryMaint")',
+            data: formData,
+            mimeType: "multipart/form-data",
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res.length == 0) {
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+                    window.location.href = '/Common/Common/CloseIframe/';
+                } else {
+                    var result = jQuery.parseJSON(res);
+                    window.parent.$('.ui-dialog-content:visible').dialog('close');
+
+                    if (result.ErrorMessages) {
+                        var message = "";
+                        for (var i = 0; i < result.ErrorMessages.length; i++) {
+                            message += result.ErrorMessages[i] + "\n";
+                        }
+                        iseiQ.utility.showMessageModal(message, true);
+                    }
+                    else {
+                    var message = result.success == "Success" ? "@Maint.CategoryDuplicateSuccess" : "";
+                    iseiQ.utility.showMessageModal(message, false, function () {
+                        window.location.reload(true);
+                        return false;
+                    });
+                }
+
+                }
+            },
+            error: function (xhr) {
+                window.parent.$('.ui-dialog-content:visible').dialog('close');
+                window.location.href = '/Common/Common/CloseIframe/';
+            }
+        });
+        event.preventDefault();
+    });
+
+</script>

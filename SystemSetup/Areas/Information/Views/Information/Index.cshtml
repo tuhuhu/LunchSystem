@@ -1,0 +1,72 @@
+﻿@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+
+@{
+    ViewBag.Title = "TOP";
+    ViewBag.FieldTitle = "インフォメーション";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="customer-index">
+    <section class="content-header">
+        <h1>
+            @ViewBag.Title
+        </h1>
+    </section>
+    @*<section class="content clearfix">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h4 class="box-title bold">@ViewBag.FieldTitle</h4>
+            </div>
+            <div class="box-body">
+
+            </div>
+        </div>
+    </section>*@
+    <div class="bxslider">
+        <div><img src="/Content/images/coffee1.jpg"></div>
+        <div><img src="/Content/images/coffee2.jpg"></div>
+        <div><img src="/Content/images/coffee3.jpg"></div>
+        <div><img src="/Content/images/coffee4.jpg"></div>
+        <div><img src="/Content/images/coffee5.jpg"></div>
+        <div><img src="/Content/images/coffee6.jpg"></div>
+        <div><img src="/Content/images/coffee7.jpg"></div>
+        <div><img src="/Content/images/coffee8.jpg"></div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.bxslider').bxSlider({
+            auto: true,
+            autoControls: true,
+            stopAutoOnClick: true,
+            pager: true,
+            slideWidth: 700
+        });
+        //var data = iseiQ.utility.getDataByAjax('/Information/Information/LoadData');
+        //var html = "";
+
+        //if (data != null && data.length > 0) {
+        //    for (var i = 0; i < data.length; i++) {
+        //        html += ' <div class="form-group">'
+        //            + ' <label class="control-label publish_start_date">' + data[i].PUBLISH_DATE_START + '</label>'
+        //            + ' <div class="top-content">'
+        //            + data[i].CONTENT
+        //            + ' </div>'
+        //            + ' </div>';
+        //    }
+        //}
+
+        //$('.box-body').append(html);
+    })
+    $(document).ready(function () {
+        //$('.bxslider').bxSlider({
+        //    auto: true,
+        //    autoControls: true,
+        //    stopAutoOnClick: true,
+        //    pager: true,
+        //    slideWidth: 600
+        //});
+    });
+</script>

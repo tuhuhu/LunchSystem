@@ -1,0 +1,380 @@
+﻿@using SystemSetup.Models;
+@using SystemSetup.Constants;
+@using SystemSetup.Constants.Security;
+@using SystemSetup.Constants.Resources;
+<!-- CSS -->
+@Styles.Render("~/Content/themes/iseiQ/maint.css")
+@model TaxRateMaintModel
+
+@{
+    ViewBag.Title = Maint.TaxRateMaintList;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+}
+
+<div id="maintInputDateList">
+    <div id="topContent">
+        <div id="title">@Maint.TaxRateMaintList</div>
+
+        <div id="searchArea">
+            <div class="form-group">
+                @Html.Label(@Maint.SEARCH_APPLY_DATE_FROM, new { @class = "" })
+                <span class="date datepicker-days date-from">
+                    @Html.TextBoxFor(m => m.SEARCH_APPLY_DATE_FROM, "{0:yyyy/MM/dd}", new { @class = "ime-mode", maxlength = 10 })
+                    <button type="button" id="DateFromCalendar" name="DateFromCalendar" class="btn btn-default btn-add-on"><i class="btn-icon btn-calendar"></i></button>
+                </span>
+                @Html.Label(@Maint.SEARCH_APPLY_DATE_TO, new { @class = "" })
+                <span class="date datepicker-days date-to">
+                    @Html.TextBoxFor(m => m.SEARCH_APPLY_DATE_TO, "{0:yyyy/MM/dd}", new { @class = "ime-mode", maxlength = 10 })
+                    <button type="button" id="DateToCalendar" name="DateToCalendar" class="btn btn-default btn-add-on"><i class="btn-icon btn-calendar"></i></button>
+                </span>
+            </div>
+            <div class="form-group">
+                @Html.Label(@Maint.SEARCH_TAX_RATE, new { @class = "" })
+                @Html.TextBoxFor(m => m.SEARCH_TAX_RATE, new { @class = "width-50", style = "ime-mode: auto;", maxlength = 4 })
+            </div>
+        </div>
+        <hr />
+
+        <div id="searchAction">
+            <button type="button" id="btnClearConditions" class="btn btn-default">
+                <i class="btn-icon btn-clear">@Maint.btnClearConditions</i>
+            </button>
+            <button type="button" id="btnSearch" class="btn btn-green">
+                <i class="btn-icon btn-search-white">@Maint.btnSearch</i>
+            </button>
+        </div>
+    </div>
+
+    @RenderPage("~/Views/Shared/ShowHideHeaderContent.cshtml")
+
+    <div id="registButton">
+        <button type="button" id="btnCreateNew" name="btnCreateNew" class="btn btn-orange"><i class="btn-icon btn-regist">@Maint.btnCreateNew</i></button>
+    </div>
+
+    <div id="mainContent" class="auto-overflow">
+        <table id="InfoTable" class="dataTable auto-scroll-x" cellspacing="0">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>@Maint.lblNo</th>
+                    <th class="width-200">@Maint.APPLY_DATE_FROM</th>
+                    <th class="width-200">@Maint.APPLY_DATE_TO</th>
+                    <th class="width-200">@Maint.TAX_RATE</th>
+                    <th>@Maint.lblUpdateTime</th>
+                    <th>@Maint.lblUpdateUser</th>
+                    <th>@Maint.EDIT</th>
+                    <th>@Maint.DELETE</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    @using (Html.BeginForm("TaxRateMaintEdit", "TaxRateMaint", FormMethod.Post, new
+        {
+            area = "Maint",
+            id = "TaxRateMaintRegist",
+            enctype = "multipart/form-data"
+        }))
+    {
+        @Html.HiddenFor(m => m.REGIST_PARAM.TAX_RATE_ID)
+        @Html.HiddenFor(m => m.REGIST_PARAM.APPLY_DATE_FROM)
+        @Html.HiddenFor(m => m.REGIST_PARAM.APPLY_DATE_TO)
+        @Html.HiddenFor(m => m.REGIST_PARAM.TAX_RATE)
+        @Html.HiddenFor(m => m.SEARCH_START)
+        @Html.HiddenFor(m => m.SEARCH_LENGTH)
+    }
+</div>
+
+<script type="text/javascript">
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Variables Declaration
+    ////////////////////////////////////////////////////////////////////////////////////
+    var dataTable;
+    var TaxRateMaintSearchUrl = '@Url.Action("TaxRateMaintSearch", "TaxRateMaint", new { area = "Maint" })';
+    var custMaintRegisterUrl = '@Url.Action("TaxRateMaintEdit", "TaxRateMaint", new { area = "Maint" })';
+    var checkTimeOutUrl = '@Url.Action("CheckTimeOut", "Common", new {area = "Common"})';
+    editlink = "編集";
+    var deletelink = "削除";
+    var TAX_RATE_ID = 0;
+    var ORDER = 1;
+    var APPLY_DATE_FROM = 2;
+    var APPLY_DATE_TO = 3;
+    var TAX_RATE = 4;
+    var UPD_DATE = 5;
+    var UPD_USERNAME = 6;
+    var EDIT = 7;
+    var DELETE = 8;
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Initialization functions
+    ////////////////////////////////////////////////////////////////////////////////////
+    $(function () {
+        checkInputDecimal($("#SEARCH_TAX_RATE"));
+
+        iseiQ.utility.imeControl($("#SEARCH_APPLY_DATE_FROM"), 'disable');
+        iseiQ.utility.imeControl($("#SEARCH_APPLY_DATE_TO"), 'disable');
+        iseiQ.utility.imeControl($("#SEARCH_TAX_RATE"), 'disable');
+
+        var oSorting = {
+            "bSort": false
+        };
+
+        var oPaginate = {
+            "bPaginate": true,
+            "iDisplayStart": parseInt(@Model.SEARCH_START),
+            "iDisplayLength": parseInt(@Model.SEARCH_LENGTH),
+            "bStateSave": false
+        };
+
+        var oServerSide = {
+            "bServerSide": true,
+            "sAjaxSource": TaxRateMaintSearchUrl,
+            "fnServerParams": serverParams,
+            "fnInitComplete": function () { },
+            "fnDrawCallback": function () { }
+        };
+
+        var aoColumnDefs = [
+            { "bVisible": false, "bSortable": false, "aTargets": [TAX_RATE_ID] },
+            { "bSortable": false, "aTargets": [ORDER], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [APPLY_DATE_FROM], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [APPLY_DATE_TO], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [TAX_RATE], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [UPD_DATE], "sWidth": "10%", "sClass": "cell_center" },
+            { "bSortable": false, "aTargets": [UPD_USERNAME], "sWidth": "10%", "sClass": "cell_left" },
+            { "bSortable": false, "aTargets": [EDIT], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return buildActionLink(full[TAX_RATE_ID], 'post-TaxRateMaint-register', editlink); } },
+            { "bSortable": false, "aTargets": [DELETE], "sWidth": "5%", "sClass": "cell_center", "mRender": function (data, type, full) { return data == 0 ? '' : buildActionLink(full[TAX_RATE_ID], 'delete-TaxRateMaint-link btn btn-red', deletelink); } }
+        ];
+
+        function serverParams(aoData) {
+            //検索条件を保持
+            $(".date.datepicker-days.date-from").datepicker("setDate", $("#REGIST_PARAM_APPLY_DATE_FROM").val());
+            $(".date.datepicker-days.date-to").datepicker("setDate", $("#REGIST_PARAM_APPLY_DATE_TO").val());
+            $("#SEARCH_TAX_RATE").val($("#REGIST_PARAM_TAX_RATE").val());
+            aoData.push(
+               { "name": "SEARCH_APPLY_DATE_FROM", "value": $("#SEARCH_APPLY_DATE_FROM").val() },
+               { "name": "SEARCH_APPLY_DATE_TO", "value": $("#SEARCH_APPLY_DATE_TO").val() },
+               { "name": "SEARCH_TAX_RATE", "value": $("#SEARCH_TAX_RATE").val() }
+            );
+        }
+
+        dataTable = CreateDataTable('#InfoTable', oSorting, oPaginate, oServerSide, aoColumnDefs);
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Event Listeners
+    ////////////////////////////////////////////////////////////////////////////////////
+    function checkInputDecimal(control) {
+        control.on("change keyup", function (e) {
+            var text = control.val();
+            var regX = /[^0-9/.]/g;
+
+            if (regX.test(text)) {
+                control.val(text.replace(regX, ''));
+            }
+        });
+    }
+
+    // Check isvalid date
+    // Return true if valid, false if invalid
+    function isValidDate(date) {
+        var bits = date.split('/');
+        var checkingDate = new Date(bits[0], bits[1] - 1, bits[2]);
+        return checkingDate && (checkingDate.getMonth() + 1) == bits[1] && checkingDate.getDate() == Number(bits[2]);
+    }
+
+    // Check validation of date field
+    // date is input data
+    // format is datetime type (yyyy/mm/dd or yyyy/mm)
+    // control is field name
+    // return invalid message if invalid, null if valid
+    function validDate(date, format, control) {
+        var constantErr = Constant.ERR_FORMAT_DATE;
+        if (date.length > 0) {
+            if (format == 'yyyy/mm') {
+                date += '/01';
+                constantErr = Constant.ERR_FORMAT_YM;
+            }
+
+            if (!/^[0-9]{4}\/[0-9]{1,2}\/[0-9]{1,2}/.test(date) || !isValidDate(date)) {
+                return control + constantErr;
+            }
+
+            var year = parseInt(date.split('/')[0]);
+
+            if ("1753" > year || year > "9999") {
+                if (format == 'yyyy/mm') {
+                    return control + Constant.ERR_INCORRECT_DATE;
+                }
+                return control + Constant.ERR_INCORRECT_DATE;
+            }
+        }
+
+        return null;
+    }
+
+    $(document).off('#btnCreateNew');
+    $(document).on('click', '#btnCreateNew', function () {
+        var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!result) return;
+
+        RegistSubmit('0');
+    });
+
+    $(document).off('#btnSearch');
+    $(document).on('click', '#btnSearch', function () {
+        var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!result) return;
+
+        searchTaxRateMaint();
+    });
+
+    $(document).off('#btnClearConditions');
+    $(document).on('click', '#btnClearConditions', function () {
+        var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!result) return;
+
+        $("#SEARCH_APPLY_DATE_FROM").val("");
+        $("#SEARCH_APPLY_DATE_TO").val("");
+        $("#SEARCH_TAX_RATE").val("");
+
+        searchTaxRateMaint();
+    });
+
+    $(document).off('.post-TaxRateMaint-register');
+    $(document).on('click', '.post-TaxRateMaint-register', function () {
+        var result = iseiQ.utility.getDataByAjax(checkTimeOutUrl, null);
+        if (!result) return;
+
+        RegistSubmit($(this).data('tax-rate-id'));
+    });
+
+    function RegistSubmit(TaxRateID) {
+        var oSettings = dataTable.fnSettings();
+
+        $('#SEARCH_START').val(oSettings._iDisplayStart);
+        $('#SEARCH_LENGTH').val(oSettings._iDisplayLength);
+
+        $('#REGIST_PARAM_TAX_RATE_ID').val(TaxRateID);
+
+        $('#TaxRateMaintRegist').submit();
+    }
+
+    $(document).off('.delete-TaxRateMaint-link');
+    $(document).on('click', '.delete-TaxRateMaint-link', function () {
+        if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;
+        var TaxRateID = parseInt($(this).data('tax-rate-id'));
+
+        if (TaxRateID < 1) return;
+
+        // Get Project Dsp Name
+        iseiQ.utility.showConfirmModal('@string.Format(@Maint.TaxRateMaintDelete)', function (action) {
+            if (action) {
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: '@Url.Action("DELETE")',
+                    data: { "TAX_RATE_ID": TaxRateID },
+                    success: function (data) {
+                        dataTable.fnStandingRedraw();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        iseiQ.utility.showMessageModal("@string.Format(Maint.MaintDeleteError)", true);
+                    }
+                });
+            }
+        });
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////Misc Functions
+    ////////////////////////////////////////////////////////////////////////////////////
+    function validateData() {
+        var invalidMess = [];
+        var errStartDate = null;
+        var errEndDate = null;
+
+        var startDate = $('#SEARCH_APPLY_DATE_FROM').val();
+        if (startDate.length > 0) {
+            errStartDate = validDate(startDate, Constant.DATE_FORMAT, '@Maint.APPLY_DATE_FROM');
+            if (errStartDate != null) {
+                invalidMess.push(errStartDate);
+            }
+        }
+
+        var endDate = $('#SEARCH_APPLY_DATE_TO').val();
+        if (endDate.length > 0) {
+            errEndDate = validDate(endDate, Constant.DATE_FORMAT, '@Maint.APPLY_DATE_TO');
+            if (errEndDate != null) {
+                invalidMess.push(errEndDate);
+            }
+        }
+
+        if (errStartDate == null && errEndDate == null && startDate.length > 0 && endDate.length > 0) {
+            if (!iseiQ.utility.compareDate(startDate, endDate, 'yyyy/mm/dd')) {
+                invalidMess.push(['@string.Format(Messages.EndDateLessStartDateWarning)']);
+            }
+        }
+
+        var TaxRate = $('#SEARCH_TAX_RATE').val();
+        if (TaxRate.length > 0) {
+
+            var arr = TaxRate.split('.');
+            var integerPart = arr[0];
+            var decimalPart = arr[1];
+
+            if (decimalPart != null) {
+                if (decimalPart.length == 0 && arr.length == 2) {
+                    TaxRate.replace('.', '');
+                }
+            }
+
+            if (!iseiQ.utility.validDecimalNumeric(TaxRate)) {
+                invalidMess.push("@string.Format(@Messages.IncorrectFormat, "消費税率")");
+            } else {
+                var maxLength = 1;
+
+                if (integerPart.length > maxLength) {
+                    invalidMess.push("@string.Format(@Messages.MaxLength, "消費税率の整数桁", 1)");
+                }
+
+                if (arr.length > 2) {
+                    invalidMess.push("@string.Format(@Messages.IncorrectFormat, "消費税率")");
+                } else {
+                    if (arr.length > 1) {
+
+                        if (decimalPart.length > 2) {
+                            invalidMess.push("@string.Format(@Messages.MaxLength, "消費税率の少数桁", 2)");
+                        }
+                    }
+                }
+            }
+        }
+
+        return invalidMess;
+    }
+
+    function searchTaxRateMaint() {
+        $('.validation-summary-errors').remove();
+        var invalidMess = validateData();
+
+        if (invalidMess.length > 0) {
+            iseiQ.utility.showClientError(invalidMess);
+            return false;
+        }
+
+        $("#REGIST_PARAM_APPLY_DATE_FROM").val($("#SEARCH_APPLY_DATE_FROM").val());
+        $("#REGIST_PARAM_APPLY_DATE_TO").val($("#SEARCH_APPLY_DATE_TO").val());
+        $("#REGIST_PARAM_TAX_RATE").val($("#SEARCH_TAX_RATE").val());
+
+        dataTable.fnPageChange('first');
+    }
+
+    function buildActionLink(TaxRateID, className, label) {
+        return '<a class="' + className + '" data-tax-rate-id="' + TaxRateID + '" >' + label + '</a>';
+    }
+
+</script>

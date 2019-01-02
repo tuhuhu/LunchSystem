@@ -1,0 +1,15 @@
+﻿@using SystemSetup.Constants.Resources
+@using SystemSetup.Models;
+@using SystemSetup.Constants.Security;
+@{
+    var currentUser = HttpContext.Current.Session["CmnEntityModel"] as CmnEntityModel;
+    var authorityList = currentUser.AuthorityList as List<string>;
+}
+<ul class="dropdown-menu">
+    <b class="caret"></b>
+    <li>
+        <a href='@Url.Action("BillingNumberMaintList", "BillingNumberMaint", new { area = "Maint" })'>
+            <i class="fa fa-angle-right pull-left"></i>@SideMenu.BillingNumberMaintList
+        </a>
+    </li>
+</ul>

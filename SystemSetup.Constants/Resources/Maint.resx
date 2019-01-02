@@ -1,0 +1,2289 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PUBLISH_DATE_START" xml:space="preserve">
+    <value>掲載開始日</value>
+  </data>
+  <data name="COMPANY_CD" xml:space="preserve">
+    <value>企業コード</value>
+  </data>
+  <data name="CONTENT" xml:space="preserve">
+    <value>掲載内容</value>
+  </data>
+  <data name="DSP_PRIORITY" xml:space="preserve">
+    <value>表示優先度</value>
+  </data>
+  <data name="DEL_FLG" xml:space="preserve">
+    <value>削除フラグ</value>
+  </data>
+  <data name="INS_DATE" xml:space="preserve">
+    <value>作成日</value>
+  </data>
+  <data name="INS_USER_ID" xml:space="preserve">
+    <value>作成者ID</value>
+  </data>
+  <data name="UPD_USER_ID" xml:space="preserve">
+    <value>更新者ID</value>
+  </data>
+  <data name="UPD_DATE" xml:space="preserve">
+    <value>更新日</value>
+  </data>
+  <data name="INFO_SEQ_NO" xml:space="preserve">
+    <value>掲載ID</value>
+  </data>
+  <data name="PUBLISH_DATE_END" xml:space="preserve">
+    <value>掲載終了日</value>
+  </data>
+  <data name="UPD_PROG_ID" xml:space="preserve">
+    <value>更新プログラムID</value>
+  </data>
+  <data name="ErrorInformation" xml:space="preserve">
+    <value>エラー情報</value>
+  </data>
+  <data name="ExcelExtension" xml:space="preserve">
+    <value>.xlsx</value>
+  </data>
+  <data name="CATEGORY_MAINT" xml:space="preserve">
+    <value>小カテゴリ保守</value>
+  </data>
+  <data name="CONTACT_PERS_MAINT" xml:space="preserve">
+    <value>取引先担当者保守</value>
+  </data>
+  <data name="CUST_MAINT" xml:space="preserve">
+    <value>取引先保守</value>
+  </data>
+  <data name="LOG_CONFIRM" xml:space="preserve">
+    <value>ログ確認</value>
+  </data>
+  <data name="ORG_MAINT" xml:space="preserve">
+    <value>組織保守</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT" xml:space="preserve">
+    <value>担当者保守</value>
+  </data>
+  <data name="SUBJECT_MAINT" xml:space="preserve">
+    <value>補助科目保守</value>
+  </data>
+  <data name="TRANS_MAINT" xml:space="preserve">
+    <value>取引窓口保守</value>
+  </data>
+  <data name="USER_MAINT" xml:space="preserve">
+    <value>ユーザー保守</value>
+  </data>
+  <data name="btnClearConditions" xml:space="preserve">
+    <value>条件クリア</value>
+  </data>
+  <data name="btnCreateNew" xml:space="preserve">
+    <value>新規作成</value>
+  </data>
+  <data name="btnSearch" xml:space="preserve">
+    <value>検索</value>
+  </data>
+  <data name="lblDuration" xml:space="preserve">
+    <value>期間</value>
+  </data>
+  <data name="lblIncludeDeleted" xml:space="preserve">
+    <value>削除済みを含む</value>
+  </data>
+  <data name="lblPostInformationList" xml:space="preserve">
+    <value>掲載情報一覧</value>
+  </data>
+  <data name="DATE_MODIFY" xml:space="preserve">
+    <value>更新日時</value>
+  </data>
+  <data name="DELETE" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="PERSON_UPDATE" xml:space="preserve">
+    <value>更新者</value>
+  </data>
+  <data name="REGISTER_DATE" xml:space="preserve">
+    <value>登録日時</value>
+  </data>
+  <data name="REGISTER_INFO" xml:space="preserve">
+    <value>掲載情報登録</value>
+  </data>
+  <data name="ALLREGISTER_INFO" xml:space="preserve">
+    <value>全体掲載情報登録</value>
+  </data>
+  <data name="REGISTER_PERSON" xml:space="preserve">
+    <value>登録者</value>
+  </data>
+  <data name="lblNo" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="lblPriority" xml:space="preserve">
+    <value>優先度</value>
+  </data>
+  <data name="lblUpdateTime" xml:space="preserve">
+    <value>更新日時</value>
+  </data>
+  <data name="lblUpdateUser" xml:space="preserve">
+    <value>更新者</value>
+  </data>
+  <data name="txtPostInformationMaintenance" xml:space="preserve">
+    <value>掲載情報保守</value>
+  </data>
+  <data name="RegisterSuccess" xml:space="preserve">
+    <value>掲載情報を登録しました。</value>
+  </data>
+  <data name="AllInsertSuccess" xml:space="preserve">
+    <value>全体掲載情報を登録しました。</value>
+  </data>
+  <data name="UpdateSuccess" xml:space="preserve">
+    <value>掲載情報を更新しました。</value>
+  </data>
+  <data name="AllUpdateSuccess" xml:space="preserve">
+    <value>全体掲載情報を更新しました。</value>
+  </data>
+  <data name="ERR_END_DATE" xml:space="preserve">
+    <value>は掲載開始日以降を指定してください。</value>
+  </data>
+  <data name="lblTransMaintList" xml:space="preserve">
+    <value>取引窓口一覧</value>
+  </data>
+  <data name="EDIT" xml:space="preserve">
+    <value>編集</value>
+  </data>
+  <data name="lblAccountBranchName" xml:space="preserve">
+    <value>口座支店名</value>
+  </data>
+  <data name="lblAccountHolder" xml:space="preserve">
+    <value>口座名義</value>
+  </data>
+  <data name="lblDispName" xml:space="preserve">
+    <value>表示名称</value>
+  </data>
+  <data name="lblInstName" xml:space="preserve">
+    <value>金融機関名</value>
+  </data>
+  <data name="iblAccountBranchCd" xml:space="preserve">
+    <value>口座支店コード</value>
+  </data>
+  <data name="lblAccountBranchCd" xml:space="preserve">
+    <value>口座支店コード</value>
+  </data>
+  <data name="lblAccountBranchNo" xml:space="preserve">
+    <value>口座番号</value>
+  </data>
+  <data name="lblAccountBranchType" xml:space="preserve">
+    <value>口座種別</value>
+  </data>
+  <data name="lblAccountDispName" xml:space="preserve">
+    <value>口座表示名称</value>
+  </data>
+  <data name="lblDspPriority" xml:space="preserve">
+    <value>表示順</value>
+  </data>
+  <data name="lblInstCd" xml:space="preserve">
+    <value>金融機関コード</value>
+  </data>
+  <data name="lblSwiftBicCd" xml:space="preserve">
+    <value>銀行コード</value>
+  </data>
+  <data name="REGISTER_TRANS" xml:space="preserve">
+    <value>取引窓口登録</value>
+  </data>
+  <data name="TransMaintRegisterSuccess" xml:space="preserve">
+    <value>取引窓口を登録しました。</value>
+  </data>
+  <data name="TransMaintUpdateSuccess" xml:space="preserve">
+    <value>取引窓口を更新しました。</value>
+  </data>
+  <data name="TransMaintDeleteSuccess" xml:space="preserve">
+    <value>取引窓口を削除しました。</value>
+  </data>
+  <data name="TransMaintDelete" xml:space="preserve">
+    <value>選択した取引窓口を削除してもよろしいですか？</value>
+  </data>
+  <data name="MaintDeleteError" xml:space="preserve">
+    <value>削除に失敗しました。</value>
+  </data>
+  <data name="btnPasswordReset" xml:space="preserve">
+    <value>パスワードリセット</value>
+  </data>
+  <data name="Confirm_Password" xml:space="preserve">
+    <value>パスワードの確認</value>
+  </data>
+  <data name="Employee_ID" xml:space="preserve">
+    <value>社員ID</value>
+  </data>
+  <data name="Group_Name" xml:space="preserve">
+    <value>グループ名</value>
+  </data>
+  <data name="lblIncludeInvalid" xml:space="preserve">
+    <value> 無効にする</value>
+  </data>
+  <data name="PASSWORD_CHANGE_DATE" xml:space="preserve">
+    <value>パスワード変更日</value>
+  </data>
+  <data name="Temporary_Password" xml:space="preserve">
+    <value>一時パスワード</value>
+  </data>
+  <data name="To_Disable" xml:space="preserve">
+    <value>無効にする</value>
+  </data>
+  <data name="UserList" xml:space="preserve">
+    <value>ユーザー一覧</value>
+  </data>
+  <data name="User_Account" xml:space="preserve">
+    <value>ユーザーアカウント</value>
+  </data>
+  <data name="User_Name" xml:space="preserve">
+    <value>ユーザー名</value>
+  </data>
+  <data name="ADDR_1" xml:space="preserve">
+    <value>住所１</value>
+  </data>
+  <data name="ADDR_2" xml:space="preserve">
+    <value>住所２</value>
+  </data>
+  <data name="ADDR_NAME" xml:space="preserve">
+    <value>住所識別名</value>
+  </data>
+  <data name="APT_PRIVATE_NOTE" xml:space="preserve">
+    <value>受注契約時共有情報</value>
+  </data>
+  <data name="BANK_MANAGE_CD" xml:space="preserve">
+    <value>管理コード</value>
+  </data>
+  <data name="BASICCONTRACT_CONCLUSION_FLG" xml:space="preserve">
+    <value>基本契約締結</value>
+  </data>
+  <data name="BIZ_CATEGORY" xml:space="preserve">
+    <value>業種</value>
+  </data>
+  <data name="BP_CD" xml:space="preserve">
+    <value>住所コード</value>
+  </data>
+  <data name="BP_NAME" xml:space="preserve">
+    <value>企業名</value>
+  </data>
+  <data name="BP_NAME_KANA" xml:space="preserve">
+    <value>企業名(カナ)</value>
+  </data>
+  <data name="CAPITAL" xml:space="preserve">
+    <value>資本金</value>
+  </data>
+  <data name="CONCLUSION_DATE" xml:space="preserve">
+    <value>締結日</value>
+  </data>
+  <data name="FAX" xml:space="preserve">
+    <value>FAX番号</value>
+  </data>
+  <data name="lblBP_ADDR" xml:space="preserve">
+    <value>住所</value>
+  </data>
+  <data name="lblBP_NAME" xml:space="preserve">
+    <value>取引先名</value>
+  </data>
+  <data name="lblBP_NAME_KANA" xml:space="preserve">
+    <value>取引先名(カナ)</value>
+  </data>
+  <data name="lblCustMaintList" xml:space="preserve">
+    <value>取引先一覧</value>
+  </data>
+  <data name="NDA_CONCLUSION" xml:space="preserve">
+    <value>NDA締結</value>
+  </data>
+  <data name="NOTE" xml:space="preserve">
+    <value>備考</value>
+  </data>
+  <data name="NUM_EMPLOYEES" xml:space="preserve">
+    <value>社員数</value>
+  </data>
+  <data name="OTHER_CONCLUSION" xml:space="preserve">
+    <value>その他締結内容</value>
+  </data>
+  <data name="PAYMENT_DAY" xml:space="preserve">
+    <value>支払日</value>
+  </data>
+  <data name="PAYMENT_SITE_TYPE" xml:space="preserve">
+    <value>支払いサイト</value>
+  </data>
+  <data name="PLC_PRIVATE_NOTE" xml:space="preserve">
+    <value>発注契約時共有情報</value>
+  </data>
+  <data name="TEL" xml:space="preserve">
+    <value>電話番号</value>
+  </data>
+  <data name="URL" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="ZIP_CD" xml:space="preserve">
+    <value>郵便番号</value>
+  </data>
+  <data name="BP_NAME_DISP" xml:space="preserve">
+    <value>企業名(表示名)</value>
+  </data>
+  <data name="REGISTER_CUST" xml:space="preserve">
+    <value>取引先一覧</value>
+  </data>
+  <data name="UserRegister" xml:space="preserve">
+    <value>ユーザー登録</value>
+  </data>
+  <data name="User_RegisterSuccess" xml:space="preserve">
+    <value>ユーザーを登録しました。</value>
+  </data>
+  <data name="User_UpdateSuccess" xml:space="preserve">
+    <value>ユーザーを更新しました。</value>
+  </data>
+  <data name="lblOrgMaint" xml:space="preserve">
+    <value>組織</value>
+  </data>
+  <data name="OrgMaintAdd" xml:space="preserve">
+    <value>選択した組織に追加</value>
+  </data>
+  <data name="lblGroupName" xml:space="preserve">
+    <value>組織名</value>
+  </data>
+  <data name="ClaimPers" xml:space="preserve">
+    <value>請求担当者</value>
+  </data>
+  <data name="ContactPers" xml:space="preserve">
+    <value>取引先担当者</value>
+  </data>
+  <data name="ContactPersList" xml:space="preserve">
+    <value>取引先担当者一覧</value>
+  </data>
+  <data name="ContactPersMaintDelete" xml:space="preserve">
+    <value>選択した取引先担当者を削除してもよろしいですか？</value>
+  </data>
+  <data name="CUST_DIS_NAME" xml:space="preserve">
+    <value>取引先表示名</value>
+  </data>
+  <data name="CUST_FOR_NAME" xml:space="preserve">
+    <value>取引先正式名</value>
+  </data>
+  <data name="Email_Address" xml:space="preserve">
+    <value>メールアドレス</value>
+  </data>
+  <data name="Extension" xml:space="preserve">
+    <value>内線</value>
+  </data>
+  <data name="PERS_IN_CHAR_NAME" xml:space="preserve">
+    <value>担当者名</value>
+  </data>
+  <data name="PERS_IN_CHAR_NAME_KANA" xml:space="preserve">
+    <value>担当者名(カナ)</value>
+  </data>
+  <data name="Staff_Group_Name" xml:space="preserve">
+    <value>部署名</value>
+  </data>
+  <data name="Staff_Position_Name" xml:space="preserve">
+    <value>役職名</value>
+  </data>
+  <data name="UserMaintDelete" xml:space="preserve">
+    <value>選択したユーザーを削除してもよろしいですか？</value>
+  </data>
+  <data name="ACCOUNT_DISP_NAME" xml:space="preserve">
+    <value>勘定科目表示名</value>
+  </data>
+  <data name="ACCOUNT_NAME" xml:space="preserve">
+    <value>勘定科目名称</value>
+  </data>
+  <data name="ASSETS_LIABILITIES_TYPE" xml:space="preserve">
+    <value>貸借区分</value>
+  </data>
+  <data name="AUXILIARY_CD" xml:space="preserve">
+    <value>補助科目コード</value>
+  </data>
+  <data name="AUXILIARY_NAME" xml:space="preserve">
+    <value>補助科目名称</value>
+  </data>
+  <data name="REGISTER_SUBJECT" xml:space="preserve">
+    <value>補助科目登録</value>
+  </data>
+  <data name="SUBJECT_LIST" xml:space="preserve">
+    <value>補助科目一覧</value>
+  </data>
+  <data name="ContactPersMaintRegisterSuccess" xml:space="preserve">
+    <value>取引先担当者を登録しました。</value>
+  </data>
+  <data name="ContactPersMaintUpdateSuccess" xml:space="preserve">
+    <value>取引先担当者を更新しました。</value>
+  </data>
+  <data name="ContactPersRegister" xml:space="preserve">
+    <value>取引先担当者登録</value>
+  </data>
+  <data name="SubjectMaintDelete" xml:space="preserve">
+    <value>選択した補助科目を削除してもよろしいでしょうか？</value>
+  </data>
+  <data name="SubjectMaintDeleteSuccess" xml:space="preserve">
+    <value>選択した補助科目を削除しました。</value>
+  </data>
+  <data name="SubjectMaintRegisterSuccess" xml:space="preserve">
+    <value>補助科目を登録しました。</value>
+  </data>
+  <data name="SubjectMaintUpdateSuccess" xml:space="preserve">
+    <value>補助科目を更新しました。</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_TAB1" xml:space="preserve">
+    <value>社員</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_TAB2" xml:space="preserve">
+    <value>非属人メールアドレス</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_TITLE" xml:space="preserve">
+    <value>担当者一覧</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_TAB1_SC_KANA" xml:space="preserve">
+    <value>社員氏名（カナ）</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_TAB1_SC_MAIL" xml:space="preserve">
+    <value>社員メールアドレス</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_TAB1_SC_NAME" xml:space="preserve">
+    <value>社員氏名</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_LIST_DELETE" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_LIST_EDIT" xml:space="preserve">
+    <value>編集</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_LIST_NO" xml:space="preserve">
+    <value>№</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_LIST_UPDATE" xml:space="preserve">
+    <value>更新日</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_LIST_UPDATER" xml:space="preserve">
+    <value>更新者</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_REGIST" xml:space="preserve">
+    <value>担当者登録</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_REGIST_LIST_NO" xml:space="preserve">
+    <value>№</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_REGIST_LIST_REGIST" xml:space="preserve">
+    <value>登録</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_REGIST_LIST_SOSHIKI" xml:space="preserve">
+    <value>組織名</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_REGIST_LIST_SOSHIKI_KANA" xml:space="preserve">
+    <value>組織名（カナ）</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_REGIST_SOSHIKI" xml:space="preserve">
+    <value>組織名</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_REGIST_SOSHIKI_KANA" xml:space="preserve">
+    <value>組織名（カナ）</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_TAB1_LIST_KANA" xml:space="preserve">
+    <value>社員氏名（カナ）</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_TAB1_LIST_MAIL" xml:space="preserve">
+    <value>社員メールアドレス</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_TAB1_LIST_NAME" xml:space="preserve">
+    <value>社員氏名</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_TAB2_LIST_KANA" xml:space="preserve">
+    <value>非属人名称（カナ）</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_TAB2_LIST_MAIL" xml:space="preserve">
+    <value>非属人メールアドレス</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_TAB2_LIST_NAME" xml:space="preserve">
+    <value>非属人名称</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_TAB2_SC_KANA" xml:space="preserve">
+    <value>非属人名称（カナ）</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_TAB2_SC_MAIL" xml:space="preserve">
+    <value>非属人メールアドレス</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_TAB2_SC_NAME" xml:space="preserve">
+    <value>非属人名称</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_TAB1_SC_STAFF_CD" xml:space="preserve">
+    <value>社員コード</value>
+  </data>
+  <data name="Trade_Type" xml:space="preserve">
+    <value>取引区分</value>
+  </data>
+  <data name="CustMaintDelete" xml:space="preserve">
+    <value>選択した取引先を削除してもよろしいですか？</value>
+  </data>
+  <data name="CustMaintRegisterSuccess" xml:space="preserve">
+    <value>取引先を登録しました。</value>
+  </data>
+  <data name="CustMaintUpdateSuccess" xml:space="preserve">
+    <value>取引先を更新しました。</value>
+  </data>
+  <data name="lblCategory" xml:space="preserve">
+    <value>カテゴリ</value>
+  </data>
+  <data name="lblCategoryMaintList" xml:space="preserve">
+    <value>小カテゴリ一覧</value>
+  </data>
+  <data name="DEFAULT_ACCOUNT_FLG" xml:space="preserve">
+    <value>標準口座</value>
+  </data>
+  <data name="AuxiliaryCdError" xml:space="preserve">
+    <value>同一契約企業コード内で補助科目コードが重複しています。</value>
+  </data>
+  <data name="DefaultAccountFrror" xml:space="preserve">
+    <value>同一契約企業コード内で標準口座が設定されています。</value>
+  </data>
+  <data name="BILL" xml:space="preserve">
+    <value>請求</value>
+  </data>
+  <data name="BILLING_ISSUE_DAY_TYPE" xml:space="preserve">
+    <value>請求書発行日付</value>
+  </data>
+  <data name="PAYMENT" xml:space="preserve">
+    <value>支払</value>
+  </data>
+  <data name="PAYMENT_TYPE" xml:space="preserve">
+    <value>支払方法</value>
+  </data>
+  <data name="PasswordInvalidCharacter" xml:space="preserve">
+    <value>入力された一時パスワードは使用できません。</value>
+  </data>
+  <data name="PasswordLength" xml:space="preserve">
+    <value>一時パスワード の長さが正しくありません。</value>
+  </data>
+  <data name="PasswordNotMatch" xml:space="preserve">
+    <value>一時パスワード と パスワードの確認 が一致していません。</value>
+  </data>
+  <data name="RePasswordInvalidCharacter" xml:space="preserve">
+    <value>入力された一時パスワードの確認 は使用できません。</value>
+  </data>
+  <data name="RePasswordLength" xml:space="preserve">
+    <value>パスワードの確認 の長さが正しくありません。</value>
+  </data>
+  <data name="Password_Reset" xml:space="preserve">
+    <value>パスワードをリセットします。\nよろしいですか？</value>
+  </data>
+  <data name="Password_Reset_OK" xml:space="preserve">
+    <value>パスワードをリセットしました。</value>
+  </data>
+  <data name="AddAddressDelete" xml:space="preserve">
+    <value>選択した住所を削除してもよろしいですか？</value>
+  </data>
+  <data name="CHARGE_TYPE" xml:space="preserve">
+    <value>料金種別</value>
+  </data>
+  <data name="ITEM_SEQ_NO" xml:space="preserve">
+    <value>通し番号</value>
+  </data>
+  <data name="NOMEN" xml:space="preserve">
+    <value>品名</value>
+  </data>
+  <data name="PURCHASE_PRICE" xml:space="preserve">
+    <value>仕入単価</value>
+  </data>
+  <data name="REGISTER_CATEGORY" xml:space="preserve">
+    <value>品目登録</value>
+  </data>
+  <data name="TAXABLE_FLG" xml:space="preserve">
+    <value>課税</value>
+  </data>
+  <data name="UNIT_PRICE" xml:space="preserve">
+    <value>単価</value>
+  </data>
+  <data name="UNIT_TYPE" xml:space="preserve">
+    <value>単位</value>
+  </data>
+  <data name="OrgGroupName" xml:space="preserve">
+    <value>組織名</value>
+  </data>
+  <data name="OrgGroupNameKana" xml:space="preserve">
+    <value>組織名（カナ）</value>
+  </data>
+  <data name="OrgMaintAddSelectError" xml:space="preserve">
+    <value>追加する組織を選択してください。</value>
+  </data>
+  <data name="OrgMaintConfirmDelete" xml:space="preserve">
+    <value>選択された組織を削除してもよろしいですか？</value>
+  </data>
+  <data name="OrgMaintConfirmUpdate" xml:space="preserve">
+    <value>選択された組織を更新してもよろしいですか？</value>
+  </data>
+  <data name="OrgMaintDeleteSelectError" xml:space="preserve">
+    <value>削除する組織を選択してください。</value>
+  </data>
+  <data name="OrgMaintUpdateSelectError" xml:space="preserve">
+    <value>編集する組織を選択して下さい。</value>
+  </data>
+  <data name="OrgMaintUpdateSuccess" xml:space="preserve">
+    <value>組織を更新しました。</value>
+  </data>
+  <data name="OrgRegist" xml:space="preserve">
+    <value>登録日</value>
+  </data>
+  <data name="OrgRegister" xml:space="preserve">
+    <value>登録者</value>
+  </data>
+  <data name="OrgTitle" xml:space="preserve">
+    <value>組織</value>
+  </data>
+  <data name="OrgUpdate" xml:space="preserve">
+    <value>更新日</value>
+  </data>
+  <data name="OrgUpdater" xml:space="preserve">
+    <value>更新者</value>
+  </data>
+  <data name="REGIST" xml:space="preserve">
+    <value>登録</value>
+  </data>
+  <data name="OrgMaintDelete" xml:space="preserve">
+    <value>選択した組織を削除</value>
+  </data>
+  <data name="OrgMaintNoUpdate" xml:space="preserve">
+    <value>更新データがありません。</value>
+  </data>
+  <data name="OrgMaintUpdate" xml:space="preserve">
+    <value>入力を選択した組織に反映</value>
+  </data>
+  <data name="CategoryProductMaintUpdateSuccess" xml:space="preserve">
+    <value>小カテゴリを更新しました。</value>
+  </data>
+  <data name="CategoryItemMaintRegisterSuccess" xml:space="preserve">
+    <value>品目を登録しました。</value>
+  </data>
+  <data name="CategoryItemMaintUpdateSuccess" xml:space="preserve">
+    <value>品目を更新しました。</value>
+  </data>
+  <data name="lblCustMaintRegister" xml:space="preserve">
+    <value>取引先登録</value>
+  </data>
+  <data name="BASICCONTRACT_CONCLUSION_DATE" xml:space="preserve">
+    <value>基本契約締結日</value>
+  </data>
+  <data name="NDA_CONCLUSION_DATE" xml:space="preserve">
+    <value>NDA締結日</value>
+  </data>
+  <data name="ADDR" xml:space="preserve">
+    <value>住所</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_DEL_COMFIRM" xml:space="preserve">
+    <value>選択した担当者を削除してもよろしいですか？</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_DEL_SUCCESS" xml:space="preserve">
+    <value>担当者を削除しました。</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_REG_SUCCESS" xml:space="preserve">
+    <value>担当者を登録しました。</value>
+  </data>
+  <data name="PERS_IN_CHAR_MAINT_UPD_SUCCESS" xml:space="preserve">
+    <value>担当者を更新しました。</value>
+  </data>
+  <data name="CONTRACT_TYPE_CLASS" xml:space="preserve">
+    <value>中カテゴリ</value>
+  </data>
+  <data name="CONTRACT_TYPE_CLASS_DISP_NAME" xml:space="preserve">
+    <value>中カテゴリ名</value>
+  </data>
+  <data name="SubCaregoryMaintRegister" xml:space="preserve">
+    <value>中カテゴリ登録</value>
+  </data>
+  <data name="SubCategoryMaintList" xml:space="preserve">
+    <value>中カテゴリ一覧</value>
+  </data>
+  <data name="SubCategoryMaintDelete" xml:space="preserve">
+    <value>選択した中カテゴリを削除してもよろしいですか？</value>
+  </data>
+  <data name="APPLY_DATE_FROM" xml:space="preserve">
+    <value>適用開始日</value>
+  </data>
+  <data name="APPLY_DATE_TO" xml:space="preserve">
+    <value>適用終了日</value>
+  </data>
+  <data name="REG_APPLY_DATE_FROM" xml:space="preserve">
+    <value>適用期間開始日</value>
+  </data>
+  <data name="REG_APPLY_DATE_TO" xml:space="preserve">
+    <value>適用期間終了日</value>
+  </data>
+  <data name="SEARCH_APPLY_DATE_FROM" xml:space="preserve">
+    <value>適用期間</value>
+  </data>
+  <data name="SEARCH_APPLY_DATE_TO" xml:space="preserve">
+    <value>～</value>
+  </data>
+  <data name="SEARCH_TAX_RATE" xml:space="preserve">
+    <value>消費税率</value>
+  </data>
+  <data name="TaxRateMaintList" xml:space="preserve">
+    <value>消費税率一覧</value>
+  </data>
+  <data name="TaxRateMaintRegister" xml:space="preserve">
+    <value>消費税率登録</value>
+  </data>
+  <data name="TAX_RATE" xml:space="preserve">
+    <value>消費税率</value>
+  </data>
+  <data name="SubCategoryMaintRegisterSuccess" xml:space="preserve">
+    <value>中カテゴリを登録しました。</value>
+  </data>
+  <data name="SubCategoryMaintUpdateSuccess" xml:space="preserve">
+    <value>中カテゴリを更新しました。</value>
+  </data>
+  <data name="UseSubCategory" xml:space="preserve">
+    <value>入力された中カテゴリは既に登録されています。</value>
+  </data>
+  <data name="TaxRateMaintDelete" xml:space="preserve">
+    <value>選択した消費税率を削除してもよろしいですか？</value>
+  </data>
+  <data name="TaxRateMaintDeleteSuccess" xml:space="preserve">
+    <value>消費税率を削除しました。</value>
+  </data>
+  <data name="TaxRateMaintRegisterSuccess" xml:space="preserve">
+    <value>消費税率を登録しました。</value>
+  </data>
+  <data name="TaxRateMaintUpdateSuccess" xml:space="preserve">
+    <value>消費税率を更新しました。</value>
+  </data>
+  <data name="ContractCompanyMaintDelete" xml:space="preserve">
+    <value>選択した契約企業を削除してもよろしいでしょうか？</value>
+  </data>
+  <data name="ContractCompanyMaintList" xml:space="preserve">
+    <value>契約企業一覧</value>
+  </data>
+  <data name="ContractCompanyMaintRegister" xml:space="preserve">
+    <value>契約企業登録</value>
+  </data>
+  <data name="AccountingSubjectGroupMaintDelete" xml:space="preserve">
+    <value>選択した勘定科目グループを削除してもよろしいですか？</value>
+  </data>
+  <data name="AccountingSubjectGroupMaintList" xml:space="preserve">
+    <value>勘定科目グループ一覧</value>
+  </data>
+  <data name="ProductMaintDelete" xml:space="preserve">
+    <value>選択した小カテゴリを削除してもよろしいですか？</value>
+  </data>
+  <data name="ProductMaintList" xml:space="preserve">
+    <value>小カテゴリ一覧</value>
+  </data>
+  <data name="ProductMaintRegister" xml:space="preserve">
+    <value>小カテゴリ登録</value>
+  </data>
+  <data name="ProductMaintRegisterSuccess" xml:space="preserve">
+    <value>小カテゴリを登録しました。</value>
+  </data>
+  <data name="ProductMaintUpdateSuccess" xml:space="preserve">
+    <value>小カテゴリを更新しました。</value>
+  </data>
+  <data name="Input_Err" xml:space="preserve">
+    <value>入力した値が不正です。</value>
+  </data>
+  <data name="UsedUserAccount" xml:space="preserve">
+    <value>同一のユーザーアカウントが既に存在しています。</value>
+  </data>
+  <data name="TaxMaintDuplicate" xml:space="preserve">
+    <value>入力された適用期間には既に消費税率が設定されています。</value>
+  </data>
+  <data name="COMPANY_GROUP_NAME" xml:space="preserve">
+    <value>担当部署</value>
+  </data>
+  <data name="AuthorityGroupMaintDelete" xml:space="preserve">
+    <value>選択した権限グループを削除してもよろしいですか？</value>
+  </data>
+  <data name="AuthorityGroupMaintList" xml:space="preserve">
+    <value>権限グループ一覧</value>
+  </data>
+  <data name="AuthorityGroupMaintRegister" xml:space="preserve">
+    <value>権限グループ登録</value>
+  </data>
+  <data name="AuthorityGroupMaintRegisterSuccess" xml:space="preserve">
+    <value>権限グループを登録しました。</value>
+  </data>
+  <data name="AuthorityGroupMaintUpdateSuccess" xml:space="preserve">
+    <value>権限グループを更新しました。</value>
+  </data>
+  <data name="CategoryMaintList" xml:space="preserve">
+    <value>大カテゴリ一覧</value>
+  </data>
+  <data name="CategoryMaintRegister" xml:space="preserve">
+    <value>大カテゴリ登録</value>
+  </data>
+  <data name="CONTRACT_TYPE_DISP_NAME" xml:space="preserve">
+    <value>大カテゴリ名</value>
+  </data>
+  <data name="EST_EFFECTIVE_INTERVAL" xml:space="preserve">
+    <value>見積有効期間</value>
+  </data>
+  <data name="EST_EFFECTIVE_TYPE" xml:space="preserve">
+    <value>見積有効期間単位</value>
+  </data>
+  <data name="EST_NO_PREFIX" xml:space="preserve">
+    <value>見積番号接頭辞</value>
+  </data>
+  <data name="CategoryMaintDelete" xml:space="preserve">
+    <value>選択した大カテゴリを削除してもよろしいですか？</value>
+  </data>
+  <data name="CategoryMaintRegisterSuccess" xml:space="preserve">
+    <value>大カテゴリを登録しました。</value>
+  </data>
+  <data name="CategoryMaintUpdateSuccess" xml:space="preserve">
+    <value>大カテゴリを更新しました。</value>
+  </data>
+  <data name="CONTRACT_TYPE" xml:space="preserve">
+    <value>大カテゴリ</value>
+  </data>
+  <data name="AVAILABLE_PERIOD_FROM" xml:space="preserve">
+    <value>契約期間（開始）</value>
+  </data>
+  <data name="AVAILABLE_PERIOD_TO" xml:space="preserve">
+    <value>契約期間（終了）</value>
+  </data>
+  <data name="BILL_DIRECT_NOTE" xml:space="preserve">
+    <value>請求書引落先注釈</value>
+  </data>
+  <data name="BILL_DIRECT_TITLE" xml:space="preserve">
+    <value>請求書引落表題</value>
+  </data>
+  <data name="BILL_FORMAT_DETAIL_LINE" xml:space="preserve">
+    <value>請求書明細行数</value>
+  </data>
+  <data name="BILL_FORMAT_PATH" xml:space="preserve">
+    <value>請求書フォーマットパス</value>
+  </data>
+  <data name="BILL_FORMAT_SES_DETAIL_LINE" xml:space="preserve">
+    <value>請求書SES明細行数</value>
+  </data>
+  <data name="BILL_FORMAT_SES_PATH" xml:space="preserve">
+    <value>請求書SESフォーマットパス</value>
+  </data>
+  <data name="BILL_NO_PREFIX" xml:space="preserve">
+    <value>請求書番号接頭辞</value>
+  </data>
+  <data name="BILL_NO_USE_PREFIX" xml:space="preserve">
+    <value>請求書番号接頭辞有無</value>
+  </data>
+  <data name="BILL_NO_USE_YM" xml:space="preserve">
+    <value>請求書番号年月有無</value>
+  </data>
+  <data name="BILL_PAYEE_NOTE" xml:space="preserve">
+    <value>請求書振込先注釈</value>
+  </data>
+  <data name="BILL_PAYEE_TITLE" xml:space="preserve">
+    <value>請求書振込表題</value>
+  </data>
+  <data name="COMPANY_ADDR_1" xml:space="preserve">
+    <value>契約住所１</value>
+  </data>
+  <data name="COMPANY_ADDR_2" xml:space="preserve">
+    <value>契約住所２</value>
+  </data>
+  <data name="COMPANY_CONTRACT_STATUS" xml:space="preserve">
+    <value>契約状態</value>
+  </data>
+  <data name="COMPANY_NAME" xml:space="preserve">
+    <value>契約企業名</value>
+  </data>
+  <data name="COMPANY_STAFF_EMAIL_ADDR" xml:space="preserve">
+    <value>契約担当者メールアドレス</value>
+  </data>
+  <data name="COMPANY_STAFF_NAME_KANA" xml:space="preserve">
+    <value>契約担当者カナ</value>
+  </data>
+  <data name="COMPANY_STAFF_TEL" xml:space="preserve">
+    <value>契約担当者電話番号</value>
+  </data>
+  <data name="COMPANY_STAFF_TEL_EXT" xml:space="preserve">
+    <value>契約担当者電話番号内線</value>
+  </data>
+  <data name="COMPANY_ZIP_CD" xml:space="preserve">
+    <value>契約郵便番号</value>
+  </data>
+  <data name="CONTRACT_LEVEL_TYPE" xml:space="preserve">
+    <value>契約階層区分</value>
+  </data>
+  <data name="DOC_COVER_LETTER_FORMAT_PATH" xml:space="preserve">
+    <value>書類送付状フォーマットパス</value>
+  </data>
+  <data name="ENVELOPE_DESTINATION_FORMAT_PATH" xml:space="preserve">
+    <value>封筒住所フォーマットパス</value>
+  </data>
+  <data name="EST_NO_USE_PREFIX" xml:space="preserve">
+    <value>見積番号接頭辞有無</value>
+  </data>
+  <data name="EST_NO_USE_YM" xml:space="preserve">
+    <value>見積番号年月有無</value>
+  </data>
+  <data name="FAX_COVER_LETTER_FORMAT_PATH" xml:space="preserve">
+    <value>FAX送付状フォーマットパス</value>
+  </data>
+  <data name="PLC_ORDER_FORMAT_DETAIL_LINE" xml:space="preserve">
+    <value>支払先注文書明細行数</value>
+  </data>
+  <data name="PLC_ORDER_FORMAT_PATH" xml:space="preserve">
+    <value>支払先注文書フォーマットパス</value>
+  </data>
+  <data name="ROUNDING_TYPE" xml:space="preserve">
+    <value>消費税端数処理区分</value>
+  </data>
+  <data name="AUTO_EXPAND_FLG" xml:space="preserve">
+    <value>自動展開</value>
+  </data>
+  <data name="CONTRACT_INPUT_TYPE" xml:space="preserve">
+    <value>契約入力区分</value>
+  </data>
+  <data name="DELIVERABLES_INIT_VALUE" xml:space="preserve">
+    <value>納品物件初期値</value>
+  </data>
+  <data name="DELIVERY_LOCATION_INIT_VALUE" xml:space="preserve">
+    <value>納品場所初期値</value>
+  </data>
+  <data name="EST_FORMAT_DETAIL_LINE" xml:space="preserve">
+    <value>見積書明細行数</value>
+  </data>
+  <data name="EST_FORMAT_PATH" xml:space="preserve">
+    <value>見積書フォーマットパス</value>
+  </data>
+  <data name="ORD_FORMAT_DETAIL_LINE" xml:space="preserve">
+    <value>注文書明細行数</value>
+  </data>
+  <data name="ORD_FORMAT_PATH" xml:space="preserve">
+    <value>注文書フォーマットパス</value>
+  </data>
+  <data name="PJT_NAME_INIT_VALUE" xml:space="preserve">
+    <value>案件名初期値</value>
+  </data>
+  <data name="PRODUCT_CD" xml:space="preserve">
+    <value>製品コード</value>
+  </data>
+  <data name="PRODUCT_NAME_DISP_NAME" xml:space="preserve">
+    <value>小カテゴリ名</value>
+  </data>
+  <data name="UseProduct" xml:space="preserve">
+    <value>入力された小カテゴリは既に登録されています。</value>
+  </data>
+  <data name="WORKING_CONTENT_INIT_VALUE" xml:space="preserve">
+    <value>作業内容初期値</value>
+  </data>
+  <data name="WORKING_LOCATION_INIT_VALUE" xml:space="preserve">
+    <value>作業場所初期値</value>
+  </data>
+  <data name="OrgMaintAddColError" xml:space="preserve">
+    <value>組織階層の上限は１０件です。組織を追加する事はできません。</value>
+  </data>
+  <data name="OrgMaintAddMaxError" xml:space="preserve">
+    <value>組織の上限は９９件です。組織を追加する事はできません。</value>
+  </data>
+  <data name="OrgMaintAddRowError" xml:space="preserve">
+    <value>同階層の組織の上限は９件です。組織を追加する事はできません。</value>
+  </data>
+  <data name="OrgMaintMoveError" xml:space="preserve">
+    <value>ルート階層に組織を移動できません。</value>
+  </data>
+  <data name="AUTHORITY_GROUP_CD" xml:space="preserve">
+    <value>権限グループコード</value>
+  </data>
+  <data name="AUTHORITY_GROUP_NAME" xml:space="preserve">
+    <value>権限グループ名</value>
+  </data>
+  <data name="COMPANY_STAFF_NAME" xml:space="preserve">
+    <value>契約担当者名</value>
+  </data>
+  <data name="ContractCompanyMaintRegisterSuccess" xml:space="preserve">
+    <value>契約企業を登録しました。</value>
+  </data>
+  <data name="KEIYAKU_COMPANY_CD" xml:space="preserve">
+    <value>契約企業コード</value>
+  </data>
+  <data name="AccountingSubjectGroupMaintRegister" xml:space="preserve">
+    <value>勘定科目グループ登録</value>
+  </data>
+  <data name="AccountingSubjectGroupMaintRegisterSuccess" xml:space="preserve">
+    <value>勘定科目グループを登録しました。</value>
+  </data>
+  <data name="AccountingSubjectGroupMaintUpdateSuccess" xml:space="preserve">
+    <value>勘定科目グループを更新しました。</value>
+  </data>
+  <data name="ACCOUNT_GROUP_CD" xml:space="preserve">
+    <value>勘定科目グループコード</value>
+  </data>
+  <data name="ACCOUNT_GROUP_NAME" xml:space="preserve">
+    <value>勘定科目グループ名称</value>
+  </data>
+  <data name="UseAccountingSubjectGroup" xml:space="preserve">
+    <value>入力された勘定科目グループは既に登録されています。</value>
+  </data>
+  <data name="PRODUCT_NAME" xml:space="preserve">
+    <value>小カテゴリ</value>
+  </data>
+  <data name="ContractCompanyMaintDuplicateCode" xml:space="preserve">
+    <value>入力された契約企業コードは既に存在しています。</value>
+  </data>
+  <data name="KEY_Billing_BillingInputDate" xml:space="preserve">
+    <value>Billing/Billing/BillingInputDate</value>
+  </data>
+  <data name="KEY_Billing_BillingInputOperateTime" xml:space="preserve">
+    <value>Billing/Billing/BillingInputOperateTime</value>
+  </data>
+  <data name="KEY_Billing_BillingInputPrivate" xml:space="preserve">
+    <value>Billing/Billing/BillingInputPrivate</value>
+  </data>
+  <data name="KEY_Billing_BillingListIndex" xml:space="preserve">
+    <value>Billing/Billing/BillingListIndex</value>
+  </data>
+  <data name="KEY_Billing_BillingSetting" xml:space="preserve">
+    <value>Billing/Billing/BillingSetting</value>
+  </data>
+  <data name="KEY_Billing_ChangeDebitNote" xml:space="preserve">
+    <value>Billing/Billing/ChangeDebitNote</value>
+  </data>
+  <data name="KEY_Billing_CreateBillingData" xml:space="preserve">
+    <value>Billing/Billing/CreateBillingData</value>
+  </data>
+  <data name="KEY_Billing_DownloadBillingData" xml:space="preserve">
+    <value>Billing/Billing/DownloadBillingData</value>
+  </data>
+  <data name="KEY_Billing_EditDebitNote" xml:space="preserve">
+    <value>Billing/Billing/EditDebitNote</value>
+  </data>
+  <data name="KEY_Billing_ExportBillingDataCsv" xml:space="preserve">
+    <value>Billing/Billing/ExportBillingDataCsv</value>
+  </data>
+  <data name="KEY_Billing_ExportBillingInfo" xml:space="preserve">
+    <value>Billing/Billing/ExportBillingInfo</value>
+  </data>
+  <data name="KEY_Billing_InputBillingPrepare" xml:space="preserve">
+    <value>Billing/Billing/InputBillingPrepare</value>
+  </data>
+  <data name="KEY_BPAddress_Register" xml:space="preserve">
+    <value>BPAddress/BPAddress/Register</value>
+  </data>
+  <data name="KEY_BPAddress_RegisterAddress" xml:space="preserve">
+    <value>BPAddress/BPAddress/RegisterAddress</value>
+  </data>
+  <data name="KEY_CategoryMaint_CategoryMaintList" xml:space="preserve">
+    <value>Maint/CategoryMaint/CategoryMaintList</value>
+  </data>
+  <data name="KEY_CategoryMaint_CategoryMaintSearch" xml:space="preserve">
+    <value>Maint/CategoryMaint/CategoryMaintSearch</value>
+  </data>
+  <data name="KEY_CategoryMaint_DELETE" xml:space="preserve">
+    <value>Maint/CategoryMaint/DELETE</value>
+  </data>
+  <data name="KEY_ContactPersMaint_ContactPersMaintList" xml:space="preserve">
+    <value>Maint/ContactPersMaint/ContactPersMaintList</value>
+  </data>
+  <data name="KEY_ContactPersMaint_ContactPersMaintSearch" xml:space="preserve">
+    <value>Maint/ContactPersMaint/ContactPersMaintSearch</value>
+  </data>
+  <data name="KEY_ContactPersMaint_DELETE" xml:space="preserve">
+    <value>Maint/ContactPersMaint/DELETE</value>
+  </data>
+  <data name="KEY_Contract_Delete" xml:space="preserve">
+    <value>Contract/Contract/Delete</value>
+  </data>
+  <data name="KEY_Contract_Edit" xml:space="preserve">
+    <value>Contract/Contract/Edit</value>
+  </data>
+  <data name="KEY_Contract_EditContract" xml:space="preserve">
+    <value>Contract/Contract/EditContract</value>
+  </data>
+  <data name="KEY_Contract_ExportCsvContractList" xml:space="preserve">
+    <value>Contract/Contract/ExportCsvContractList</value>
+  </data>
+  <data name="KEY_Contract_Finish" xml:space="preserve">
+    <value>Contract/Contract/Finish</value>
+  </data>
+  <data name="KEY_Contract_FinishContract" xml:space="preserve">
+    <value>Contract/Contract/FinishContract</value>
+  </data>
+  <data name="KEY_Contract_IssuedEstimate" xml:space="preserve">
+    <value>Contract/Contract/IssuedEstimate</value>
+  </data>
+  <data name="KEY_Contract_List" xml:space="preserve">
+    <value>Contract/Contract/List</value>
+  </data>
+  <data name="KEY_Contract_View" xml:space="preserve">
+    <value>Contract/Contract/View</value>
+  </data>
+  <data name="KEY_CustMaint_CustMaintEdit" xml:space="preserve">
+    <value>Maint/CustMaint/CustMaintEdit</value>
+  </data>
+  <data name="KEY_CustMaint_CustMaintList" xml:space="preserve">
+    <value>Maint/CustMaint/CustMaintList</value>
+  </data>
+  <data name="KEY_CustMaint_DELETE" xml:space="preserve">
+    <value>Maint/CustMaint/DELETE</value>
+  </data>
+  <data name="KEY_Customer_Edit" xml:space="preserve">
+    <value>Customer/Customer/Edit</value>
+  </data>
+  <data name="KEY_Customer_EditCustomer" xml:space="preserve">
+    <value>Customer/Customer/EditCustomer</value>
+  </data>
+  <data name="KEY_Estimate_Delete" xml:space="preserve">
+    <value>Estimate/Estimate/Delete</value>
+  </data>
+  <data name="KEY_Estimate_Duplicate" xml:space="preserve">
+    <value>Estimate/Estimate/Duplicate</value>
+  </data>
+  <data name="KEY_Estimate_Edit" xml:space="preserve">
+    <value>Estimate/Estimate/Edit</value>
+  </data>
+  <data name="KEY_Estimate_EditEstimate" xml:space="preserve">
+    <value>Estimate/Estimate/EditEstimate</value>
+  </data>
+  <data name="KEY_Estimate_EstimateList" xml:space="preserve">
+    <value>Estimate/Estimate/EstimateList</value>
+  </data>
+  <data name="KEY_Estimate_EstimateListContract" xml:space="preserve">
+    <value>Estimate/Estimate/EstimateListContract</value>
+  </data>
+  <data name="KEY_Estimate_IssueEstimateFile" xml:space="preserve">
+    <value>Estimate/Estimate/IssueEstimateFile</value>
+  </data>
+  <data name="KEY_Estimate_IssueEstimateFileFromContract" xml:space="preserve">
+    <value>Estimate/Estimate/IssueEstimateFileFromContract</value>
+  </data>
+  <data name="KEY_Estimate_SendEstimate" xml:space="preserve">
+    <value>Estimate/Estimate/SendEstimate</value>
+  </data>
+  <data name="KEY_Estimate_ViewAttachedFile" xml:space="preserve">
+    <value>Estimate/Estimate/ViewAttachedFile</value>
+  </data>
+  <data name="KEY_Estimate_ViewEstimate" xml:space="preserve">
+    <value>Estimate/Estimate/ViewEstimate</value>
+  </data>
+  <data name="KEY_Estimate_ViewEstimateHistory" xml:space="preserve">
+    <value>Estimate/Estimate/ViewEstimateHistory</value>
+  </data>
+  <data name="KEY_Information_Tbl_InformationList" xml:space="preserve">
+    <value>Information/Information/Tbl_InformationList</value>
+  </data>
+  <data name="KEY_Information_Tbl_InformationRegister" xml:space="preserve">
+    <value>Information/Information/Tbl_InformationRegister</value>
+  </data>
+  <data name="KEY_Information_Index" xml:space="preserve">
+    <value>Information/Information/Index</value>
+  </data>
+  <data name="KEY_Information_PostInformationList" xml:space="preserve">
+    <value>Information/Information/PostInformationList</value>
+  </data>
+  <data name="KEY_Information_PostInformationSearch" xml:space="preserve">
+    <value>Information/Information/PostInformationSearch</value>
+  </data>
+  <data name="KEY_Information_ALLInformationList" xml:space="preserve">
+    <value>Information/AllInformation/AllInformationList</value>
+  </data>
+  <data name="KEY_Information_AllInformationSearch" xml:space="preserve">
+    <value>Information/AllInformation/AllInformationSearch</value>
+  </data>
+  <data name="KEY_OrgMaint_OrgMaintList" xml:space="preserve">
+    <value>Maint/OrgMaint/OrgMaintList</value>
+  </data>
+  <data name="KEY_OrgMaint_Regist" xml:space="preserve">
+    <value>Maint/OrgMaint/Regist</value>
+  </data>
+  <data name="KEY_PartnerStaff_CoverLetter" xml:space="preserve">
+    <value>PartnerStaff/PartnerStaff/CoverLetter</value>
+  </data>
+  <data name="KEY_PartnerStaff_EditPartnerStaff" xml:space="preserve">
+    <value>PartnerStaff/PartnerStaff/EditPartnerStaff</value>
+  </data>
+  <data name="KEY_PartnerStaff_Register" xml:space="preserve">
+    <value>PartnerStaff/PartnerStaff/Register</value>
+  </data>
+  <data name="KEY_Payment_CreateRedInvoice" xml:space="preserve">
+    <value>Payment/Payment/CreateRedInvoice</value>
+  </data>
+  <data name="KEY_Payment_ExportFilePaymentOrders" xml:space="preserve">
+    <value>Payment/Payment/ExportFilePaymentOrders</value>
+  </data>
+  <data name="KEY_Payment_ExportSalesPaymentsDataCsv" xml:space="preserve">
+    <value>Payment/Payment/ExportSalesPaymentsDataCsv</value>
+  </data>
+  <data name="KEY_Payment_ExportSalesPaymentsInfo" xml:space="preserve">
+    <value>Payment/Payment/ExportSalesPaymentsInfo</value>
+  </data>
+  <data name="KEY_Payment_IssueOrderForPayment" xml:space="preserve">
+    <value>Payment/Payment/IssueOrderForPayment</value>
+  </data>
+  <data name="KEY_Payment_PaymentClearSetting" xml:space="preserve">
+    <value>Payment/Payment/PaymentClearSetting</value>
+  </data>
+  <data name="KEY_Payment_PaymentHistory" xml:space="preserve">
+    <value>Payment/Payment/PaymentHistory</value>
+  </data>
+  <data name="KEY_Payment_PaymentInputPrivate" xml:space="preserve">
+    <value>Payment/Payment/PaymentInputPrivate</value>
+  </data>
+  <data name="KEY_Payment_PaymentList" xml:space="preserve">
+    <value>Payment/Payment/PaymentList</value>
+  </data>
+  <data name="KEY_Payment_PaymentNotPayment" xml:space="preserve">
+    <value>Payment/Payment/PaymentNotPayment</value>
+  </data>
+  <data name="KEY_PersInCharMaint_DELETE" xml:space="preserve">
+    <value>Maint/PersInCharMaint/DELETE</value>
+  </data>
+  <data name="KEY_PersInCharMaint_PersInCharMaintList" xml:space="preserve">
+    <value>Maint/PersInCharMaint/PersInCharMaintList</value>
+  </data>
+  <data name="KEY_PersInCharMaint_PersInCharMaintRegister" xml:space="preserve">
+    <value>Maint/PersInCharMaint/PersInCharMaintRegister</value>
+  </data>
+  <data name="KEY_PersInCharMaint_SearchList" xml:space="preserve">
+    <value>Maint/PersInCharMaint/SearchList</value>
+  </data>
+  <data name="KEY_SelectMail_Index" xml:space="preserve">
+    <value>SendMail/SelectMail/Index</value>
+  </data>
+  <data name="KEY_SendMail_InputDestination" xml:space="preserve">
+    <value>SendMail/SendMail/InputDestination</value>
+  </data>
+  <data name="KEY_SendMail_SendMail" xml:space="preserve">
+    <value>SendMail/SendMail/SendMail</value>
+  </data>
+  <data name="KEY_ShowLog_ShowLog" xml:space="preserve">
+    <value>Log/ShowLog/ShowLog</value>
+  </data>
+  <data name="KEY_SubjectMaint_DELETE" xml:space="preserve">
+    <value>Maint/SubjectMaint/DELETE</value>
+  </data>
+  <data name="KEY_SubjectMaint_SubjectMaintList" xml:space="preserve">
+    <value>Maint/SubjectMaint/SubjectMaintList</value>
+  </data>
+  <data name="KEY_SubjectMaint_SubjectMaintSearch" xml:space="preserve">
+    <value>Maint/SubjectMaint/SubjectMaintSearch</value>
+  </data>
+  <data name="KEY_TransMaint_DELETE" xml:space="preserve">
+    <value>Maint/TransMaint/DELETE</value>
+  </data>
+  <data name="KEY_TransMaint_TransMaintList" xml:space="preserve">
+    <value>Maint/TransMaint/TransMaintList</value>
+  </data>
+  <data name="KEY_TransMaint_TransMaintSearch" xml:space="preserve">
+    <value>Maint/TransMaint/TransMaintSearch</value>
+  </data>
+  <data name="KEY_UserMaint_DELETE" xml:space="preserve">
+    <value>Maint/UserMaint/DELETE</value>
+  </data>
+  <data name="KEY_UserMaint_UserMaintList" xml:space="preserve">
+    <value>Maint/UserMaint/UserMaintList</value>
+  </data>
+  <data name="KEY_UserMaint_UserMaintSearch" xml:space="preserve">
+    <value>Maint/UserMaint/UserMaintSearch</value>
+  </data>
+  <data name="VIEW_Billing_BillingInputDate" xml:space="preserve">
+    <value>送付確認</value>
+  </data>
+  <data name="VIEW_Billing_BillingInputOperateTime" xml:space="preserve">
+    <value>稼働時間入力</value>
+  </data>
+  <data name="VIEW_Billing_BillingListIndex" xml:space="preserve">
+    <value>請求機能</value>
+  </data>
+  <data name="VIEW_Billing_BillingSetting" xml:space="preserve">
+    <value>請求書設定</value>
+  </data>
+  <data name="VIEW_Billing_CreateBillingData" xml:space="preserve">
+    <value>請求書作成</value>
+  </data>
+  <data name="VIEW_Billing_EditDebitNote" xml:space="preserve">
+    <value>請求書編集</value>
+  </data>
+  <data name="VIEW_Billing_InputBillingPrepare" xml:space="preserve">
+    <value>請求ルール設定</value>
+  </data>
+  <data name="VIEW_CategoryMaint_CategoryMaintList" xml:space="preserve">
+    <value>小カテゴリー保守</value>
+  </data>
+  <data name="VIEW_ContactPersMaint_ContactPersMaintList" xml:space="preserve">
+    <value>取引先担当者保守</value>
+  </data>
+  <data name="VIEW_Contract_Delete" xml:space="preserve">
+    <value>契約削除</value>
+  </data>
+  <data name="VIEW_Contract_Edit" xml:space="preserve">
+    <value>契約登録</value>
+  </data>
+  <data name="VIEW_Contract_ExportCsvContractList" xml:space="preserve">
+    <value>契約CSV出力</value>
+  </data>
+  <data name="VIEW_Contract_FinishContract" xml:space="preserve">
+    <value>契約確定</value>
+  </data>
+  <data name="VIEW_Contract_IssuedEstimate" xml:space="preserve">
+    <value>見積書・注文書出力</value>
+  </data>
+  <data name="VIEW_Contract_List" xml:space="preserve">
+    <value>契約機能</value>
+  </data>
+  <data name="VIEW_Contract_View" xml:space="preserve">
+    <value>契約閲覧</value>
+  </data>
+  <data name="VIEW_CustMaint_CustMaintList" xml:space="preserve">
+    <value>取引先保守</value>
+  </data>
+  <data name="VIEW_Estimate_Delete" xml:space="preserve">
+    <value>見積削除</value>
+  </data>
+  <data name="VIEW_Estimate_Edit" xml:space="preserve">
+    <value>見積作成</value>
+  </data>
+  <data name="VIEW_Estimate_EstimateList" xml:space="preserve">
+    <value>見積機能</value>
+  </data>
+  <data name="VIEW_Estimate_EstimateListContract" xml:space="preserve">
+    <value>見積成約</value>
+  </data>
+  <data name="VIEW_Estimate_IssueEstimateFile" xml:space="preserve">
+    <value>見積書発行</value>
+  </data>
+  <data name="VIEW_Estimate_SendEstimate" xml:space="preserve">
+    <value>見積書送付</value>
+  </data>
+  <data name="VIEW_Estimate_ViewAttachedFile" xml:space="preserve">
+    <value>ファイル添付</value>
+  </data>
+  <data name="VIEW_Estimate_ViewEstimate" xml:space="preserve">
+    <value>見積閲覧</value>
+  </data>
+  <data name="VIEW_Information_PostInformationList" xml:space="preserve">
+    <value>掲載情報保守</value>
+  </data>
+  <data name="VIEW_Mst_Maintenance" xml:space="preserve">
+    <value>マスタメンテナンス機能</value>
+  </data>
+  <data name="VIEW_OrgMaint_OrgMaintList" xml:space="preserve">
+    <value>組織保守</value>
+  </data>
+  <data name="VIEW_Other" xml:space="preserve">
+    <value>その他</value>
+  </data>
+  <data name="VIEW_PartnerStaff_CoverLetter" xml:space="preserve">
+    <value>送付票出力</value>
+  </data>
+  <data name="VIEW_Payment_CreateRedInvoice" xml:space="preserve">
+    <value>赤伝作成</value>
+  </data>
+  <data name="VIEW_Payment_ExportSalesPaymentsDataCsv" xml:space="preserve">
+    <value>CSV出力</value>
+  </data>
+  <data name="VIEW_Payment_IssueOrderForPayment" xml:space="preserve">
+    <value>支払先注文書</value>
+  </data>
+  <data name="VIEW_Payment_PaymentClearSetting" xml:space="preserve">
+    <value>入金消込</value>
+  </data>
+  <data name="VIEW_Payment_PaymentInputPrivate" xml:space="preserve">
+    <value>ステータス編集</value>
+  </data>
+  <data name="VIEW_Payment_PaymentList" xml:space="preserve">
+    <value>出金機能</value>
+  </data>
+  <data name="VIEW_Payment_PaymentNotPayment" xml:space="preserve">
+    <value>入金機能</value>
+  </data>
+  <data name="VIEW_PersInCharMaint_PersInCharMaintList" xml:space="preserve">
+    <value>担当者保守</value>
+  </data>
+  <data name="VIEW_Sheet" xml:space="preserve">
+    <value>帳票出力機能</value>
+  </data>
+  <data name="VIEW_ShowLog_ShowLog" xml:space="preserve">
+    <value>ログ閲覧</value>
+  </data>
+  <data name="VIEW_SubjectMaint_SubjectMaintList" xml:space="preserve">
+    <value>補助科目保守</value>
+  </data>
+  <data name="VIEW_TransMaint_TransMaintList" xml:space="preserve">
+    <value>自社銀行口座保守</value>
+  </data>
+  <data name="VIEW_UserMaint_UserMaintList" xml:space="preserve">
+    <value>ログインユーザー保守</value>
+  </data>
+  <data name="AccountingSubjectMaintDelete" xml:space="preserve">
+    <value>選択した勘定科目を削除してもよろしいでしょうか？</value>
+  </data>
+  <data name="AccountingSubjectMaintDuplicateCode" xml:space="preserve">
+    <value>入力された勘定科目コードは既に存在しています。</value>
+  </data>
+  <data name="AccountingSubjectMaintList" xml:space="preserve">
+    <value>勘定科目一覧</value>
+  </data>
+  <data name="AccountingSubjectMaintRegister" xml:space="preserve">
+    <value>勘定科目登録</value>
+  </data>
+  <data name="AccountingSubjectMaintRegisterSuccess" xml:space="preserve">
+    <value>勘定科目を登録しました。</value>
+  </data>
+  <data name="AccountingSubjectMaintJISDuplicateCode" xml:space="preserve">
+    <value>入力された勘定科目コード（JIS）は既に存在しています。</value>
+  </data>
+  <data name="AccountingSubjectMaintUpdateSuccess" xml:space="preserve">
+    <value>勘定科目を更新しました。</value>
+  </data>
+  <data name="ACCOUNT_CD" xml:space="preserve">
+    <value>勘定科目コード</value>
+  </data>
+  <data name="ACCOUNT_GROUP" xml:space="preserve">
+    <value>勘定科目グループ</value>
+  </data>
+  <data name="JIS_ACCOUNT_CD" xml:space="preserve">
+    <value>勘定科目コード（JIS）</value>
+  </data>
+  <data name="ContractCompanyMaintUpdateSuccess" xml:space="preserve">
+    <value>契約企業を更新しました。</value>
+  </data>
+  <data name="EnvironmentDependentCharErr" xml:space="preserve">
+    <value>{0}に環境依存文字が入力されています。</value>
+  </data>
+  <data name="KEY_CategoryMaint_CategoryMaintEdit" xml:space="preserve">
+    <value>Maint/CategoryMaint/CategoryMaintEdit</value>
+  </data>
+  <data name="KEY_CategoryMaint_Edit" xml:space="preserve">
+    <value>Maint/CategoryMaint/Edit</value>
+  </data>
+  <data name="KEY_CategoryMaint_ListEdit" xml:space="preserve">
+    <value>Maint/CategoryMaint/ListEdit</value>
+  </data>
+  <data name="KEY_ContactPersMaint_ContactPersMaintEdit" xml:space="preserve">
+    <value>Maint/ContactPersMaint/ContactPersMaintEdit</value>
+  </data>
+  <data name="KEY_ContactPersMaint_Edit" xml:space="preserve">
+    <value>Maint/ContactPersMaint/Edit</value>
+  </data>
+  <data name="KEY_CustMaint_CustMaintSearch" xml:space="preserve">
+    <value>Maint/CustMaint/CustMaintSearch</value>
+  </data>
+  <data name="KEY_CustMaint_Edit" xml:space="preserve">
+    <value>Maint/CustMaint/Edit</value>
+  </data>
+  <data name="KEY_Customer_SearchCustomerIndex" xml:space="preserve">
+    <value>Customer/Customer/SearchCustomerIndex</value>
+  </data>
+  <data name="KEY_Information_Edit" xml:space="preserve">
+    <value>Information/Information/Edit</value>
+  </data>
+  <data name="KEY_Information_PostInformationEdit" xml:space="preserve">
+    <value>Information/Information/PostInformationEdit</value>
+  </data>
+  <data name="KEY_PartnerStaff_SearchPartnerStaff" xml:space="preserve">
+    <value>PartnerStaff/PartnerStaff/SearchPartnerStaff</value>
+  </data>
+  <data name="KEY_PersInCharMaint_PersInCharMaintEdit" xml:space="preserve">
+    <value>Maint/PersInCharMaint/PersInCharMaintEdit</value>
+  </data>
+  <data name="KEY_PersInCharMaint_PersInCharMaintListReturn" xml:space="preserve">
+    <value>Maint/PersInCharMaint/PersInCharMaintListReturn</value>
+  </data>
+  <data name="KEY_SubjectMaint_Edit" xml:space="preserve">
+    <value>Maint/SubjectMaint/Edit</value>
+  </data>
+  <data name="KEY_SubjectMaint_SubjectMaintEdit" xml:space="preserve">
+    <value>Maint/SubjectMaint/SubjectMaintEdit</value>
+  </data>
+  <data name="KEY_TransMaint_Edit" xml:space="preserve">
+    <value>Maint/TransMaint/Edit</value>
+  </data>
+  <data name="KEY_TransMaint_TransMaintEdit" xml:space="preserve">
+    <value>Maint/TransMaint/TransMaintEdit</value>
+  </data>
+  <data name="KEY_UserMaint_Edit" xml:space="preserve">
+    <value>Maint/UserMaint/Edit</value>
+  </data>
+  <data name="KEY_UserMaint_UserMaintEdit" xml:space="preserve">
+    <value>Maint/UserMaint/UserMaintEdit</value>
+  </data>
+  <data name="AuthorityGroupMaintDeleteError" xml:space="preserve">
+    <value>権限グループに割り付けられているユーザーが存在します。\n権限グループを削除できません。</value>
+  </data>
+  <data name="AccountingSubjectGroupMaintDeleteError" xml:space="preserve">
+    <value>勘定科目グループ内の勘定科目に補助科目が存在します。\n勘定科目グループを削除できません。</value>
+  </data>
+  <data name="AccountingSubjectMaintDeleteError" xml:space="preserve">
+    <value>勘定科目に補助科目が存在します。\n勘定科目を削除できません。</value>
+  </data>
+  <data name="KEY_Contract_IssuePackageDelivery" xml:space="preserve">
+    <value>Contract/Contract/IssuePackageDelivery</value>
+  </data>
+  <data name="KEY_Contract_IssueSlipFileFromContract" xml:space="preserve">
+    <value>Contract/Contract/IssueSlipFileFromContract</value>
+  </data>
+  <data name="VIEW_CONTRACT_ISSUEPACKAGEDELIVERY" xml:space="preserve">
+    <value>納品書出力</value>
+  </data>
+  <data name="INV_FORMAT_DETAIL_LINE" xml:space="preserve">
+    <value>納品書明細行数</value>
+  </data>
+  <data name="INV_FORMAT_PATH" xml:space="preserve">
+    <value>納品書フォーマットパス</value>
+  </data>
+  <data name="Invalid" xml:space="preserve">
+    <value>無効</value>
+  </data>
+  <data name="Limit" xml:space="preserve">
+    <value>制限</value>
+  </data>
+  <data name="SetUpUserList" xml:space="preserve">
+    <value>設定ユーザー一覧</value>
+  </data>
+  <data name="SetUpUser_Account" xml:space="preserve">
+    <value>設定ユーザーアカウント</value>
+  </data>
+  <data name="SetUpUser_Name" xml:space="preserve">
+    <value>設定ユーザー名</value>
+  </data>
+  <data name="SetUpUserRegiser" xml:space="preserve">
+    <value>設定ユーザー登録</value>
+  </data>
+  <data name="LOGIN_LOCK_FLG" xml:space="preserve">
+    <value>ログイン制限</value>
+  </data>
+  <data name="set_Disable" xml:space="preserve">
+    <value>ユーザーを無効とする</value>
+  </data>
+  <data name="AccountLength" xml:space="preserve">
+    <value>アカウント の長さが正しくありません。</value>
+  </data>
+  <data name="DISABLE_FLG" xml:space="preserve">
+    <value>無効フラグ</value>
+  </data>
+  <data name="LOGIN_ACCOUNT_UPPER" xml:space="preserve">
+    <value>アカウント数上限値</value>
+  </data>
+  <data name="MONTHLY_BILL_DATA_UPPER" xml:space="preserve">
+    <value>月間請求データ数上限値</value>
+  </data>
+  <data name="PLAN_BASE_PRICE" xml:space="preserve">
+    <value>基本金額</value>
+  </data>
+  <data name="PLAN_CD" xml:space="preserve">
+    <value>プランコード</value>
+  </data>
+  <data name="PLAN_NAME" xml:space="preserve">
+    <value>プラン名称</value>
+  </data>
+  <data name="PLAN_SEQ_NO" xml:space="preserve">
+    <value>プラン通し番号</value>
+  </data>
+  <data name="PlanMaintDelete" xml:space="preserve">
+    <value>選択した契約プランを削除してもよろしいでしょうか？</value>
+  </data>
+  <data name="PlanMaintDeleteError" xml:space="preserve">
+    <value>\n契約プランを削除できません。</value>
+  </data>
+  <data name="PlanMaintList" xml:space="preserve">
+    <value>契約プラン一覧</value>
+  </data>
+  <data name="PLAN_DISABLE" xml:space="preserve">
+    <value>契約プランを無効とする</value>
+  </data>
+  <data name="PLAN_REGISTER" xml:space="preserve">
+    <value>契約プラン登録</value>
+  </data>
+  <data name="DISABLE" xml:space="preserve">
+    <value>無効</value>
+  </data>
+  <data name="PLAN_LIST" xml:space="preserve">
+    <value>契約プラン一覧</value>
+  </data>
+  <data name="PlanMaintRegister" xml:space="preserve">
+    <value>契約プラン登録</value>
+  </data>
+  <data name="PlanMaintDuplicateCode" xml:space="preserve">
+    <value>入力されたプランコードは既に存在しています。</value>
+  </data>
+  <data name="PlanMaintUpdateSuccess" xml:space="preserve">
+    <value>契約プランをを更新しました。</value>
+  </data>
+  <data name="PlanMaintRegisterSuccess" xml:space="preserve">
+    <value>契約プランを登録しました。</value>
+  </data>
+  <data name="Login_lock" xml:space="preserve">
+    <value>ログイン制限</value>
+  </data>
+  <data name="KEY_Cash_Flow" xml:space="preserve">
+    <value>BusinessAnalysis/BusinessAnalysis/CashFlow</value>
+  </data>
+  <data name="KEY_Contract_Plan_Confirm" xml:space="preserve">
+    <value>Maint/ContractPlan/ContractPlanConfirm</value>
+  </data>
+  <data name="KEY_Lock_Out_Disable" xml:space="preserve">
+    <value>Login/Login/LockoutDisable</value>
+  </data>
+  <data name="KEY_Nomen_Delete" xml:space="preserve">
+    <value>Maint/NomenMaint/Delete</value>
+  </data>
+  <data name="KEY_Nomen_Edit" xml:space="preserve">
+    <value>Maint/NomenMaint/Edit</value>
+  </data>
+  <data name="KEY_Nomen_Edit_Nomen" xml:space="preserve">
+    <value>Maint/NomenMaint/EditNomen</value>
+  </data>
+  <data name="KEY_Nomen_List" xml:space="preserve">
+    <value>Maint/NomenMaint/List</value>
+  </data>
+  <data name="KEY_Proceeds_Payment_Confirm" xml:space="preserve">
+    <value>BusinessAnalysis/BusinessAnalysis/ProceedsPaymentConfirm</value>
+  </data>
+  <data name="KEY_Proceeds_Payment_Plan" xml:space="preserve">
+    <value>BusinessAnalysis/BusinessAnalysis/ProceedsPaymentPlan</value>
+  </data>
+  <data name="KEY_Send_Mail_Contact" xml:space="preserve">
+    <value>Maint/ContractPlan/SendMailContact</value>
+  </data>
+  <data name="VIEW_Business_Analysis" xml:space="preserve">
+    <value>経営分析機能</value>
+  </data>
+  <data name="VIEW_Cash_Flow" xml:space="preserve">
+    <value>キャッシュフロー</value>
+  </data>
+  <data name="VIEW_Contract_Plan_Confirm" xml:space="preserve">
+    <value>契約プラン確認</value>
+  </data>
+  <data name="VIEW_Lock_Out_Disable" xml:space="preserve">
+    <value>ロックアウト無し</value>
+  </data>
+  <data name="VIEW_Nomen_Info" xml:space="preserve">
+    <value>品名情報保守</value>
+  </data>
+  <data name="VIEW_Proceeds_Payment_Confirm" xml:space="preserve">
+    <value>売上・支払確定</value>
+  </data>
+  <data name="VIEW_Proceeds_Payment_Plan" xml:space="preserve">
+    <value>売上・支払予定</value>
+  </data>
+  <data name="KEY_Contract_FinishContractDirect" xml:space="preserve">
+    <value>Contract/Contract/FinishContractDirect</value>
+  </data>
+  <data name="VIEW_Contract_FinishContractDirect" xml:space="preserve">
+    <value>メールを送信せず確定</value>
+  </data>
+  <data name="ACCOUNT_CLOSING_MONTH" xml:space="preserve">
+    <value>決算月</value>
+  </data>
+  <data name="COMPANY_LOGO_IMAGE_PATH" xml:space="preserve">
+    <value>契約企業ロゴ画像パス</value>
+  </data>
+  <data name="CONTRACT_PLAN" xml:space="preserve">
+    <value>契約プラン</value>
+  </data>
+  <data name="KEY_CategoryMaint_EditProduct" xml:space="preserve">
+    <value>Maint/CategoryMaint/EditProduct</value>
+  </data>
+  <data name="KEY_Customer_Index" xml:space="preserve">
+    <value>Customer/Customer/Index</value>
+  </data>
+  <data name="KEY_CustMaint_ImportCSV" xml:space="preserve">
+    <value>Maint/CustMaint/ImportCSV</value>
+  </data>
+  <data name="KEY_PartnerStaff_CreateCoverLetter" xml:space="preserve">
+    <value>PartnerStaff/PartnerStaff/CreateCoverLetter</value>
+  </data>
+  <data name="KEY_Contract_ExportCsvContractListData" xml:space="preserve">
+    <value>Contract/Contract/ExportContractInfoDataCsv</value>
+  </data>
+  <data name="PasswordSetupUserLength" xml:space="preserve">
+    <value>一時パスワードは6文字以上32文字以内です。</value>
+  </data>
+  <data name="KEY_AccountCodeMaint_AccountCodeMaintEdit" xml:space="preserve">
+    <value>Maint/AccountCodeMaint/EditAccountCode</value>
+  </data>
+  <data name="KEY_AccountCodeMaint_AccountCodeMaintList" xml:space="preserve">
+    <value>Maint/AccountCodeMaint/List</value>
+  </data>
+  <data name="KEY_AccountCodeMaint_AccountCodeSearch" xml:space="preserve">
+    <value>Maint/AccountCodeMaint/SearchAccountCode</value>
+  </data>
+  <data name="KEY_AccountCodeMaint_DELETE" xml:space="preserve">
+    <value>Maint/AccountCodeMaint/Delete</value>
+  </data>
+  <data name="KEY_AccountCodeMaint_Edit" xml:space="preserve">
+    <value>Maint/AccountCodeMaint/Edit</value>
+  </data>
+  <data name="VIEW_AccountCodeMaint_AccountCodeMaintList" xml:space="preserve">
+    <value>勘定科目保守</value>
+  </data>
+  <data name="KEY_PaymentState_EditPaymentStateList" xml:space="preserve">
+    <value>Maint/PaymentStateMaint/EditPaymentStateList</value>
+  </data>
+  <data name="KEY_PaymentState_PaymentStateMaintList" xml:space="preserve">
+    <value>Maint/PaymentStateMaint/PaymentStateMaintList</value>
+  </data>
+  <data name="VIEW_PaymentState_PaymentStateMaintList" xml:space="preserve">
+    <value>支払ステータス保守</value>
+  </data>
+  <data name="NOTICE_FLG" xml:space="preserve">
+    <value>告知有無</value>
+  </data>
+  <data name="NOTICE_MESSAGE" xml:space="preserve">
+    <value>告知メッセージ</value>
+  </data>
+  <data name="NOTICE_TITLE" xml:space="preserve">
+    <value>告知タイトル</value>
+  </data>
+  <data name="SYSTEM_OPERATION_MODE" xml:space="preserve">
+    <value>運転モード</value>
+  </data>
+  <data name="SYSTEM_STOPPED_MESSAGE" xml:space="preserve">
+    <value>停止時表示メッセージ</value>
+  </data>
+  <data name="SystemStatusRegister" xml:space="preserve">
+    <value>運転制御</value>
+  </data>
+  <data name="SystemStatusRegisterSuccess" xml:space="preserve">
+    <value>登録が完了しました。</value>
+  </data>
+  <data name="SystemStatusUpdateSuccess" xml:space="preserve">
+    <value>更新が完了しました。</value>
+  </data>
+  <data name="END_DATE" xml:space="preserve">
+    <value>掲載終了日</value>
+  </data>
+  <data name="START_DATE" xml:space="preserve">
+    <value>掲載開始日</value>
+  </data>
+  <data name="ContractBillingNumberMaintList" xml:space="preserve">
+    <value>契約請求件数一覧</value>
+  </data>
+  <data name="DELIVERY_NO_PREFIX" xml:space="preserve">
+    <value>納品番号接頭辞</value>
+  </data>
+  <data name="PLC_ORDER_NO_PREFIX" xml:space="preserve">
+    <value>支払先注文番号接頭辞</value>
+  </data>
+  <data name="KEY_AuthorityGroupMaint_AuthorityGroupMaintEdit" xml:space="preserve">
+    <value>Maint/AuthorityGroupMaint/AuthorityGroupMaintEdit</value>
+  </data>
+  <data name="KEY_AuthorityGroupMaint_AuthorityGroupMaintList" xml:space="preserve">
+    <value>Maint/AuthorityGroupMaint/List</value>
+  </data>
+  <data name="KEY_AuthorityGroupMaint_Delete" xml:space="preserve">
+    <value>Maint/AuthorityGroupMaint/Delete</value>
+  </data>
+  <data name="KEY_AuthorityGroupMaint_Edit" xml:space="preserve">
+    <value>Maint/AuthorityGroupMaint/Edit</value>
+  </data>
+  <data name="KEY_AuthorityGroupMaint_Search" xml:space="preserve">
+    <value>Maint/AuthorityGroupMaint/Search</value>
+  </data>
+  <data name="VIEW_AuthorityGroupMaint_AuthorityGroupMaintList" xml:space="preserve">
+    <value>権限グループ保守</value>
+  </data>
+  <data name="DELIVERY_NO_USE_PREFIX" xml:space="preserve">
+    <value>納品番号接頭辞有無</value>
+  </data>
+  <data name="DELIVERY_NO_USE_YM" xml:space="preserve">
+    <value>納品番号年月有無</value>
+  </data>
+  <data name="PLC_ORDER_NO_USE_PREFIX" xml:space="preserve">
+    <value>支払先注文番号接頭辞有無</value>
+  </data>
+  <data name="PLC_ORDER_NO_USE_YM" xml:space="preserve">
+    <value>支払先注文番号年月有無</value>
+  </data>
+  <data name="KEY_Proceed_Payment_Confirm_Graph" xml:space="preserve">
+    <value>BusinessAnalysis/BusinessAnalysis/ProceedPaymentConfirmGraph</value>
+  </data>
+  <data name="KEY_Proceeds_Payment_Plan_Graph" xml:space="preserve">
+    <value>BusinessAnalysis/BusinessAnalysis/ProceedsPaymentPlanGraph</value>
+  </data>
+  <data name="KEY_Cash_Flow_Graph" xml:space="preserve">
+    <value>BusinessAnalysis/BusinessAnalysis/CashFlowGraph</value>
+  </data>
+  <data name="KEY_Payment_PaymentHistory_ExportCSV" xml:space="preserve">
+    <value>Payment/Payment/PaymentHistoryExportCSV</value>
+  </data>
+  <data name="KEY_Contract_Resend" xml:space="preserve">
+    <value>Contract/Contract/ResendContract</value>
+  </data>
+  <data name="VIEW_Contract_Resend" xml:space="preserve">
+    <value>契約再送</value>
+  </data>
+  <data name="VIEW_ExternalLink" xml:space="preserve">
+    <value>外部連携機能</value>
+  </data>
+  <data name="KEY_AcReceivable_CsvOutput" xml:space="preserve">
+    <value>ExternalLink/ExternalLink/AcReceivableCsvOutput</value>
+  </data>
+  <data name="KEY_Deposit_CsvOutput" xml:space="preserve">
+    <value>ExternalLink/ExternalLink/DepositCsvOutput</value>
+  </data>
+  <data name="KEY_Setting_AcReceivable" xml:space="preserve">
+    <value>ExternalLink/ExternalLink/ExternalLinkSettingAcReceivable</value>
+  </data>
+  <data name="KEY_Setting_Deposit" xml:space="preserve">
+    <value>ExternalLink/ExternalLink/ExternalLinkSettingDeposit</value>
+  </data>
+  <data name="VIEW_AcReceivable_CsvOutput" xml:space="preserve">
+    <value>売掛CSV書出</value>
+  </data>
+  <data name="VIEW_Deposit_CsvOutput" xml:space="preserve">
+    <value>入金CSV書出</value>
+  </data>
+  <data name="VIEW_External_Link_Setting_AcReceivable" xml:space="preserve">
+    <value>外部連携設定（売掛）</value>
+  </data>
+  <data name="VIEW_External_Link_Setting_Deposit" xml:space="preserve">
+    <value>外部連携設定（入金）</value>
+  </data>
+  <data name="KEY_ExternalLinkSettingAcPayable" xml:space="preserve">
+    <value>ExternalLink/ExternalLink/ExternalLinkSettingAcPayable</value>
+  </data>
+  <data name="VIEW_ExternalLinkSettingAcPayable" xml:space="preserve">
+    <value>外部連携設定（買掛）</value>
+  </data>
+  <data name="KEY_AcPayable_CsvOutput" xml:space="preserve">
+    <value>ExternalLink/ExternalLink/AcPayableCsvOutput</value>
+  </data>
+  <data name="KEY_ExportAcPayable_Csv" xml:space="preserve">
+    <value>ExternalLink/ExternalLink/ExportAcPayableDataCsv</value>
+  </data>
+  <data name="KEY_ExportAcReceivable_Csv" xml:space="preserve">
+    <value>ExternalLink/ExternalLink/ExportAcReceivableDataCsv</value>
+  </data>
+  <data name="KEY_ExportDeposit_Csv" xml:space="preserve">
+    <value>ExternalLink/ExternalLink/ExportDepositDataCsv</value>
+  </data>
+  <data name="KEY_Setting_AcPayable" xml:space="preserve">
+    <value>ExternalLink/ExternalLink/ExternalLinkSettingAcPayable</value>
+  </data>
+  <data name="VIEW_AcPayable_CsvOutput" xml:space="preserve">
+    <value>買掛CSV書出</value>
+  </data>
+  <data name="VIEW_External_Link_Setting_AcPayable" xml:space="preserve">
+    <value>外部連携設定（買掛）</value>
+  </data>
+  <data name="KEY_ExternalLink_ExportAcPayableDataCsv" xml:space="preserve">
+    <value>ExternalLink/ExternalLink/ExportAcPayableDataCsv</value>
+  </data>
+  <data name="KEY_Payment_EditOrderStatus" xml:space="preserve">
+    <value>Payment/Payment/EditOrderStatus</value>
+  </data>
+  <data name="VIEW_Payment_EditOrderStatus" xml:space="preserve">
+    <value>支払先注文書ステータス編集</value>
+  </data>
+  <data name="KEY_Sale_Actual" xml:space="preserve">
+    <value>BusinessAnalysis/BusinessAnalysis/SaleActualComparision</value>
+  </data>
+  <data name="KEY_Sale_Actual_Graph" xml:space="preserve">
+    <value>BusinessAnalysis/BusinessAnalysis/SaleActualComparisionGraph</value>
+  </data>
+  <data name="VIEW_Sale_Actual" xml:space="preserve">
+    <value>売上実績比較</value>
+  </data>
+  <data name="KEY_Billing_BillingInputPrivateDispatch" xml:space="preserve">
+    <value>Billing/Billing/BillingInputPrivateDispatch</value>
+  </data>
+  <data name="BILL_FORMAT_TEMP_DETAIL_LINE" xml:space="preserve">
+    <value>請求書派遣明細行数</value>
+  </data>
+  <data name="BILL_FORMAT_TEMP_PATH" xml:space="preserve">
+    <value>請求書派遣フォーマットパス</value>
+  </data>
+  <data name="btnCreateNewline" xml:space="preserve">
+    <value>新規行を追加</value>
+  </data>
+  <data name="CheckInValid" xml:space="preserve">
+    <value>無効</value>
+  </data>
+  <data name="DebitNoteFormat" xml:space="preserve">
+    <value>請求書追加フォーマット</value>
+  </data>
+  <data name="DebitNoteType" xml:space="preserve">
+    <value>請求書区分</value>
+  </data>
+  <data name="DeleteLine" xml:space="preserve">
+    <value>削除行</value>
+  </data>
+  <data name="FormatDisplayName" xml:space="preserve">
+    <value>フォーマット表示名</value>
+  </data>
+  <data name="FormatPath" xml:space="preserve">
+    <value>フォーマットパス</value>
+  </data>
+  <data name="NewLine" xml:space="preserve">
+    <value>新規行</value>
+  </data>
+  <data name="VIEW_DispatchContractOverhead" xml:space="preserve">
+    <value>派遣契約諸表登録</value>
+  </data>
+  <data name="DispatchContractOverhead" xml:space="preserve">
+    <value>派遣契約諸表</value>
+  </data>
+  <data name="LineDetail" xml:space="preserve">
+    <value>明細行数</value>
+  </data>
+  <data name="KEY_Billing_BillingIssueDebitNoteList" xml:space="preserve">
+    <value>Billing/Billing/BillingIssueDebitNoteList</value>
+  </data>
+  <data name="KEY_Billing_BillingIssueDebitNote_Download" xml:space="preserve">
+    <value>Billing/Billing/DownloadBillingIssueDebitNote</value>
+  </data>
+  <data name="VIEW_Billing_IssueDebitNoteList" xml:space="preserve">
+    <value>指定フォーマット発行</value>
+  </data>
+  <data name="KEY_Payment_PackageClearDeposit" xml:space="preserve">
+    <value>Payment/Payment/PackageClearDeposit</value>
+  </data>
+  <data name="VIEW_Payment_PackageClearDeposit" xml:space="preserve">
+    <value>一括入金消込</value>
+  </data>
+  <data name="KEY_Contract_CancelContractEnd" xml:space="preserve">
+    <value>Contract/Contract/CancelFinishContract</value>
+  </data>
+  <data name="VIEW_Contract_CancelContractEnd" xml:space="preserve">
+    <value>契約終了取消</value>
+  </data>
+  <data name="KEY_Billing_EditOrderStatus" xml:space="preserve">
+    <value>Billing/Billing/EditOrderStatus</value>
+  </data>
+  <data name="VIEW_Billing_EditOrderStatus" xml:space="preserve">
+    <value>顧客先注文書ステータス編集</value>
+  </data>
+  <data name="KEY_Issue_Dispatch_Contract" xml:space="preserve">
+    <value>Contract/Contract/IssueDispatchContract</value>
+  </data>
+  <data name="KEY_Issue_Dispatch_Contract_Download" xml:space="preserve">
+    <value>Contract/Contract/IssueDispatchContractDownload</value>
+  </data>
+  <data name="VIEW_Issue_Dispatch_Contract" xml:space="preserve">
+    <value>派遣契約諸表</value>
+  </data>
+  <data name="KEY_Sale_Actual_By_Customer" xml:space="preserve">
+    <value>BusinessAnalysis/BusinessAnalysis/SaleActualByCustomer</value>
+  </data>
+  <data name="KEY_Sale_Actual_By_Customer_Graph" xml:space="preserve">
+    <value>BusinessAnalysis/BusinessAnalysis/SaleActualByCustomerGraph</value>
+  </data>
+  <data name="VIEW_Sale_Actual_By_Customer" xml:space="preserve">
+    <value>取引先別売上実績</value>
+  </data>
+  <data name="KEY_Payment_Notice_Issue" xml:space="preserve">
+    <value>Payment/Payment/IssueNoticeForPayment</value>
+  </data>
+  <data name="KEY_Payment_Notice_Issue_Download" xml:space="preserve">
+    <value>Payment/Payment/ExportFilePaymentNotice</value>
+  </data>
+  <data name="PLC_PAYMENT_NOTICE_FORMAT_PATH" xml:space="preserve">
+    <value>支払通知書フォーマットパス</value>
+  </data>
+  <data name="VIEW_Payment_Notice_Issue" xml:space="preserve">
+    <value>支払通知書</value>
+  </data>
+  <data name="All_company" xml:space="preserve">
+    <value>全社</value>
+  </data>
+  <data name="Authority_type" xml:space="preserve">
+    <value>検索権限</value>
+  </data>
+  <data name="Organization" xml:space="preserve">
+    <value>組織</value>
+  </data>
+  <data name="Person" xml:space="preserve">
+    <value>個人</value>
+  </data>
+  <data name="OrgMaintDeleteSelectRoot" xml:space="preserve">
+    <value>最上位の組織は削除できません。</value>
+  </data>
+  <data name="KEY_EngineerCategory" xml:space="preserve">
+    <value>Engineer/Engineer/EngineerCategoryList</value>
+  </data>
+  <data name="KEY_EngineerDelete" xml:space="preserve">
+    <value>Engineer/Engineer/EngineerDelete</value>
+  </data>
+  <data name="KEY_EngineerList" xml:space="preserve">
+    <value>Engineer/Engineer/EngineerList</value>
+  </data>
+  <data name="VIEW_EngineerCategory" xml:space="preserve">
+    <value>技術者カテゴリ</value>
+  </data>
+  <data name="VIEW_EngineerDelete" xml:space="preserve">
+    <value>技術者削除</value>
+  </data>
+  <data name="VIEW_EngineerList" xml:space="preserve">
+    <value>技術者一覧</value>
+  </data>
+  <data name="VIEW_ManageEngineer" xml:space="preserve">
+    <value>技術者管理機能</value>
+  </data>
+  <data name="KEY_EngineerCategoryEdit" xml:space="preserve">
+    <value>Engineer/Engineer/EngineerCategoryRegist</value>
+  </data>
+  <data name="KEY_EngineerEdit" xml:space="preserve">
+    <value>Engineer/Engineer/EngineerRegist</value>
+  </data>
+  <data name="DuplicateDestinationCompanyCode" xml:space="preserve">
+    <value>複製先企業コード</value>
+  </data>
+  <data name="DuplicateSourceCompanyCode" xml:space="preserve">
+    <value>複製元企業コード</value>
+  </data>
+  <data name="CategoryDuplicateSuccess" xml:space="preserve">
+    <value>カテゴリを複製しました。</value>
+  </data>
+  <data name="lblAnyGroupCode" xml:space="preserve">
+    <value>組織コード</value>
+  </data>
+  <data name="KEY_Contract_PaymentIssueDispatch" xml:space="preserve">
+    <value>Contract/Contract/IssueDispatchContractForPayment</value>
+  </data>
+  <data name="KEY_Contract_PaymentIssueDispatchDownload" xml:space="preserve">
+    <value>Contract/Contract/IssueDispatchContractDownloadForPayment</value>
+  </data>
+  <data name="VIEW_IssueDispatchPayment" xml:space="preserve">
+    <value>支払先派遣契約諸表</value>
+  </data>
+  <data name="VIEW_PaymentDispatchContractOverhead" xml:space="preserve">
+    <value>支払先派遣契約諸表登録</value>
+  </data>
+  <data name="KEY_Billing_DeleteDebitNote" xml:space="preserve">
+    <value>Billing/Billing/DeleteDebitNote</value>
+  </data>
+  <data name="VIEW_Billing_DeleteDebitNote" xml:space="preserve">
+    <value>請求書削除</value>
+  </data>
+  <data name="KEY_ContactPersMaint_ExportCSV" xml:space="preserve">
+    <value>Maint/ContactPersMaint/ExportCSV</value>
+  </data>
+  <data name="KEY_CustMaint_ExportCSV" xml:space="preserve">
+    <value>Maint/CustMaint/ExportCSV</value>
+  </data>
+  <data name="KEY_Proceeds_Payment_Confirm_ExportCSV" xml:space="preserve">
+    <value>BusinessAnalysis/BusinessAnalysis/ProceedsPaymentConfirmCsv</value>
+  </data>
+  <data name="KEY_Proceeds_Payment_Plan_ExportCSV" xml:space="preserve">
+    <value>BusinessAnalysis/BusinessAnalysis/ProceedsPaymentPlanCsv</value>
+  </data>
+  <data name="KEY_Sale_Actual_By_Customer_ExportCSV" xml:space="preserve">
+    <value>BusinessAnalysis/BusinessAnalysis/SaleActualByCustomerCsv</value>
+  </data>
+  <data name="KEY_Sale_Actual_ExportCSV" xml:space="preserve">
+    <value>BusinessAnalysis/BusinessAnalysis/SaleActualComparisionCsv</value>
+  </data>
+  <data name="KEY__CashFlow_ExportCSV" xml:space="preserve">
+    <value>BusinessAnalysis/BusinessAnalysis/CashFlowCsv</value>
+  </data>
+  <data name="NotSelectedDestinationCompany" xml:space="preserve">
+    <value>複製先企業が選択されていません。</value>
+  </data>
+  <data name="NotSelectedSourceCompany" xml:space="preserve">
+    <value>複製元企業が選択されていません。</value>
+  </data>
+  <data name="KEY_Estimate_Collection" xml:space="preserve">
+    <value>Estimate/Estimate/EstimateCollection</value>
+  </data>
+  <data name="KEY_Regist_Estimate_Collection" xml:space="preserve">
+    <value>Estimate/Estimate/RegistEstimateCollection</value>
+  </data>
+  <data name="KEY_Release_Estimate_Collection" xml:space="preserve">
+    <value>Estimate/Estimate/ReleaseEstimateCollection</value>
+  </data>
+  <data name="VIEW_Estimate_Collection" xml:space="preserve">
+    <value>見積集約</value>
+  </data>
+  <data name="EST_COLLECTION_FORMAT_DETAIL_LINE" xml:space="preserve">
+    <value>集約見積書明細行数</value>
+  </data>
+  <data name="EST_COLLECTION_FORMAT_NOMEN_LINE" xml:space="preserve">
+    <value>集約見積書品目行数</value>
+  </data>
+  <data name="EST_COLLECTION_FORMAT_PATH" xml:space="preserve">
+    <value>集約見積書フォーマットパス</value>
+  </data>
+  <data name="EST_COLLECTION_FORMAT_SES_DETAIL_LINE" xml:space="preserve">
+    <value>集約見積書SES明細行数</value>
+  </data>
+  <data name="EST_COLLECTION_FORMAT_SES_NOMEN_LINE" xml:space="preserve">
+    <value>集約見積書SES品目行数</value>
+  </data>
+  <data name="EST_COLLECTION_FORMAT_SES_PATH" xml:space="preserve">
+    <value>集約見積書SESフォーマットパス</value>
+  </data>
+  <data name="EST_COLLECTION_NO_PREFIX" xml:space="preserve">
+    <value>集約見積書番号接頭辞</value>
+  </data>
+  <data name="EST_COLLECTION_NO_USE_PREFIX" xml:space="preserve">
+    <value>集約見積書番号接頭辞有無</value>
+  </data>
+  <data name="EST_COLLECTION_NO_USE_YM" xml:space="preserve">
+    <value>集約見積書番号年月有無</value>
+  </data>
+  <data name="ORD_COLLECTION_FORMAT_DETAIL_LINE" xml:space="preserve">
+    <value>集約注文書明細行数</value>
+  </data>
+  <data name="ORD_COLLECTION_FORMAT_NOMEN_LINE" xml:space="preserve">
+    <value>集約注文書品目行数</value>
+  </data>
+  <data name="ORD_COLLECTION_FORMAT_PATH" xml:space="preserve">
+    <value>集約注文書フォーマットパス</value>
+  </data>
+  <data name="ORD_COLLECTION_FORMAT_SES_DETAIL_LINE" xml:space="preserve">
+    <value>集約注文書SES明細行数</value>
+  </data>
+  <data name="ORD_COLLECTION_FORMAT_SES_NOMEN_LINE" xml:space="preserve">
+    <value>集約注文書SES品目行数</value>
+  </data>
+  <data name="ORD_COLLECTION_FORMAT_SES_PATH" xml:space="preserve">
+    <value>集約注文書SESフォーマットパス</value>
+  </data>
+  <data name="KEY_Issue_Estimate_Collection" xml:space="preserve">
+    <value>Estimate/Estimate/IssueEstimateCollection</value>
+  </data>
+  <data name="KEY_Issue_Order_Collection" xml:space="preserve">
+    <value>Estimate/Estimate/IssueOrderCollection</value>
+  </data>
+  <data name="KEY_Receive_Order_Collection" xml:space="preserve">
+    <value>Estimate/Estimate/ReceiveOrderCollection</value>
+  </data>
+  <data name="KEY_Send_Estimate_Collection" xml:space="preserve">
+    <value>Estimate/Estimate/SendEstimateCollection</value>
+  </data>
+  <data name="KEY_Send_Order_Collection" xml:space="preserve">
+    <value>Estimate/Estimate/SendOrderCollection</value>
+  </data>
+  <data name="KEY_Billing_NoteIssueControl" xml:space="preserve">
+    <value>Billing/Billing/BillingNoteIssuedControl</value>
+  </data>
+  <data name="VIEW_Billing_NoteIssueControl" xml:space="preserve">
+    <value>請求書発行済制御有り</value>
+  </data>
+  <data name="KEY_Dashboard_Display" xml:space="preserve">
+    <value>SalesAnalysis/SalesAnalysis/Dashboard</value>
+  </data>
+  <data name="VIEW_Dashboard_Display" xml:space="preserve">
+    <value>ダッシュボード表示有り</value>
+  </data>
+  <data name="VIEW_SalesAnalysis_Dashboard" xml:space="preserve">
+    <value>営業分析機能</value>
+  </data>
+  <data name="Sales_Analysis_Authority_type" xml:space="preserve">
+    <value>営業分析権限</value>
+  </data>
+  <data name="KEY_EngineerUploadFile" xml:space="preserve">
+    <value>Engineer/Engineer/EngineerFileUpload</value>
+  </data>
+  <data name="lblUploadFilePassword" xml:space="preserve">
+    <value>アップロードファイルパスワード</value>
+  </data>
+  <data name="VIEW_EngineerUploadFile" xml:space="preserve">
+    <value>ファイルアップロード</value>
+  </data>
+  <data name="KEY_EngineerDownloadFile" xml:space="preserve">
+    <value>Engineer/Engineer/EngineerFileDownload</value>
+  </data>
+  <data name="lblUploadFileSizeMax" xml:space="preserve">
+    <value>アップロードファイルサイズ上限（MB）</value>
+  </data>
+</root>
