@@ -30,7 +30,10 @@ namespace SystemSetup.DataAccess
     public class BaseDa
     {
         private CmnEntityModel cmnEntityModel = null;
-        
+        public static readonly string ConnectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
+        //public static readonly string ConnectionString = "Data Source=eimikghlls.database.windows.net;Initial Catalog=i-seiQ2-test;Integrated Security=False;User ID=i-seiq-test-admin;Password=P3LX5HxPstmK";
+        //public static readonly string ConnectionString = Environment.GetEnvironmentVariable("LUNCH");
+        //public static readonly string ConnectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=LunchManagement;Integrated Security=False;User ID=sa;Password=111111";
         public static log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private IDbConnection conn;
         private IDbCommand cmd;

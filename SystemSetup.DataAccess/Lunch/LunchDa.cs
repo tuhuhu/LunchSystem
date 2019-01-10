@@ -300,14 +300,20 @@ namespace SystemSetup.DataAccess
                     FROM_DATE = from_date,
                     TO_DATE = to_date
                 }).ToList();
+
+            var totalCountMenu = 0;
+
             StringBuilder content = new StringBuilder();
             content.Append("Hôm nay cho anh như sau nhé : ");
             content.AppendLine();
             foreach (var menu in result)
             {
+                totalCountMenu += totalCountMenu;
                 content.Append(String.Format("{0} {1}", menu.COUNT_MENU, menu.LUNCH_MENU_NAME));
                 content.AppendLine();
             }
+
+            content.Append(String.Format("{0}", totalCountMenu));
             mailbody = content.ToString();
             return mailbody;
         }

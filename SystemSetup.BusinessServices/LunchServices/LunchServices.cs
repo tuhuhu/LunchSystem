@@ -100,7 +100,8 @@ namespace SystemSetup.BusinessServices
             mailbody = dataAccess.GetMailBody();
             int result;
             result = SystemSetup.UtilityServices.MailUtility.SendMail(
-                            "nguyendoan200887@gmail.com",
+                            //"nguyendoan200887@gmail.com",
+                            "bk.newbie@gmail.com",
                             "votruonggiang2401@gmail.com",
                             "",
                             "Công ty i-enter Asia Tầng 9 IPH đặt cơm trưa",

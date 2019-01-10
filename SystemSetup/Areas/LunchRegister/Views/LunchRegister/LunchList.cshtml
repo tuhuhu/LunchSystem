@@ -259,11 +259,11 @@
     $(document).on('click', '#btnApprove', function () {
         if (!iseiQ.utility.getDataByAjax(checkTimeOutUrl, null)) return;        
         var hourNow = new Date().getHours();
-        if (hourNow >= 12 || hourNow < 11) {
-            iseiQ.utility.showMessageModal("Please make order from 11hAM to 12hAM !!!", true);
-        }
-        else
-        {
+        //if (hourNow >= 12 || hourNow < 11) {
+        //    iseiQ.utility.showMessageModal("Please make order from 11hAM to 12hAM !!!", true);
+        //}
+        //else
+        //{
             // Get Project Dsp Name
             iseiQ.utility.showConfirmModal('Do you want to Aprrove all order ?', function (action) {
                 if (action) {
@@ -286,7 +286,7 @@
                     });
                 }
             });
-        }        
+        //}        
     });
 
     $(document).off('.delete-TaxRateMaint-link');
